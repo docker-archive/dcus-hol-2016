@@ -4,14 +4,14 @@
 1. Use the following command to clone the DockChat repo from GitHub to node-0
 
 ```
-node-0:$ git clone https://github.com/mark-church/simple-site.git
+node-0:$ git clone https://github.com/mark-church/FoodTrucks.git
 Cloning into 'dockchat'...
 remote: Counting objects: 54, done.
 remote: Total 54 (delta 0), reused 0 (delta 0), pack-reused 54
 Unpacking objects: 100% (54/54), done.
 Checking connectivity... done.
 ```
-2. Change directory to ```simple-site``` and examine the list of files in the repo
+2. Change directory to ```FoodTrucks``` and examine the list of files in the repo
 
 ```
 $ tree
@@ -43,9 +43,10 @@ __CMD__:
 
 
 
-3. 
 
-##Deploy a Multi-Service, Multi-Host Application
+##Task 2: Start a Docker Cluster
+
+
 
 #####Set Up Docker Clustering
 1. Create cluster
@@ -57,6 +58,9 @@ __CMD__:
 1. ```docker version``
 2. ```docker info```
 3. ```docker network ls```
+
+
+##Task 3: Deploy a Multi-Service, Multi-Host Application
 
 #####Deploy Application
 1. Examine compose file
@@ -79,20 +83,20 @@ __networks__:
 __volumes__:
 
 
-1.```docker login```
+1. ```docker login```
 2. ```docker-compose build build-compose.yml```
 3. ```docker push```
 4. ```docker-compose run-compose.yml up```
 5. ```docker ps``` 
 6. Go to application
 
-####Explore Application
+#####Explore Application
 1. ```docker inspect container```
 2. ```docker network inspect net```
 3. show labels on worker nodes and infrastructure node
 
-#####Infrastructure Operations
-1. Scale front-end
+#####Cluster and Application Operations
+1. Scale front-end web server to 3 
 2. Hit front-end and show different containers serving up the web page
 3. Rolling update of application
 4. Kill host
