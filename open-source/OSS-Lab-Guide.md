@@ -11,17 +11,19 @@
 #####Set Up Environment
 
 1. Connect to __host0__
-2. Use the following command to clone the simpleApp repo from GitHub to node-0
+2. Use the following command to clone the simple app repo from GitHub to node-0
 
 ```
-node-0:$ git clone https://github.com/mark-church/FoodTrucks.git
-Cloning into 'dockchat'...
-remote: Counting objects: 54, done.
-remote: Total 54 (delta 0), reused 0 (delta 0), pack-reused 54
-Unpacking objects: 100% (54/54), done.
+node-0:$ git clone https://github.com/mark-church/simple.git
+Cloning into 'simple'...
+remote: Counting objects: 2628, done.
+remote: Compressing objects: 100% (1706/1706), done.
+remote: Total 2628 (delta 864), reused 2628 (delta 864), pack-reused 0
+Receiving objects: 100% (2628/2628), 11.18 MiB | 9.39 MiB/s, done.
+Resolving deltas: 100% (864/864), done.
 Checking connectivity... done.
 ```
-3. Change directory to ```FoodTrucks``` and examine the list of files in the repo
+3. Change directory to ```simple`` and examine the list of files in the repo
 
 ```
 $ cd simple
@@ -55,8 +57,14 @@ Server:
  OS/Arch:      linux/amd64
 ```
 
+2. Go to the simpleDir directory
 
-2. Inspect the Dockerfile to see how its parameters will build the container image
+```
+$ cd simpleDir
+```
+
+
+3. Inspect the Dockerfile to see how its parameters will build the container image
 
 ```
 $ cat Dockerfile
@@ -84,31 +92,54 @@ __CMD__:
 
 
 
-2. Build the image specifying the directory of the Dockerfile and tagging the image with a name
+4. Build the image specifying the directory of the Dockerfile and tagging the image with a name
 
 ```
 $ docker build -t simple-app .
-ending build context to Docker daemon 46.41 MB
+Sending build context to Docker daemon 46.37 MB
 Step 1 : FROM ubuntu
  ---> 97434d46f197
- ...
- 
- done!
+Step 2 : RUN sudo apt-get update && apt-get -y install python-pip
+ ---> Using cache
+ ---> b0cb7f91182a
+Step 3 : RUN sudo pip install flask
+ ---> Using cache
+ ---> 48341a27ddae
+Step 4 : COPY / /simpleDir
+ ---> d4624e790810
+Removing intermediate container ff6acef54740
+Step 5 : WORKDIR /simpleDir
+ ---> Running in 5b72131e12d4
+ ---> ae4e569e3e78
+Removing intermediate container 5b72131e12d4
+Step 6 : RUN chmod a+x /simpleDir/run.py
+ ---> Running in 38d3b00b2543
+ ---> e5f7ccf32e83
+Removing intermediate container 38d3b00b2543
+Step 7 : CMD python /simpleDir/run.py
+ ---> Running in 0c8d994d23ce
+ ---> 6b249f008fee
+Removing intermediate container 0c8d994d23ce
+Successfully built 6b249f008fee
  ```
  
 3. See that the image is now in the local image repository of the Docker engine
 
 ```
 $ docker images
+REPOSITORY                             TAG                         IMAGE ID            CREATED             SIZE
+simple-app                             latest                      6b249f008fee        13 minutes ago      418.6 MB
 
 ```
 
+
+We have now built a new container image using the Dockerfile and the contents of the directory that we cloned from GitHub.
 
 #####Run the Application
 1. Now create a container with our simple-app image and run it on __host0__ at port 80
 
 ```
-$ docker run -it -p 80:80 simple-app
+$ docker run -it -p 5000:5000 simple-app
 ```
 
 2. Verify through the Docker CLI that the container is running
@@ -126,6 +157,12 @@ From this output we can see the following:
 
 3. Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of __host0__. Type ```http://<ip address>:80''' into the browser and you will see your container running.
 
+You should see the following ...
+<p align="center">
+<img src="./simple-app.png" width=400px>
+</p>
+
+
 
 
 
@@ -134,15 +171,34 @@ Up until this point we have been dealing with a single-container application on 
 
 
 #####Set Up Docker Clustering
-1. Create cluster
-2. Point client at cluster address
+1. Create swarm controller
 
+```
+$ docker swarm create --listen-addr <IP>:4500
+ ```
+ 
+2. View containers on controller host
 
-#####Swarm Cluster Architecture
+```
+$ docker ps
+...
+```
 
-1. ```docker version``
-2. ```docker info```
-3. ```docker network ls```
+3. Join the other hosts to the swarm cluster
+
+```
+$ docker swarm join <IP>:4500
+```
+4. View the cluster
+
+```
+$ docker node ls
+...
+
+$ docker swarm info
+...
+
+```
 
 
 ##Task 3: Deploy a Multi-Service, Multi-Host Application
