@@ -76,7 +76,7 @@ Installing the Docker Cloud CLI differs based on the operating system you're usi
 		$ docker-cloud -v
 		docker-cloud 1.0.2
 		
-**Note**: If you later want to uninstall the Docker Cloud CLI run either `pip uninstall docker-cloud` on Linux and Windows or `brew uninstall docker-cloud`
+> **Note**: If you later want to uninstall the Docker Cloud CLI run either `pip uninstall docker-cloud` on Linux and Windows or `brew uninstall docker-cloud`
 
 # <a name="install_node"></a>Step 2: Install the Docker Cloud Agent on a Node
 A node is another name for a Docker host that is managed by Docker Cloud. Docker Cloud allows administrators to link to several different hosted cloud service providers (such as Microsoft Azure), and create clusters of nodes quicly and easily. This process stands up new nodes on the cloud provider of choice, joins them to a cluster, and installs the Docker Cloud agent. 
@@ -142,7 +142,7 @@ When you create a service in the Docker Cloud web interface, a wizard walks you 
 +  **Configure the Service** From here, give the service a name, set the initial number of containers, expose/publish ports, modify the run command or entrypoint, set memory and CPU limits.
 +  **Set Environment variables** Set the edit environment variables and link your service to other existing services in Docker Cloud.
 
-**Note**: In this lab  we won't be working with environment variables or connecting data volumes, but these are also available as optional steps in the wizard.
+> **Note**: In this lab  we won't be working with environment variables or connecting data volumes, but these are also available as optional steps in the wizard.
 
 Let's get started by selecting a service to deploy.
 
@@ -177,7 +177,7 @@ anything for most of the fields on the Create Service page, but we do need to ma
 	
 1. We are going to map port 80 in the container to port 8080 on the host. To do this replace **dynamic** with 8080. 
 	
-	**Note**: Two containers on the same node cannot publish to the same port.
+	> **Note**: Two containers on the same node cannot publish to the same port.
 
 1. Click **Create and deploy**. 
 
@@ -203,7 +203,7 @@ Let's check on the status of our service
 
 1. Click the **Timeline** tab and select **Service Start** to see a log output similar to the one below. 
 	
-	**Note**: It can take a couple of minutes for the container to deploy.
+	> **Note**: It can take a couple of minutes for the container to deploy.
 	
 	![](images/first-service-timeline.png)
 
@@ -289,13 +289,13 @@ Now we'll clone the repository into our local Docker environment. The following 
 
 1. Check to see if the voting front end is working by navigating to `http://localhost` in your web browser. 
 
-	**Note**: The voting app is running on port 80
+	> **Note**: The voting app is running on port 80
 	
 	![](images/voting.png)
 	
 1. Check to see if the results front end is working by navigating to `http://localhost:8000` in your web browser. 
 
-	**Note**: You will not see any results until you cast a vote using the voting front end. As you change your vote you can move back to results screen to see the change. 
+	> **Note**: You will not see any results until you cast a vote using the voting front end. As you change your vote you can move back to results screen to see the change. 
 	
 	![](images/results.png)
 
@@ -387,7 +387,7 @@ Switch back to your terminal or command window.
 
 1. Notice the status is flashing **building**
 
-	**Note**: It can take several minutes for a build job to complete
+	> **Note**: It can take several minutes for a build job to complete
 	
 	![](images/building.png)
 	
@@ -456,7 +456,7 @@ Let's go ahead and deploy the application.
 			autoredeploy: true
 		  	image: '<your Docker ID>/voting:latest'
 		  	
-	**Note**: You do NOT need to change the organization for the **haproxy** image. 
+	> **Note**: You do NOT need to change the organization for the **haproxy** image. 
 
 1. Authentiate to Docker Cloud
 
@@ -471,7 +471,7 @@ Let's go ahead and deploy the application.
 		$ docker-cloud stack up
 		5087205f-80c5-498a-9005-0ff9a29e48f0
 		
-	**Note**: You can also stand up stacks using the Docker Cloud web interface.
+	> **Note**: You can also stand up stacks using the Docker Cloud web interface.
 	
 Next we'll navigate back to Docker Cloud to see if our service is up and running
 
@@ -489,9 +489,9 @@ Next we'll navigate back to Docker Cloud to see if our service is up and running
 
 1. Scroll down to the **Endpoints** section and click on the link icons at the end of the two lines under **Service Endpoints** 
 
-	**Note**: Notice the voting app now says "Futbol VS Soccer" instead of "Dev vs OPs". This is the result of the change we made earlier. 
+	> **Note**: Notice the voting app now says "Futbol VS Soccer" instead of "Dev vs OPs". This is the result of the change we made earlier. 
 
-	**Note**: As before you won't see anyting on the results page until you vote. 
+	> **Note**: As before you won't see anyting on the results page until you vote. 
 
 Now that we have our application up and running, let's make a push to GitHub and watch Docker Cloud redeploy our application. 
 
@@ -537,7 +537,7 @@ Switch back to your terminal or command window.
 
 1. Notice the status is flashing **building**
 
-	**Note**: It can take several minutes for a build job to complete
+	> **Note**: It can take several minutes for a build job to complete
 	
 	![](images/building.png)
 	
