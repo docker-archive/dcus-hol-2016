@@ -140,14 +140,14 @@ We have now built a new container image using the Dockerfile and the contents of
 
 ```
 $ docker run -it -p 5000:5000 simple-app
+a81a20cdb00d486601b57dba9b02c31c8272400ea67b9122a8a177c0b465d568
 ```
 
 2. Verify through the Docker CLI that the container is running
 
 ```
 $ docker ps
-
-
+a81a20cdb00d        simple-app          "python /simpleDir/ru"   13 minutes ago      Up 3 seconds        0.0.0.0:5000->5000/tcp   tiny_elion
 ```
 From this output we can see the following:   
 
