@@ -153,9 +153,9 @@ From this output we can see the following:
 
 * The container has been given an automatically generated ID and name (we can specify the name if we choose)
 * We can see what image was used to create the container
-* We can also see if and how the container is exposed outside the host (in this case on port 80 of the host interfaces)
+* We can also see if and how the container is exposed outside the host (in this case on port 5000 of the host interfaces)
 
-3. Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of __host0__. Type ```http://<ip address>:80''' into the browser and you will see your container running.
+3. Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of __host0__. Type ```http://<ip address>:5000``` into the browser and you will see your container running.
 
 You should see the following ...
 <p align="center">
