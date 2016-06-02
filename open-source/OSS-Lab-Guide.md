@@ -130,7 +130,7 @@ From this output we can see the following:
 
 
 ##Task 2: Start a Docker Cluster
-Up until this point we have been dealing with a singel-container application on one host. Real-world applications are typically many apps across hosts that may even be in different environments. The Docker ecosystem has powerful tools to scale and manage large applicaion
+Up until this point we have been dealing with a single-container application on one host. Real-world applications are typically many apps across hosts that may even be in different environments. The Docker ecosystem has powerful tools to scale and manage large applicaion
 
 
 #####Set Up Docker Clustering
