@@ -23,7 +23,7 @@ Receiving objects: 100% (2628/2628), 11.18 MiB | 9.39 MiB/s, done.
 Resolving deltas: 100% (864/864), done.
 Checking connectivity... done.
 ```
-3. Change directory to ```simple`` and examine the list of files in the repo
+3. Change directory to `simple` and examine the list of files in the repo
 
 ```
 $ cd simple
@@ -163,45 +163,75 @@ You should see the following ...
 </p>
 
 
+4. You have now completed Task 1. Before proceeding to the next task clear all of the containers on __node0__ by running the command ```$ docker rm -f $(docker ps -q)```. You should then see that there are no or stopped containers on the host. 
 
+```
+$ docker ps -a
+```
 
 
 ##Task 2: Start a Docker Cluster
-Up until this point we have been dealing with a single-container application on one host. Real-world applications are typically many apps across hosts that may even be in different environments. The Docker ecosystem has powerful tools to scale and manage large applicaion
+Up until this point we have been dealing with a single-container application on one host. Real-world applications are typically many apps across many hosts. Each container provides a service that can be written in different languages and use different frameworks. By splitting an application into different services, Docker allows the application components to scale independently of one another. 
+
+Docker has powerful tools to manage multi-service apps. It has built-in capabilities to define, schedule, and scale services. In the next part of the lab we will use Docker clustering to deploy a multi-service app across two hosts and scale it meet growing demand.
 
 
 #####Set Up Docker Clustering
-1. Create swarm controller
+A Docker Swarm cluster has Swarm managers and Swarm worker nodes. The managers manage and retain the state of the cluster while the worker nodes run application loads. As of Docker 1.12 no external backend or 3rd party components are required for a fully functioning Swarm cluster. 
+
+In this part of the demo we will use all three of the nodes in our lab. __node0__ will be our Swarm manager while __node1__ and __node2__ will server as our Swarm worker nodes. Swarm supports a highly available, redundant managers but for the purposes of this lab we will only have a single manager.
+
+
+######Create a Swarm Master
+1. Get the internal IP address of __node0__
 
 ```
-$ docker swarm create --listen-addr <IP>:4500
+$ ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 06:67:be:89:1f:b5
+          inet addr:172.31.22.238  Bcast:172.31.31.255  Mask:255.255.240.0
+...
+```
+2. Create a Swarm manager on __node0__ with its internal IP address
+
+```
+$ docker swarm init --listen-addr <IP>:4500
  ```
- 
-2. View containers on controller host
+
+######Join a Worker Node to a Swarm Cluster
+1. Open up a second tab and log in to __node1__ keeping the first tab open
 
 ```
-$ docker ps
-...
+$ ssh -i key.pem ubuntu@<host1 external IP>
+fdadfas
 ```
 
-3. Join the other hosts to the swarm cluster
+3. Join the swarm cluster as a worker node with the internal IP address of the Swarm master, __node0__
+4. 
 
 ```
-$ docker swarm join <IP>:4500
-```
-4. View the cluster
-
-```
-$ docker node ls
-...
-
-$ docker swarm info
-...
-
+$ docker swarm join <host0 IP>:4500
 ```
 
+Repeat step 3 for __host2__
+
+4. Go back to the __host0__ tab and note that __host1__ has joined the cluster as a worker node
+
+```
+docker node ls
+ID              NAME                                          STATUS  AVAILABILITY/MEMBERSHIP  MANAGER STATUS  LEADER
+1q7l9v5cswpa    ip-192-168-34-90.us-west-2.compute.internal   READY   ACTIVE
+2un9gn4ye1uc *  ip-192-168-33-113.us-west-2.compute.internal  READY   ACTIVE                   REACHABLE       Yes
+```
+```docker node ls``` shows us all of the nodes that are in a given Swarm cluster. Here we can see the hostname, the unique ID of the host, and the role of the host in the cluster. The ```*``` denotes the host that we are currently running the Docker command from.
+
+5. Repeat steps 1-5 for __node2__
+
+Congratulations, you have now set up a Docker Swarm cluster and completed Task 2!
 
 ##Task 3: Deploy a Multi-Service, Multi-Host Application
+
+We will now deploy a 2-container application comprised of a web front end and a database backend. The frontend is a custom Python application and the backend is Elasticsearch. It's called the Foodtruck app and it creates a great visualization to see all of the different places to get food in San Francisco. The locations are searchable and presented on a map of the city.
+
 
 #####Deploy Application
 1. Examine compose file
