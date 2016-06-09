@@ -3,7 +3,7 @@
 #####Prerequisites
 * You will be using __node0__, __node1__, and __node2__
 * Ensure that no containers are running on these nodes ```$ docker rm -f $(docker ps -q)```
-* 
+* This lab requires a Docker Hub account. This account is free and will allow you to push and pull images from the Docker public registry. This link describes how to create a Docker Hub account: <a href="https://docs.docker.com/mac/step_five/">https://docs.docker.com/mac/step_five/</a>
 
 
 
