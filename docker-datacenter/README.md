@@ -1,7 +1,7 @@
 # Docker Datacenter
 
-TODO: - Must reference which nodes that the commands will be run on??? - node-0, node-1, etc...
-TODO: - Remove all references to AWS and EC2 - This might require different screenshots also
+- TODO: - Must reference which nodes that the commands will be run on??? - node-0, node-1, etc...
+- TODO: - Remove all references to AWS and EC2 - This might require different screenshots also
 
 These tasks for hands-on labs will take you through a typical workflow for Docker Datacenter.
 From install, through deploying various applications, and setting up common role-based access control
