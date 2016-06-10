@@ -44,7 +44,7 @@ To create a Docker ID:
 
 Before beginning this lab, you will need to select an option for working with a local Docker environment 
 
-**Option 1 (recommended)**: We recommend that you install the Docker for Mac or Docker for Windows beta on your laptop. If you'd like to do this please refer to **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there. 
+**Option 1 (recommended)**: We recommend that you install the Docker for Mac or Docker for Windows beta on your laptop. If you'd like to do this please refer to TODO: **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there. 
 
 If you choose this option, you will execute install the Docker Cloud CLI and executecommands in a terminal or command window on your local machine.
 
