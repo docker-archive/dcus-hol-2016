@@ -1,5 +1,7 @@
 # Docker Datacenter
 
+TODO: - Must reference which nodes that the commands will be run on??? - node-0, node-1, etc...
+
 These tasks for hands-on labs will take you through a typical workflow for Docker Datacenter.
 From install, through deploying various applications, and setting up common role-based access control
 you will be able to quickly familiarize yourself with the features of Docker Universal Control Plane.
@@ -371,10 +373,6 @@ If you completed all the steps correctly, you should see a very cool application
 
 ## <a name="deploy-ucp-interface"></a>Deploy Applications using the UCP Web Interface
 
-### Pre-requisites
-
-- UCP installed and 2 nodes joined to the UCP controller
-
 ### Deploy FoodTruck Application again
 
 - Remove all the applications you have deployed on UCP so far.
@@ -403,12 +401,7 @@ In this task you will complete the following four steps.
 - Assign permissions to team
 - Deploy containers
 
-### Pre-requisites
-
-- A working UCP installation
-- An UCP account with admin rights
-
-### Step 1 - Create new users
+### Create new users
 
 In this step you will create the 4 new users shown below.
 
@@ -435,7 +428,7 @@ In this step you will create the 4 new users shown below.
 
 - Click **Create User**.
 
-Repeat steps 1-4 for all users in the table above. Be sure to select the appropriate permissions from the **Default Permissions** dropdown.
+Repeat for all users in the table above. Be sure to select the appropriate permissions from the **Default Permissions** dropdown.
 
 > **Note:** The *Default Permissions* configured in the above step are not the same as the permissions you will set in Step - *Default Permissions* apply to non-labelled resources. The permissions you will set in Step 3 will only apply to resources that are labelled appropriately.
 
