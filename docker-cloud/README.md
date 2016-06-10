@@ -92,20 +92,20 @@ However, in some cases, you may already have a node deployed that you want to br
 
 2. Click the **Create a Node** icon on the welcome screen
 
-	![weclome_node_create](./images/welcome_node_create.png)
+TODO: ![welcome_node_create](./images/welcome_node_create.png)
 
 3. Click **Bring Your Own Node**
 
-	![byon_button](./images/byon_button.png)
+![byon_button](./images/byon_button.png)
 
-4. The dialog that appears lists the currently supported distributions of Linux, and provides a command that you can copy.
+4. The dialog that appears lists the currently supported distributions of Linux and provides a command that you can copy.
     This command includes a token that allows the agent to talk to Docker Cloud.
     
-    ![](images/node-byoh-wizard-v2.png)
+![](images/node-byoh-wizard-v2.png)
 
 5. Copy the command to your clipboard.
 
-6. Open a terminal window and SSH into `node-0`
+6. Open a terminal window and SSH into `node-0` - TODO: node-0 or node-2?(node-2 is listed at the top)
 
 		ssh -i <your ssh key name>.pem <username>@<node-0 ip address>
 
@@ -133,7 +133,9 @@ However, in some cases, you may already have a node deployed that you want to br
 
 6. Switch back to your web browser, and confirm that the new Linux host is detected. 
 
-	![byon_success](./images/byon_success.png)
+TODO: Fix this screenshot - Either frame it or crop it.
+
+![byon_success](./images/byon_success.png)
 	
 7. Click **Close Window**
 
@@ -144,9 +146,9 @@ A service is a group of containers of the same **image:tag**. Services make it s
 
 When you create a service in the Docker Cloud web interface, a wizard walks you through configuring the service in three steps.
 
-+ **Choose a Container Image** Images can come from Docker Cloud's Jumpstarts library, your personal Docker Hub account, Docker Hub's public index, or from third party registries you connect.
-+  **Configure the Service** From here, give the service a name, set the initial number of containers, expose/publish ports, modify the run command or entrypoint, set memory and CPU limits.
-+  **Set Environment variables** Set environment variables and link your service to other existing services in Docker Cloud.
++ **Choose a Container Image:** Images can come from Docker Cloud's Jumpstarts library, your personal Docker Hub account, Docker Hub's public index, or from third party registries you connect.
++  **Configure the Service:** From here, give the service a name, set the initial number of containers, expose/publish ports, modify the run command or entrypoint, set memory and CPU limits.
++  **Set Environment variables:** Set environment variables and link your service to other existing services in Docker Cloud.
 
 > **Note**: In this lab  we won't be working with environment variables or connecting data volumes, but these are also available as optional steps in the wizard.
 
@@ -154,17 +156,19 @@ Let's get started by selecting a service to deploy.
 
 1. In your web browser, from any page on Docker Cloud, click the **Services** icon in the menu on the left hand side of the screen.
 
-	![services_icon](images/services_icon.png)
+TODO: Better screenshot
+
+![services_icon](images/services_icon.png)
 
 1. Click **Create**.
 	
-	![](images/create-first-service.png)
+![](images/create-first-service.png)
 	
 1. Click the rocket icon near the top of the page and look for the  **Miscellaneous** section.
 	
 1. Click the **dockercloud/hello-world** image. This image creates a container that runs NGINX, and shows a simple *hello world* web page.
 
-	![](images/first-service-wizard.png)
+![](images/first-service-wizard.png)
 
 Docker Cloud takes us to the Services Wizard where we can configure our service. 
 
@@ -173,11 +177,11 @@ anything for most of the fields on the Create Service page, but we do need to ma
 
 1. Click the **Ports** menu item, 
 
-	![](images/service_deployed.png)
+![](images/service_deployed.png)
 	
 1. Click the **Published** checkbox.
 
-	![](images/first-service-ports.png)
+![](images/first-service-ports.png)
 	
 1. We are going to map port 80 in the container to port 8080 on the host. To do this replace **dynamic** with 8080. 
 	
@@ -209,7 +213,7 @@ Let's check on the status of our service
 	
 	> **Note**: It can take a couple of minutes for the container to deploy.
 	
-	![](images/first-service-timeline.png)
+![](images/first-service-timeline.png)
 
 1. Click back onto the **General** tab
 
@@ -217,7 +221,7 @@ Let's check on the status of our service
 
 	The **Containers** list shows all of the containers in this service. There should just be one for now.
 	
-	![](images/first-service-container-list.png)
+![](images/first-service-container-list.png)
 	
 1. Click the container's name to go to the Container's detail view. 
 	
@@ -225,13 +229,13 @@ Let's check on the status of our service
 	endpoints, logs, environment variables, volumes, a terminal, and the console
 	timeline.
 	
-	![](images/first-service-container.png)
+![](images/first-service-container.png)
 	
 	The **Endpoints** section lists the endpoints (ports) that this container is publishing. In the screenshot above, there is a single endpoint: **hello-world-66622790-1.9ab56d66.container.docker.io:8080**. The endpoint is composed of both the container's hostname and a port number.
 
 1. Click the link icon in the **Endpoints** section. This opens a new tab and shows the webpage that the **hello-world** container is hosting.
 
-	![](images/first-service-webpage.png)
+![](images/first-service-webpage.png)
 
 **Congratulations!** You've successfully deployed your first service using Docker Cloud.
 
@@ -295,19 +299,19 @@ Now we'll clone the repository into our local Docker environment. The following 
 
 	> **Note**: The voting app is running on port 80
 	
-	![](images/voting.png)
+![](images/voting.png)
 	
 1. Check to see if the results front end is working by navigating to `http://localhost:8000` in your web browser. 
 
 	> **Note**: You will not see any results until you cast a vote using the voting front end. As you change your vote you can move back to results screen to see the change. 
 	
-	![](images/results.png)
+![](images/results.png)
 
 Docker Cloud can automatically test changes pushed to your source code repositories using containers. You can enable Autotest on a Docker repository to run tests at each GitHub push, similar to a continuous integration testing service. We're now going to build two repositories (one for the **voting** image and one for the **results** image), and configure them to rebuild the images when a change is pushed to GitHub. 
 
 1. In your web browser return to Docker Cloud and click the **Repositories** icon on the left hand side. 
 
-	![](images/repositories.png)
+![](images/repositories.png)
 
 1. Click **Create** near the top right of the page
 
@@ -328,13 +332,13 @@ Docker Cloud can automatically test changes pushed to your source code repositor
 
 1. Make sure **Autobuild** is selected. This is the switch that tells Docker cloud to rebuild the service when a changed is pushed to GitHub
 
-	![](images/edit_repo.png)
+![](images/edit_repo.png)
 
 1. Click **Save**. There should be a pop up notification letting you know that GitHub was successfully pinged. 
 
 1. Click the blue wrench to fire trigger an initial image build.
 
-	![](images/wrench.png)
+![](images/wrench.png)
 
 Repeat steps 1-9 with the following exceptions
 
@@ -393,17 +397,17 @@ Switch back to your terminal or command window.
 
 	> **Note**: It can take several minutes for a build job to complete
 	
-	![](images/building.png)
+![](images/building.png)
 	
 1. Click the **Timeline** tab near the top of the screen
 
-	![](images/timeline.png)
+![](images/timeline.png)
 
 1. Click `Build in master:/voting`
 
 	Here you can see the status of the build process
 	
-	![](images/build_status.png)
+![](images/build_status.png)
 
 Now that we have Docker Cloud configured to update our images whenever new code is pushed to GitHub, we will configure our voting application to redeploy our services anytime an underlying image is changed. 
 
@@ -483,11 +487,11 @@ Next we'll navigate back to Docker Cloud to see if our service is up and running
 
 1. Click the **Stacks** icon in the left hand menu. 
 	
-	![](images/stacks_icon.png)
+![](images/stacks_icon.png)
 	
 	You should see your Stack running. 
 
-	![](images/stack_running.png)
+![](images/stack_running.png)
 	
 1. Click on the stack name, `voting-demo`
 
@@ -543,16 +547,16 @@ Switch back to your terminal or command window.
 
 	> **Note**: It can take several minutes for a build job to complete
 	
-	![](images/building.png)
+![](images/building.png)
 	
 1. Click the **Timeline** tab near the top of the screen
 
-	![](images/timeline.png)
+![](images/timeline.png)
 
 1. Click `Build in master:/voting`
 
 	Here you can see the status of the build process
 	
-	![](images/build_status.png)
+![](images/build_status.png)
 	
 1. Once the build finishes, click on **Stacks** in the left hand menu
