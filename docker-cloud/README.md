@@ -7,7 +7,6 @@
 > **Tasks**:
 >
 > + [Prerequisites](#prerequisites)
->
 > + [Install the Docker Cloud CLI](#cli-install)
 > + [Install the Docker Cloud Agent on a Node](#install_node)
 > + [Deploy a service](#deploy_service)
