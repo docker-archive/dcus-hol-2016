@@ -27,21 +27,21 @@ In this step you will launch a new container based on the NGINX image using the 
 
 4. Fill out the Basic Settings as shown below:
 
-  ![](images/basic_settings.png)
+![](images/basic_settings.png)
 
 5. Expand the **Network** section on the same page and configure the following port mappings:
 
-  ![](images/port_mappings.png)
+![](images/port_mappings.png)
 
 6. Hit the **Run Container** button on the right side panel.
 
   When the operation completes you will see your container listed as shown below. The green circle to the left of the container indicates that the container is in the **running** state.
 
-  ![](images/deployed_container.png)
+![](images/deployed_container.png)
 
 7. Click on the row where the container is listed to see the full container details. Then scroll down to the **Ports** section of the page to check the port mappings.
 
-  ![](images/port_mappings_check.png)
+![](images/port_mappings_check.png)
 
 ## Step 2 - Quick Test
 
@@ -51,19 +51,17 @@ In order to access the NGINX container from your web browser you will need the D
 
 1. First, let's take a look at the node our **nginx_server** container is running on. In the container details, you can find the node information.
 
-   ![](images/node_information.png)
+![](images/node_information.png)
 
-   In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.236. However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the public IP, or public DNS name, of the node from the lab details you received (each lab machine you have will have a public and priave IP and DNS).
+In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.236. However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the public IP, or public DNS name, of the node from the lab details you received (each lab machine you have will have a public and priave IP and DNS).
 
 2. Go to your web browser and enter the public IP or public DNS name of the node that the **nginx_server** container is running on.
 
-   You will see the NGINX welcome page.
+You will see the NGINX welcome page.
 
-   ![](images/nginx_welcome.png)
+![](images/nginx_welcome.png)
 
 You have successfully launched a web container using the Docker UCP web UI.# Task 4 - Deploy a simple application on UCP
-
-TODO
 
 ## Pre-requisites
 
@@ -203,128 +201,138 @@ Note the certificates and the `env.sh` and `env.cmd` files. For users on Mac OSX
 `CMD` terminal will be using `env.cmd`
 
 5. Open `env.sh` and take note of the environment variables that the script is setting
-   Let's take a look at `env.sh`
-   ```
-   export DOCKER_TLS_VERIFY=1
-   export DOCKER_CERT_PATH="$(pwd)"
-   export DOCKER_HOST=tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
-   ```
 
-   The `DOCKER_TLS_VERIFY` variable turns on TLS verification between our Docker Client and the Docker Engine we want to communicate with.
-   The `DOCKER_CERT_PATH` variable specifies where our SSL certificates and private key is located. In this case it is in the same folder as our `env.sh` script.
-   The `DOCKER_HOST` variable specifies the address of the Host we are connecting the client to. In this case, it is our Swarm Manager running on the UCP
-   controller node.
+Let's take a look at `env.sh`
+```
+export DOCKER_TLS_VERIFY=1
+export DOCKER_CERT_PATH="$(pwd)"
+export DOCKER_HOST=tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
+```
 
-   Note that in our example the `DOCKER_HOST` is specified with the public IP address of the node. It would also be possible to specify it with the DNS Name
+The `DOCKER_TLS_VERIFY` variable turns on TLS verification between our Docker Client and the Docker Engine we want to communicate with.
+The `DOCKER_CERT_PATH` variable specifies where our SSL certificates and private key is located. In this case it is in the same folder as our `env.sh` script.
+The `DOCKER_HOST` variable specifies the address of the Host we are connecting the client to. In this case, it is our Swarm Manager running on the UCP
+controller node.
+
+Note that in our example the `DOCKER_HOST` is specified with the public IP address of the node. It would also be possible to specify it with the DNS Name
+
 6. Open your terminal and change directory into the folder where you extracted the client bundle zip
 7. Run `source ./env.sh` or `env.cmd`
 
-   **For Mac and Linux users**
-   `$ source ./env.sh`
-   To verify that it worked, check the value of the variables
-   ```
-   $ echo $DOCKER_HOST
-   tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
-   ```
+**For Mac and Linux users**
 
-   **For Windows users using CMD Terminal**
-   ```
-   C:\Docker\ucp_client_bundles\ucp-bundle-admin>env.cmd
+`$ source ./env.sh`
 
-   C:\Docker\ucp_client_bundles\ucp-bundle-admin>echo %DOCKER_HOST%
-   tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
-   ```
-   **Note:** Windows users can opt to use a command line tool such as `git bash` and thus be able to follow the same instructions as Mac and Linux users.
+To verify that it worked, check the value of the variables
+
+```
+$ echo $DOCKER_HOST
+tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
+```
+
+**For Windows users using CMD Terminal**
+
+```
+C:\Docker\ucp_client_bundles\ucp-bundle-admin>env.cmd
+
+C:\Docker\ucp_client_bundles\ucp-bundle-admin>echo %DOCKER_HOST%
+tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
+```
+
+**Note:** Windows users can opt to use a command line tool such as `git bash` and thus be able to follow the same instructions as Mac and Linux users.
+
 8. Now run `docker info`. You should be able to see all nodes that are connected
 
-   ```
-   C:\Docker\ucp_client_bundles\ucp-bundle-admin>docker info
-   Containers: 17
-    Running: 17
-    Paused: 0
-    Stopped: 0
-   Images: 41
-   Server Version: swarm/1.1.3
-   Role: primary
-   Strategy: spread
-   Filters: health, port, dependency, affinity, constraint
-   Nodes: 3
-    ucp-controller: 10.0.15.6:12376
-      Status: Healthy
-      Containers: 12
-      Reserved CPUs: 0 / 1
-      Reserved Memory: 0 B / 3.859 GiB
-      Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
-      Error: (none)
-      UpdatedAt: 2016-05-24T05:04:06Z
-    ucp-node-0: 10.0.7.110:12376
-      Status: Healthy
-      Containers: 2
-      Reserved CPUs: 0 / 1
-      Reserved Memory: 0 B / 3.859 GiB
-      Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
-      Error: (none)
-      UpdatedAt: 2016-05-24T05:04:20Z
-    ucp-node-1: 10.0.28.145:12376
-      Status: Healthy
-      Containers: 3
-      Reserved CPUs: 0 / 1
-      Reserved Memory: 0 B / 3.859 GiB
-      Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
-      Error: (none)
-      UpdatedAt: 2016-05-24T05:04:23Z
-   Cluster Managers: 1
-    10.0.15.6: Healthy
-      Orca Controller: https://10.0.15.6:443
-      Swarm Manager: tcp://10.0.15.6:2376
-      KV: etcd://10.0.15.6:12379
-   Plugins:
-    Volume:
-    Network:
-   Kernel Version: 4.2.0-23-generic
-   Operating System: linux
-   Architecture: amd64
-   CPUs: 3
-   Total Memory: 11.58 GiB
-   Name: ucp-controller-ucp-controller
-   ID: 44WM:6P6I:N6WZ:U4OB:RFMN:WKY7:OX3N:3OSU:GTE3:3SDC:FROD:OQ6Z
-   Labels:
-    com.docker.ucp.license_key=4dd1umru9iT8lplNkXi5I1cdZrdxBIl60qyNzB9i6x_b
-    com.docker.ucp.license_max_engines=10
-    com.docker.ucp.license_expires=2016-05-31 21:53:37 +0000 UTC
-   ```
+```
+C:\Docker\ucp_client_bundles\ucp-bundle-admin>docker info
+Containers: 17
+Running: 17
+Paused: 0
+Stopped: 0
+Images: 41
+Server Version: swarm/1.1.3
+Role: primary
+Strategy: spread
+Filters: health, port, dependency, affinity, constraint
+Nodes: 3
+ucp-controller: 10.0.15.6:12376
+  Status: Healthy
+  Containers: 12
+  Reserved CPUs: 0 / 1
+  Reserved Memory: 0 B / 3.859 GiB
+  Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
+  Error: (none)
+  UpdatedAt: 2016-05-24T05:04:06Z
+ucp-node-0: 10.0.7.110:12376
+  Status: Healthy
+  Containers: 2
+  Reserved CPUs: 0 / 1
+  Reserved Memory: 0 B / 3.859 GiB
+  Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
+  Error: (none)
+  UpdatedAt: 2016-05-24T05:04:20Z
+ucp-node-1: 10.0.28.145:12376
+  Status: Healthy
+  Containers: 3
+  Reserved CPUs: 0 / 1
+  Reserved Memory: 0 B / 3.859 GiB
+  Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
+  Error: (none)
+  UpdatedAt: 2016-05-24T05:04:23Z
+Cluster Managers: 1
+10.0.15.6: Healthy
+  Orca Controller: https://10.0.15.6:443
+  Swarm Manager: tcp://10.0.15.6:2376
+  KV: etcd://10.0.15.6:12379
+Plugins:
+Volume:
+Network:
+Kernel Version: 4.2.0-23-generic
+Operating System: linux
+Architecture: amd64
+CPUs: 3
+Total Memory: 11.58 GiB
+Name: ucp-controller-ucp-controller
+ID: 44WM:6P6I:N6WZ:U4OB:RFMN:WKY7:OX3N:3OSU:GTE3:3SDC:FROD:OQ6Z
+Labels:
+com.docker.ucp.license_key=4dd1umru9iT8lplNkXi5I1cdZrdxBIl60qyNzB9i6x_b
+com.docker.ucp.license_max_engines=10
+com.docker.ucp.license_expires=2016-05-31 21:53:37 +0000 UTC
+```
+
 9. Clone the HelloRedis repository https://github.com/johnny-tu/HelloRedis.git into another folder of your choice
 9. Remove the existing HelloRedis application from UCP.
 
-   ![](images/ucp02_t4_applications_remove.PNG)
+![](images/ucp02_t4_applications_remove.PNG)
 
 10. Launch the application by using the Client Bundle. To do this, you just need to go into the applications folder and run `docker-compose up -d`
 
    You may notice the following error
-   ```
-   johnny@JT MINGW64 ~/Documents/GitHub/HelloRedis (master)
-   $ docker-compose up -d
-   helloredis_redis_1 is up-to-date
-   Creating helloredis_javaclient_1
-   unable to find a node that satisfies image==helloredis_javaclient
-   ```
-   If you look inside the `docker-compose.yml` file, you will notice that the `javaclient` service is defined with a `build` instruction. This is not advised on productions runs, especially when
-   Docker Compose is interacting with Swarm or UCP. Compose does not have the ability to build an image across every node in the Swarm cluster. It will build on the node the container is scheduled on.
 
-   Sometimes this can lead to errors if Swarm tries to schedule a container on a node without the image.
+```
+johnny@JT MINGW64 ~/Documents/GitHub/HelloRedis (master)
+$ docker-compose up -d
+helloredis_redis_1 is up-to-date
+Creating helloredis_javaclient_1
+unable to find a node that satisfies image==helloredis_javaclient
+```
 
-   For best practice, in a production deployment of an application, the compose file should only use images already built and available through Docker Hub or DTR
+If you look inside the `docker-compose.yml` file, you will notice that the `javaclient` service is defined with a `build` instruction. This is not advised on productions runs, especially when
+Docker Compose is interacting with Swarm or UCP. Compose does not have the ability to build an image across every node in the Swarm cluster. It will build on the node the container is scheduled on.
 
-   Take a look inside the `docker-compose.prod.yml` and compare the difference.
+Sometimes this can lead to errors if Swarm tries to schedule a container on a node without the image.
 
-   Now run, `$docker-compose -f docker-compose.prod.yml up -d` to launch the application.
+For best practice, in a production deployment of an application, the compose file should only use images already built and available through Docker Hub or DTR
 
-   The `-f` option allows users to specify a specific compose file to use
+Take a look inside the `docker-compose.prod.yml` and compare the difference.
 
-11. Take note of the nodes each container is running on. You should see that both containers are on the same node. This is the expected behavior due
-   to how networking works on older Compose applications. Later in the course we will learn how to deploy application containers across multiple nodes.
+Now run, `$docker-compose -f docker-compose.prod.yml up -d` to launch the application.
 
-   ![](images/ucp02_t4_helloredis.PNG)
+The `-f` option allows users to specify a specific compose file to use
+
+11. Take note of the nodes each container is running on. You should see that both containers are on the same node. This is the expected behavior due to how networking works on older Compose applications. Later in the course we will learn how to deploy application containers across multiple nodes.
+
+![](images/ucp02_t4_helloredis.PNG)
 
 ## Deploy another application
 
@@ -335,38 +343,37 @@ For the following section, use what you have learnt just now and complete the st
 3. Deploy the `FoodTrucks` application into UCP. Remember to use the Client Bundle
 4. View the application in your web browser
 
-   If you completed all the steps correctly, you should see a very cool application that allows you to search for food trucks in San Francisco
+If you completed all the steps correctly, you should see a very cool application that allows you to search for food trucks in San Francisco
 
-   ![](images/ucp02_t4_foodtrucks.PNG)
-# Task 5 - Deploy Applications using the UCP Web Interface
+![](images/ucp02_t4_foodtrucks.PNG)
+
+## Task 5 - Deploy Applications using the UCP Web Interface
 
 ## Pre-requisites
+
 - UCP installed and 2 nodes joined to the UCP controller
 
 ## Deploy FoodTruck Application again
 
-1. Remove all the applications you have deployed on UCP so far. 
+1. Remove all the applications you have deployed on UCP so far.
 2. Click on the **Compose Application** button on the **Applications** page
-   
-   ![](images/ucp02_t5_compose_application.PNG)
-   
+
+![](images/ucp02_t5_compose_application.PNG)
+
 3. On the Create Application window, give your application a name. i.e. "FoodTrucks" and upload the FoodTruck Docker Compose file.
-   You can copy and paste the docker-compose.yml file from your FoodTruck applications folder or upload by selecting the file from your PC or Mac. 
+   You can copy and paste the docker-compose.yml file from your FoodTruck applications folder or upload by selecting the file from your PC or Mac.
    Then click on **Create**
-   
-   ![](images/ucp02_t5_create_application_screen.PNG)
-   
+
+![](images/ucp02_t5_create_application_screen.PNG)
+
 4. Note the output of the action, then click done.
 
-   ![](images/ucp02_t5_create_application_output.PNG)
-   
+![](images/ucp02_t5_create_application_output.PNG)
+
 5. You should now see your FoodTrucks application listed on the **Applications** page.
 
+## Deploy
 
-## Deploy 
-   
-   
-   
 # Task 1 - Create Users and Teams
 
 In this task you will complete the following four steps.
@@ -394,15 +401,15 @@ In this step you will create the 4 new users shown below.
 
 1. Click **Users & Teams** from the left navigation pane.
 
-   ![](http://i.imgur.com/LYX8Onu.png)
+![](images/users_teams.png)
 
 2. Click **Create User**.
 
-   ![](http://i.imgur.com/E4mKCgj.png)
+![](images/create_user.png)
 
 3. Fill out the **Create User** form with the details provided in the table above. The screenshot below shows the form filled out with the details for the *John Full* user.
 
-   ![](http://i.imgur.com/iCvJjXU.png)
+![](images/john_full_details.png)
 
 > Be sure to make a note of the password that you set for each user. You will need this in future labs.
 
@@ -410,7 +417,7 @@ In this step you will create the 4 new users shown below.
 
 Repeat steps 1-4 for all users in the table above. Be sure to select the appropriate permissions from the **Default Permissions** dropdown.
 
->**Note:** The *Default Permissions* configured in the above step are not the same as the permissions you will set in Step 3. *Default Permissions* apply to non-labelled resources. The permissions you will set in Step 3 will only apply to resources that are labelled appropriately.
+> **Note:** The *Default Permissions* configured in the above step are not the same as the permissions you will set in Step 3. *Default Permissions* apply to non-labelled resources. The permissions you will set in Step 3 will only apply to resources that are labelled appropriately.
 
 ## Step 2 - Create a team and add users
 
@@ -420,7 +427,7 @@ This step will walk you through the process of creating a team and adding users 
 
 1. Create a team called **Engineering** by clicking the ** + Create** button shown in the image below.
 
-  ![](http://i.imgur.com/LMsxBMa.png)
+![](images/create_team.png)
 
 2. Set the **TEAM NAME** to "Engineering" and make sure **TYPE** is "Managed".
 
@@ -428,7 +435,7 @@ This step will walk you through the process of creating a team and adding users 
 
 3. Make sure the Engineering team is selected and click the **Add User to Team** button form the **Members** tab.
 
-  ![](http://i.imgur.com/9KQw0o0.png)
+![](images/add_user_to_team.png)
 
 4. Add all four new users to the team by clicking the **Add to Team** button next to each of them and then click **Done**. Do not add yourself (usually "admin") to the team.
 
@@ -442,7 +449,7 @@ In this step you will create a new label and assign the Engineering team "View O
 
 1. With the **Engineering** team selected, go to the **Permissions** tab and click **+ Add Label**.
 
-  ![](http://i.imgur.com/yQ1mrRV.png)
+![](images/add_label.png)
 
 2. Create the following three labels and click **Add Label**.
 
@@ -460,24 +467,17 @@ In this step you will start a new container with the "view" label. You will also
 
 1. Select **Containers** from the left hand pane, and click **+ Deploy Container**.
 
-  ![](http://i.imgur.com/STas02x.png)
+![](images/deploy_container.png)
 
 1. Fill out the Deploy form with the following details and then click **Run Container**.
 
-  ![](http://i.imgur.com/UGV5lvO.png)
-
+![](images/nginx_deploy_details.png)
 
 Repeat the above steps to deploy one or more containers without any label. Be sure to give each container a unique name.
 
 In the next exercise you will explore the implications of running containers with labels.
-   
-   
-   
-   
-   
-   
-   
-   # Task 2 - Test User Access
+
+# Task 2 - Test User Access
 
 In this task you will complete the following steps:
 1. Test permission labels
@@ -502,23 +502,23 @@ Docker UCP uses labels to implement permissions and access control. In the previ
 
 3. Click the controls button to the right of the container (three dots) and attempt to **Stop** the container. The action will fail and you will see an error message like the one shown below.
 
-  ![](http://i.imgur.com/a8moPah.png)
+![](images/stop_error.png)
 
 4. Click on the container to view its details.
 
 5. Scroll down to the **Labels** section and verify the presence of the **view** label.
 
-  ![](http://i.imgur.com/R5S8B3a.png)
+![](images/view_label.png)
 
 6. Click the **Containers** link in the left pane.
 
 7. Click the **+ Deploy Container** button to deploy a new container with the following basic options.
 
-  ![](http://i.imgur.com/tgUgqQq.png)
+![](images/ubuntu_deploy.png)
 
   When you click the **Run Container** button, the deployment will fail. This is because members of the Engineering team only have *View Only* access to resources with the **view** label. They cannot create containers with the **view** label.
 
-  ![](http://i.imgur.com/Bn4gI5T.png)
+![](images/deploy_view_error.png)
 
 8. Repeat the previous action two more times, but configure the containers as shown in the table below:
 
@@ -536,7 +536,7 @@ In this step you will attempt to perform certain actions while logged in as the 
 
 1. Click on the container **ub1**. Then click the **Console** tab.
 
-  ![](http://i.imgur.com/D2eedEJ.png)
+![](images/container_console_link.png)
 
 2. Click on the **Run** button with "bash" specified in the field.
 
@@ -548,7 +548,7 @@ In this step you will attempt to perform certain actions while logged in as the 
 
    This time the bash terminal will launch successfully. This is because the user **johnfull** is a member of the **Engineering** team which has *Full Control* over the **ub2** container via the **run** label.
 
-  ![](http://i.imgur.com/IPQYt6Z.png)
+![](images/ub2_deploy.png)
 
 ## Step 3 - Test container access from the command line
 
@@ -566,39 +566,39 @@ In this step you will create and download a **client bundle** for the **johnfull
 
 4. List the files in your current directory.
 
-   ```
-   nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
-   $ ls
-   ca.pem  cert.pem  cert.pub  env.cmd  env.ps1  env.sh  key.pem
-   ```
+```
+nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
+$ ls
+ca.pem  cert.pem  cert.pub  env.cmd  env.ps1  env.sh  key.pem
+```
 
 5. Execute the `source.sh` shell script.
 
-  ```
-  nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
-  $ source env.sh
-  ```
+```
+nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
+$ source env.sh
+```
 
 6. Run a `docker ps` command to list the containers.
 
-  The output should contain the "nginx1", "ub1", and "ub2" containers created in the previous steps.
+The output should contain the "nginx1", "ub1", and "ub2" containers created in the previous steps.
 
-  ```
-  nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnful
-  $ docker ps
-  CONTAINER ID   IMAGE      COMMAND                  CREATED             STATUS              PORTS             NAMES
-  26483416a3ef   ubuntu     "/bin/bash"              About an hour ago   Up About an hour                      ub2
-  656e3e4c0ccf   ubuntu     "/bin/bash"              About an hour ago   Up About an hour                      ub1
-  0fe093853832   nginx      "nginx -g 'daemon off"   About an hour ago   Up About an hour    80/tcp, 443/tcp   nginx1
-  ```
+```
+nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnful
+$ docker ps
+CONTAINER ID   IMAGE      COMMAND                  CREATED             STATUS              PORTS             NAMES
+26483416a3ef   ubuntu     "/bin/bash"              About an hour ago   Up About an hour                      ub2
+656e3e4c0ccf   ubuntu     "/bin/bash"              About an hour ago   Up About an hour                      ub1
+0fe093853832   nginx      "nginx -g 'daemon off"   About an hour ago   Up About an hour    80/tcp, 443/tcp   nginx1
+```
 
 7. Run `docker exec -it ub1 bash` to open a `bash` terminal on the "ub2" container.
 
-   This will result in an *Error response from daemon: access denied* error. This is because the "ub1" container is tagged with the "restricted" label, which maps the *Restricted Control* permission to members of the Engineering team.
+This will result in an *Error response from daemon: access denied* error. This is because the "ub1" container is tagged with the "restricted" label, which maps the *Restricted Control* permission to members of the Engineering team.
 
 8. Repeat the same command for the **ub2** container.
 
-   This time the command works because the **ub2** container is tagged with the **run** label which maps the *Full Control* permission to members of the Engineering team. Restricted Control does not allow users to `docker exec` into a container.
+This time the command works because the **ub2** container is tagged with the **run** label which maps the *Full Control* permission to members of the Engineering team. Restricted Control does not allow users to `docker exec` into a container.
 
 
 ## Step 4 - Test admin access form the command line
@@ -611,7 +611,7 @@ In this step you will attempt to launch a console form the UCP web UI, as well a
 
 3. Click the **Console** tab and then click the **Run** button to run a `bash` terminal.
 
-   This time the terminal opens. This is because the "admin" user has full access to all UCP resources, regardless of permissions labels that are applied.
+This time the terminal opens. This is because the "admin" user has full access to all UCP resources, regardless of permissions labels that are applied.
 
 4. Download the Admin user's client bundle and unzip to a folder of your choice.  See steps 3.1-3.3 for details of how to do this.
 
@@ -619,11 +619,11 @@ In this step you will attempt to launch a console form the UCP web UI, as well a
 
 6. Run a `docker ps` command and take note of how many containers you can see.
 
-   You should see the **nginx1**, **ub1** and **ub2** containers that were launched in Step 1. You should also see any additional containers that you launched without permissions labels at the end of Task 1.
+You should see the **nginx1**, **ub1** and **ub2** containers that were launched in Step 1. You should also see any additional containers that you launched without permissions labels at the end of Task 1.
 
 7. Run `docker exec` and open a `bash` terminal to the "ub1" container
 
-   The operation will also succeed because you are connected to UCP as the **admin** user.
+The operation will also succeed because you are connected to UCP as the **admin** user.
 
 ## Step 5 - Test default permissions
 
@@ -635,15 +635,15 @@ In this step you will test access to UCP resources that are not tagged with perm
 
 3. Pull the "hello-world" image.
 
-  ![](http://i.imgur.com/NjJgEfH.png)
+![](images/hello_world_pull.png)
 
-  The image pull operation will be successful.
+The image pull operation will be successful.
 
 4. Click on the **Networks** link and click **+ Create Network** to create a new network called "johns-net".
 
-  Just give the network a name and click **Create**.
+Just give the network a name and click **Create**.
 
-  The network will be successfully created.
+The network will be successfully created.
 
 From the previous 4 steps we can see that the user **johnfull** has full access to create networks, pull images, and perform other UCP tasks. This is because **johnfull** has the *Full Access* default permission, giving him full access to all non-tagged UCP resources. His access is only restricted to resources tagged with permissions labels.
 
@@ -653,30 +653,26 @@ From the previous 4 steps we can see that the user **johnfull** has full access 
 
 7. Click on the **Networks** link and create a network called "kerry-net".
 
-  Similar  to **johnfull**, **kerryres** can also pull images and create networks despite only having the **Restricted Control** default permission. However, there are actions that users with Full Control can do, that users with Restricted Control cannot do such as `docker exec` into containers and lauch **privileged** containers.
+Similar  to **johnfull**, **kerryres** can also pull images and create networks despite only having the **Restricted Control** default permission. However, there are actions that users with Full Control can do, that users with Restricted Control cannot do such as `docker exec` into containers and lauch **privileged** containers.
 
 8. Logout of UCP as **kerryres** and log back in as **barryview**.
 
 9. Click on the **Images** link.
 
-  Notice that Barry does not even have a **Pull Image** button. This is because **barryview** has the **View Only** default permission. This permission does not allow operations such as pulling images.
+Notice that Barry does not even have a **Pull Image** button. This is because **barryview** has the **View Only** default permission. This permission does not allow operations such as pulling images.
 
 10. Click the **Networks** link and create a network called "barry-net".
 
-   You will get an **Error creating network: access denied** error message because of insufficient permissions.
+You will get an **Error creating network: access denied** error message because of insufficient permissions.
 
 11. Logout of UCP as **barryview** and login as **traceyno**.
 
 12. Notice that Tracey only has links to the following three resource types:
-   - Applications
-   - Containers
-   - Nodes
 
-    This is because Tracey has the **No Access** default permission. However, because Tracey is a members of the Engineering team, she gets access to all of the tagged resources that the Engineering team has access to.
+- Applications
+- Containers
+- Nodes
+
+This is because Tracey has the **No Access** default permission. However, because Tracey is a members of the Engineering team, she gets access to all of the tagged resources that the Engineering team has access to.
 
 13. Click the **Containers** link and notice that Tracey can see the three containers that have the **view** label attached to them.
-  
-  
-
-
-   
