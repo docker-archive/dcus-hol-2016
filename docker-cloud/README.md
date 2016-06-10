@@ -20,6 +20,7 @@ Docker Cloud is a hosted service that provides a Registry with build and testing
 ## <a name="prerequisites"></a>Prerequisites
 
 ### Obtain a Docker ID
+
 If you do not already have a Docker ID, you will need to create one now. Creating a Docker ID is free, and allows you to access both Docker Cloud and Docker Hub. 
 
 To create a Docker ID:
@@ -40,6 +41,7 @@ To create a Docker ID:
 
 
 ### Choose a local Docker environment
+
 Before beginning this lab, you will need to select an option for working with a local Docker environment 
 
 **Option 1 (recommended)**: We recommend that you install the Docker for Mac or Docker for Windows beta on your laptop. If you'd like to do this please refer to **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there. 
@@ -51,10 +53,11 @@ If you choose this option, you will execute install the Docker Cloud CLI and exe
 	ssh -i <your ssh key name>.pem <username>@<node-2 ip address>
 
 ### GitHub or BitBucket Account
+
 In order to complete the CI/CD portions of this lab, you will need an account on either GitHub or BitBucket. Please visit the site of your choosing, and create an account if you do not already have one. 
 
 
-# <a name="cli-install"></a>Step 1: Install The Docker Cloud CLI
+## <a name="cli-install"></a>Step 1: Install The Docker Cloud CLI
 
 Docker Cloud provides a Command Line Interface (CLI) tool that you can use
 to interact with the service. We will be using this tool, along with Docker Cloud's web interface as part of this lab today
@@ -78,7 +81,8 @@ Installing the Docker Cloud CLI differs based on the operating system you're usi
 		
 > **Note**: If you later want to uninstall the Docker Cloud CLI run either `pip uninstall docker-cloud` on Linux and Windows or `brew uninstall docker-cloud`
 
-# <a name="install_node"></a>Step 2: Install the Docker Cloud Agent on a Node
+## <a name="install_node"></a>Step 2: Install the Docker Cloud Agent on a Node
+
 A node is another name for a Docker host that is managed by Docker Cloud. Docker Cloud allows administrators to link to several different hosted cloud service providers (such as Microsoft Azure), and create clusters of nodes quicly and easily. This process stands up new nodes on the cloud provider of choice, joins them to a cluster, and installs the Docker Cloud agent. 
 
 However, in some cases, you may already have a node deployed that you want to bring under management. That's the use case we'll be exploring in this next step. We will be installing the Docker Cloud agent onto `node-0` to bring it under management.
@@ -132,7 +136,7 @@ However, in some cases, you may already have a node deployed that you want to br
 	
 7. Click **Close Window**
 
-# <a name="deploy_service"></a>Step 3: Deploy a Service
+## <a name="deploy_service"></a>Step 3: Deploy a Service
 
 A service is a group of containers of the same **image:tag**. Services make it simple to scale your application. With Docker Cloud, you simply drag a slider to change the number of containers in a service.
 
@@ -232,7 +236,7 @@ Let's check on the status of our service
 **Congratulations!** You've successfully deployed your first service using Docker Cloud.
 
 
-# <a name="deploy_app"></a>Step 4: Setup a CI/CD pipeline and deploy a multi-service application
+## <a name="deploy_app"></a>Step 4: Setup a CI/CD pipeline and deploy a multi-service application
 
 One of the most powerful features of Docker Cloud is the ability to define end-to-end  CI/CD pipelines. In this part of the lab we're going to show how you can link your GitHub account to Docker Cloud to facilitate seamless application delivery. 
 
@@ -552,22 +556,3 @@ Switch back to your terminal or command window.
 	![](images/build_status.png)
 	
 1. Once the build finishes, click on **Stacks** in the left hand menu
-
-
-
-
-
-
-	
-	
-
- 
-
- 
-
- 
-		
-
-
-
-
