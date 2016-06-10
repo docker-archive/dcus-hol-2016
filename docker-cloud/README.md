@@ -46,7 +46,7 @@ Before beginning this lab, you will need to select an option for working with a 
 
 **Option 1 (recommended)**: We recommend that you install the Docker for Mac or Docker for Windows beta on your laptop. If you'd like to do this please refer to TODO: **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there. 
 
-If you choose this option, you will execute install the Docker Cloud CLI and executecommands in a terminal or command window on your local machine.
+If you choose this option, you will install the Docker Cloud CLI and execute commands in a terminal or command window on your local machine.
 
 **Option 2**: If you do not wish to install any software locally, you will need to SSH into `node-2` to install the Docker Cloud CLI and execute any commands.  To SSH into `node-2` type the following, substituting the information provided to you over email. 
 
@@ -81,9 +81,10 @@ Installing the Docker Cloud CLI differs based on the operating system you're usi
 		
 > **Note**: If you later want to uninstall the Docker Cloud CLI run either `pip uninstall docker-cloud` on Linux and Windows or `brew uninstall docker-cloud`
 
+
 ## <a name="install_node"></a>Step 2: Install the Docker Cloud Agent on a Node
 
-A node is another name for a Docker host that is managed by Docker Cloud. Docker Cloud allows administrators to link to several different hosted cloud service providers (such as Microsoft Azure), and create clusters of nodes quicly and easily. This process stands up new nodes on the cloud provider of choice, joins them to a cluster, and installs the Docker Cloud agent. 
+A node is another name for a Docker host that is managed by Docker Cloud. Docker Cloud allows administrators to link to several different hosted cloud service providers (such as Microsoft Azure), and create clusters of nodes quickly and easily. This process stands up new nodes on the cloud provider of choice, joins them to a cluster, and installs the Docker Cloud agent. 
 
 However, in some cases, you may already have a node deployed that you want to bring under management. That's the use case we'll be exploring in this next step. We will be installing the Docker Cloud agent onto `node-0` to bring it under management.
 
@@ -136,15 +137,16 @@ However, in some cases, you may already have a node deployed that you want to br
 	
 7. Click **Close Window**
 
+
 ## <a name="deploy_service"></a>Step 3: Deploy a Service
 
 A service is a group of containers of the same **image:tag**. Services make it simple to scale your application. With Docker Cloud, you simply drag a slider to change the number of containers in a service.
 
 When you create a service in the Docker Cloud web interface, a wizard walks you through configuring the service in three steps.
 
-+ **Choose a Container Image** Images can come from Docker Cloud's Jumpstarts library, your personal Docker Hub account or Docker Hub's public index, or from third party registries you connect.
++ **Choose a Container Image** Images can come from Docker Cloud's Jumpstarts library, your personal Docker Hub account, Docker Hub's public index, or from third party registries you connect.
 +  **Configure the Service** From here, give the service a name, set the initial number of containers, expose/publish ports, modify the run command or entrypoint, set memory and CPU limits.
-+  **Set Environment variables** Set the edit environment variables and link your service to other existing services in Docker Cloud.
++  **Set Environment variables** Set environment variables and link your service to other existing services in Docker Cloud.
 
 > **Note**: In this lab  we won't be working with environment variables or connecting data volumes, but these are also available as optional steps in the wizard.
 
@@ -160,7 +162,6 @@ Let's get started by selecting a service to deploy.
 	
 1. Click the rocket icon near the top of the page and look for the  **Miscellaneous** section.
 	
-	
 1. Click the **dockercloud/hello-world** image. This image creates a container that runs NGINX, and shows a simple *hello world* web page.
 
 	![](images/first-service-wizard.png)
@@ -169,7 +170,6 @@ Docker Cloud takes us to the Services Wizard where we can configure our service.
 
 For the purposes of this lab, you don't actually need to enter or change
 anything for most of the fields on the Create Service page, but we do need to make sure we expose a port for our container. So, let's do that. 
-
 
 1. Click the **Ports** menu item, 
 
