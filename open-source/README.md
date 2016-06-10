@@ -1,17 +1,27 @@
-#Orchestration with Docker Clustering
+# Orchestration with Docker Clustering
 
-#####Prerequisites
-* You will be using __node0__, __node1__, and __node2__
-* Ensure that no containers are running on these nodes ```$ docker rm -f $(docker ps -q)```
-* This lab requires a Docker Hub account. This account is free and will allow you to push and pull images from the Docker public registry. This link describes how to create a Docker Hub account: <a href="https://docs.docker.com/mac/step_five/">https://docs.docker.com/mac/step_five/</a>
+> **Difficulty**: Beginner
 
+> **Time**: Approximately 40 minutes
 
+> **Notes**
+>
+> * In this lab you will be using __node-0__, __node-1__, and __node-2__
+> * Ensure that no containers are running on these nodes ```$ docker rm -f $(docker ps -q)```
+> * This lab requires a Docker Hub account. This account is free and will allow you to push and pull images from the Docker public registry. This link describes how to create a Docker Hub account: <a href="https://docs.docker.com/mac/step_five/">https://docs.docker.com/mac/step_five/</a>
 
-##Task 1: Deploy a Simple Application
-#####Set Up Environment
+> **Tasks**:
+>
+> * [Deploy a Simple Application](#deploy-application)
+> * [Start a Docker Cluster](#start-cluster)
+> * [Deploy a Multi-Service, Multi-Host Application](#multi-application)
 
-1. Connect to __host0__
-2. Use the following command to clone the simple app repo from GitHub to node-0
+## <a name="deploy-application"></a>Task 1: Deploy a Simple Application
+
+### Set Up Environment
+
+Connect to __node-0__
+Use the following command to clone the simple app repo from GitHub to node-0
 
 ```
 node-0:$ git clone https://github.com/mark-church/docker-curriculum.git
@@ -23,21 +33,24 @@ Receiving objects: 100% (2628/2628), 11.18 MiB | 9.39 MiB/s, done.
 Resolving deltas: 100% (864/864), done.
 Checking connectivity... done.
 ```
-3. Change directory to `flask-app` and examine the list of files in the repo
+
+Change directory to `flask-app` and examine the list of files in the repo
 
 ```
 $ cd docker-curriculum/flask-app
 $ ls
 Dockerfile        app.py            requirements.txt  templates/
 ```
-flask-app is a basic Flask application. It has a built in webserver that serves up a webpage at the address that the application is bound to.  
+
+**flask-app** is a basic Flask application. It has a built in webserver that serves up a webpage at the address that the application is bound to.
 
 The other file in this directory is the __Dockerfile__. A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. This includes packages that the application will need, directories of data that needs to be a part of the image, and any metadata that should be shipped in the image. The Docker engine uses Dockerfiles to create new container images.
 
 Next we will use a Dockerfile to create an image and then run a container from that image.
 
-#####Build the Application
-1. Verify that the Docker is running on __host0__
+### Build the Application
+
+Verify that the Docker is running on __node-0__
 
 ```
 $ docker version
@@ -58,11 +71,9 @@ Server:
  OS/Arch:      linux/amd64
 ```
 
-
-3. Inspect the Dockerfile to see how its parameters will build the container image
+Inspect the Dockerfile to see how its parameters will build the container image
 
 ```
-
 $ cat Dockerfile
 FROM ubuntu:14.04
 
@@ -77,8 +88,8 @@ WORKDIR /usr/bin
 EXPOSE 5000
 
 CMD ["python", "./app.py"]
-
 ```
+
 __FROM__: This sets the base image for subsequent instructions. This can be any valid image. You can also build new images from other peoples' images.
 
 __ADD__: This copies files or directories and adds them to the filesystem of the container. This copied over the contents of our working directory, and thus the app.py file.
@@ -87,9 +98,7 @@ __RUN__: The RUN instruction will execute any commands in a new layer on top of 
 
 __CMD__: The main purpose of a CMD is to provide defaults for an executing container.
 
-
-
-4. Build the image specifying the directory of the Dockerfile and tagging the image with a name. This tagged name specifies the name for the image (cat-app) and also the namespace of a registry (markchurch). This is important as a Docker client can push or pull to many registries by using this namespace feature.
+Build the image specifying the directory of the Dockerfile and tagging the image with a name. This tagged name specifies the name for the image (cat-app) and also the namespace of a registry (markchurch). This is important as a Docker client can push or pull to many registries by using this namespace feature.
 
 ```
 $ docker build -t markchurch/cat-app .
@@ -119,32 +128,29 @@ Step 7 : CMD python /simpleDir/run.py
 Removing intermediate container 0c8d994d23ce
 Successfully built 6b249f008fee
  ```
- 
-3. See that the image is now in the local image repository of the Docker engine
+
+Run `docker images` and confirm that the image is listed
 
 ```
 $ docker images
 REPOSITORY                             TAG                         IMAGE ID            CREATED             SIZE
 cat-app                             latest                      6b249f008fee        13 minutes ago      418.6 MB
-
 ```
+We have now built a new container image using the Dockerfile and the contents of the directory that we cloned from GitHub.
+Next we will push the image to a registry so that it can be stored and even used by other people.
 
-We have now built a new container image using the Dockerfile and the contents of the directory that we cloned from GitHub. Next we will push the image to a registry so that it can be stored and even used by other people.
-
-4. With the Docker client, log in with your Docker Hub credentials.
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 
 ```
 docker login
-Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 Username: markchurch
 Password:
 Login Succeeded
 ```
 
-5. Now push your image to the Docker Hub. This is a public registry provided by Docker. It is also possible to host your images in a private registry as well.
+Now push your image to the Docker Hub. This is a public registry provided by Docker. It is also possible to host your images in a private registry as well.
 
 ```
-
 $ docker push markchurch/cat-app
 The push refers to a repository [docker.io/markchurch/cat-app]
 721eac55c41e: Pushed
@@ -158,58 +164,57 @@ a7e1c363defb: Pushed
 latest: digest: sha256:2ee2217c9d184909846afe3a2f09de70690f439aff29b741f974d8a7c57a1979 size: 1989
 ```
 
+### Run the Application
 
-
-#####Run the Application
-1. Now create a container with our simple-app image and run it on __host0__ at port 80
+Now create a container with our simple-app image and run it on __node-0__ at port 8080
 
 ```
 $ docker run -itd -p 8080:5000 markchurch/cat-app
 64fa72a113492463be8f844e011f3b44da01bcffacb82f3cba8d050f1ab8b931
 ```
 
-2. Verify through the Docker CLI that the container is running
+Verify through the Docker CLI that the container is running
 
 ```
 $ docker ps
 CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                    NAMES
 64fa72a11349        markchurch/cat-app              "python ./app.py"        16 seconds ago      Up 15 seconds       0.0.0.0:8080->5000/tcp   happy_davinci
 ```
-From this output we can see the following:   
+
+From this output we can see the following:
 
 * The container has been given an automatically generated ID and name (we can specify the name if we choose)
 * We can see what image was used to create the container
 * We can also see if and how the container is exposed outside the host (in this case on port 5000 of the host interfaces)
 
-3. Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of __host0__. Type ```http://<ip address>:8080``` into the browser and you will see your container running.
+Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of __node-0__. Type ```http://<ip address>:8080``` into the browser and you will see your container running.
 
 You should see the following ...
 <p align="center">
-<img src="./cat.png" width=400px>
+<img src="images/cat.png" width=400px>
 </p>
 
-
-4. You have now completed Task 1. Before proceeding to the next task clear all of the containers on __node0__ by running the command ```$ docker rm -f $(docker ps -q)```. You should then see that there are no or stopped containers on the host. 
+You have now completed Task 1. Before proceeding to the next task clear all of the containers on __node-0__ by running the command ```$ docker rm -f $(docker ps -q)```. You should then see that there are no or stopped containers on the host.
 
 ```
 $ docker ps -a
 ```
 
+## <a name="start-cluster"></a>Task 2: Start a Docker Cluster
 
-##Task 2: Start a Docker Cluster
-Up until this point we have been dealing with a single-container application on one host. Real-world applications are typically many apps across many hosts. Each container provides a service that can be written in different languages and use different frameworks. By splitting an application into different services, Docker allows the application components to scale independently of one another. 
+Up until this point we have been dealing with a single-container application on one host. Real-world applications are typically many apps across many hosts. Each container provides a service that can be written in different languages and use different frameworks. By splitting an application into different services, Docker allows the application components to scale independently of one another.
 
 Docker has powerful tools to manage multi-service apps. It has built-in capabilities to define, schedule, and scale services. In the next part of the lab we will use Docker clustering to deploy a multi-service app across two hosts and scale it meet growing demand.
 
+### Set Up Docker Clustering
 
-#####Set Up Docker Clustering
-A Docker Swarm cluster has Swarm managers and Swarm worker nodes. The managers manage and retain the state of the cluster while the worker nodes run application loads. As of Docker 1.12 no external backend or 3rd party components are required for a fully functioning Swarm cluster. 
+A Docker Swarm cluster has Swarm managers and Swarm worker nodes. The managers manage and retain the state of the cluster while the worker nodes run application loads. As of Docker 1.12 no external backend or 3rd party components are required for a fully functioning Swarm cluster.
 
-In this part of the demo we will use all three of the nodes in our lab. __node0__ will be our Swarm manager while __node1__ and __node2__ will server as our Swarm worker nodes. Swarm supports a highly available, redundant managers but for the purposes of this lab we will only have a single manager.
+In this part of the demo we will use all three of the nodes in our lab. __node-0__ will be our Swarm manager while __node-1__ and __node-2__ will server as our Swarm worker nodes. Swarm supports a highly available, redundant managers but for the purposes of this lab we will only have a single manager.
 
+### Create a Swarm Master
 
-######Create a Swarm Master
-1. Get the internal IP address of __node0__
+Get the internal IP address of __node-0__
 
 ```
 $ ifconfig eth0
@@ -217,30 +222,31 @@ eth0      Link encap:Ethernet  HWaddr 06:67:be:89:1f:b5
           inet addr:172.31.22.238  Bcast:172.31.31.255  Mask:255.255.240.0
 ...
 ```
-2. Create a Swarm manager on __node0__ with its internal IP address
+
+Create a Swarm manager on __node-0__ with its internal IP address
 
 ```
 $ docker swarm init --listen-addr <IP>:4500
  ```
 
-######Join a Worker Node to a Swarm Cluster
-1. Open up a second tab and log in to __node1__ keeping the first tab open
+### Join a Worker Node to a Swarm Cluster
+
+Open up a second tab and log in to __node-1__ keeping the first tab open
 
 ```
-$ ssh -i key.pem ubuntu@<host1 external IP>
+$ ssh -i key.pem ubuntu@<node-1 external IP>
 fdadfas
 ```
 
-3. Join the swarm cluster as a worker node with the internal IP address of the Swarm master, __node0__
-4. 
+Join the swarm cluster as a worker node with the internal IP address of the Swarm master, __node-0__
 
 ```
-$ docker swarm join <host0 IP>:4500
+$ docker swarm join <node-0 IP>:4500
 ```
 
-Repeat step 3 for __host2__
+Repeat step 3 for __node-2__
 
-4. Go back to the __host0__ tab and note that __host1__ has joined the cluster as a worker node
+Go back to the __node-0__ tab and note that __node-1__ has joined the cluster as a worker node
 
 ```
 docker node ls
@@ -248,18 +254,19 @@ ID              NAME                                          STATUS  AVAILABILI
 1q7l9v5cswpa    ip-192-168-34-90.us-west-2.compute.internal   READY   ACTIVE
 2un9gn4ye1uc *  ip-192-168-33-113.us-west-2.compute.internal  READY   ACTIVE                   REACHABLE       Yes
 ```
+
 ```docker node ls``` shows us all of the nodes that are in a given Swarm cluster. Here we can see the hostname, the unique ID of the host, and the role of the host in the cluster. The ```*``` denotes the host that we are currently running the Docker command from.
 
-5. Repeat steps 1-5 for __node2__
+Repeat the section above on __node-2__
 
 Congratulations, you have now set up a Docker Swarm cluster and completed Task 2!
 
-##Task 3: Deploy a Multi-Service, Multi-Host Application
+## <a name="multi-application"></a>Task 3: Deploy a Multi-Service, Multi-Host Application
 
 We will now deploy a 2-container application comprised of a web front end and a database backend. The frontend is a custom Python application and the backend is Elasticsearch. It's called the Foodtruck app and it creates a great visualization to see all of the different places to get food in San Francisco. The locations are searchable and presented on a map of the city.
 
 
-#####TBD
+### TODO: TBD
 
 `docker network create -d overlay --subnet 10.10.0.0/24 --gateway 10.10.0.1 foodnet `
 
@@ -286,4 +293,3 @@ Kill node, see the container get rescheduled on another node
 `docker service inspect web`
 
 Check browser and refresh page to see multiple containers serving frontend
-
