@@ -133,8 +133,6 @@ However, in some cases, you may already have a node deployed that you want to br
 
 6. Switch back to your web browser, and confirm that the new Linux host is detected. 
 
-TODO: Fix this screenshot - Either frame it or crop it.
-
 ![byon_success](images/byon_success.png)
 	
 7. Click **Close Window**
@@ -155,8 +153,6 @@ When you create a service in the Docker Cloud web interface, a wizard walks you 
 Let's get started by selecting a service to deploy.
 
 1. In your web browser, from any page on Docker Cloud, click the **Services** icon in the menu on the left hand side of the screen.
-
-TODO: Better screenshot
 
 ![services_icon](images/services_icon.png)
 
