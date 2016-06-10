@@ -24,6 +24,6 @@ Welcome!
 
 ## Prerequisites
 
-TODO: Add intruction/note to do `sudo usermod -aG docker <username>` to instructions somewhere
-TODO: Recommended order if a particpant want to do them all?
-TODO: Note that 'Docker Cloud' lab should be completed last
+- TODO: Add intruction/note to do `sudo usermod -aG docker <username>` to instructions somewhere
+- TODO: Recommended order if a particpant want to do them all?
+- TODO: Note that 'Docker Cloud' lab should be completed last
