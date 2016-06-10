@@ -28,7 +28,7 @@ you will be able to quickly familiarize yourself with the features of Docker Uni
 
 - TODO
 
-### Attach nodes
+### Attach Nodes
 
 - TODO
 
@@ -352,7 +352,7 @@ Now run, `$docker-compose -f docker-compose.prod.yml up -d` to launch the applic
 
 The `-f` option allows users to specify a specific compose file to use
 
-1- Take note of the nodes each container is running on. You should see that both containers are on the same node. This is the expected behavior due to how networking works on older Compose applications. Later in the course we will learn how to deploy application containers across multiple nodes.
+- Take note of the nodes each container is running on. You should see that both containers are on the same node. This is the expected behavior due to how networking works on older Compose applications. Later in the course we will learn how to deploy application containers across multiple nodes.
 
 ![](images/ucp02_t4_helloredis.PNG)
 
@@ -394,8 +394,6 @@ If you completed all the steps correctly, you should see a very cool application
 
 - You should now see your FoodTrucks application listed on the **Applications** page.
 
-### Deploy
-
 ## <a name="create-users-teams"></a>Create Users and Teams
 
 In this task you will complete the following four steps.
@@ -405,12 +403,12 @@ In this task you will complete the following four steps.
 - Assign permissions to team
 - Deploy containers
 
-## Pre-requisites
+### Pre-requisites
 
 - A working UCP installation
 - An UCP account with admin rights
 
-## Step 1 - Create new users
+### Step 1 - Create new users
 
 In this step you will create the 4 new users shown below.
 
@@ -441,7 +439,7 @@ Repeat steps 1-4 for all users in the table above. Be sure to select the appropr
 
 > **Note:** The *Default Permissions* configured in the above step are not the same as the permissions you will set in Step - *Default Permissions* apply to non-labelled resources. The permissions you will set in Step 3 will only apply to resources that are labelled appropriately.
 
-## Step 2 - Create a team and add users
+### Create a team and add users
 
 Users can be grouped into teams for simpler management.
 
@@ -463,7 +461,7 @@ This step will walk you through the process of creating a team and adding users 
 
 All four users are now members of the Engineering team.
 
-## Step 3 Assign permissions to team
+### Assign permissions to team
 
 Labels are central to permissions in Docker UCP.
 
@@ -483,7 +481,7 @@ In this step you will create a new label and assign the Engineering team "View O
 
 The labels will now be listed on the **Permissions** tab of the Engineering team.
 
-## Step 4 - Deploy containers
+### Deploy containers
 
 In this step you will start a new container with the "view" label. You will also start one or more container without any label.
 
@@ -502,38 +500,30 @@ In the next exercise you will explore the implications of running containers wit
 ## <a name="test-user-access"></a>Test User Access
 
 In this task you will complete the following steps:
+
 - Test permission labels
 - Test container access from the web UI
 - Test container access from the command line
 - Test admin access form the command line
 - Test default permissions
 
-## Pre-requisites
-
-- Completed Task 1
-
-## Step 1 - Test permission labels
+### Test permission labels
 
 Docker UCP uses labels to implement permissions and access control. In the previous lab (Task 1) you deployed the "nginx1" container with the "view" label. You also assigned the Engineering team "View Only" access to all resources tagged with the "view" label. In this step you will log back in to UCP as "johnfull" and verify that you only have view access to the "nginx1" container.
 
 - Logout of UCP and log back in as user **johnfull**
-
 - Click on the **Containers** link in the left pane.
-
-  Confirm that you can only see the "nginx1" container (with the "view" label). The other containers that you deployed with no labels will not be visible.
-
+- Confirm that you can only see the "nginx1" container (with the "view" label). The other containers that you deployed with no labels will not be visible.
 - Click the controls button to the right of the container (three dots) and attempt to **Stop** the container. The action will fail and you will see an error message like the one shown below.
 
 ![](images/stop_error.png)
 
 - Click on the container to view its details.
-
 - Scroll down to the **Labels** section and verify the presence of the **view** label.
 
 ![](images/view_label.png)
 
 - Click the **Containers** link in the left pane.
-
 - Click the **+ Deploy Container** button to deploy a new container with the following basic options.
 
 ![](images/ubuntu_deploy.png)
@@ -549,10 +539,9 @@ Docker UCP uses labels to implement permissions and access control. In the previ
 | ubuntu     | ub1             | restricted        |
 | ubuntu     | ub2             | run               |
 
-  Deploying with either of these two labels will work. This is because members of the Engineering team have *Restricted Control* on the **restricted** label, and *Full Control* on the **run** label. Both of these permissions allow for the deployment of new containers.
+Deploying with either of these two labels will work. This is because members of the Engineering team have *Restricted Control* on the **restricted** label, and *Full Control* on the **run** label. Both of these permissions allow for the deployment of new containers.
 
-
-## Step 2 - Test container access from the web UI
+### Test container access from the web UI
 
 In this step you will attempt to perform certain actions while logged in as the **johnfull** user. Depending on which permissions labels are in force will determine whether these actions succeed or fail.
 
@@ -562,17 +551,17 @@ In this step you will attempt to perform certain actions while logged in as the 
 
 - Click on the **Run** button with "bash" specified in the field.
 
-  This action is the GUI equivalent of running a `docker exec` command. In this case, you are trying to execute a `bash` terminal inside the **ub1** container.
+This action is the GUI equivalent of running a `docker exec` command. In this case, you are trying to execute a `bash` terminal inside the **ub1** container.
 
-  You will get an error message saying *Error attempting to open exec session*. This is because the you are logged in as **johnfull** who is a member of the **Engineering** team, and the **Engineering** team only have *Restricted Control* to the **ub1** container via the **restricted** label. *Restricted Control* does not allow you to open exec sessions to a container.
+You will get an error message saying *Error attempting to open exec session*. This is because the you are logged in as **johnfull** who is a member of the **Engineering** team, and the **Engineering** team only have *Restricted Control* to the **ub1** container via the **restricted** label. *Restricted Control* does not allow you to open exec sessions to a container.
 
 - Now try the same thing with the **ub2** container.
 
-   This time the bash terminal will launch successfully. This is because the user **johnfull** is a member of the **Engineering** team which has *Full Control* over the **ub2** container via the **run** label.
+This time the bash terminal will launch successfully. This is because the user **johnfull** is a member of the **Engineering** team which has *Full Control* over the **ub2** container via the **run** label.
 
 ![](images/ub2_deploy.png)
 
-## Step 3 - Test container access from the command line
+### Test container access from the command line
 
 In this step you will create and download a **client bundle** for the **johnfull** user, connect to UCP using the client bundle, and perform some tests from the command line. You can do this from either a Windows or Mac. The steps below are from a Windows machine.
 
@@ -580,11 +569,11 @@ In this step you will create and download a **client bundle** for the **johnfull
 
 - Scroll to the bottom of the profile screen and click **Create a Client Bundle**.
 
-  This will download the client bundle to your local machine as a zipped archive file.
+This will download the client bundle to your local machine as a zipped archive file.
 
 - Unzip the contents of the archive file and open a command prompt to the location of the extracted contents. On a Windows machine this is likely to be C:\Users\your-user\Downloads\ucp-bundle-johnfull.
 
-  The examples in this tutorial are using Git Bash. Feel free to use a command line tool of your choice.
+The examples in this tutorial are using Git Bash. Feel free to use a command line tool of your choice.
 
 - List the files in your current directory.
 
@@ -623,22 +612,18 @@ This will result in an *Error response from daemon: access denied* error. This i
 This time the command works because the **ub2** container is tagged with the **run** label which maps the *Full Control* permission to members of the Engineering team. Restricted Control does not allow users to `docker exec` into a container.
 
 
-## Step 4 - Test admin access form the command line
+### Test admin access form the command line
 
 In this step you will attempt to launch a console form the UCP web UI, as well as the **admin** user's client bundle.
 
 - Logout of UCP as **johnfull** and log back in as the **admin** user
-
 - Click the **Containers** link in the left of the web UI and click the **ub1** container.
-
 - Click the **Console** tab and then click the **Run** button to run a `bash` terminal.
 
 This time the terminal opens. This is because the "admin" user has full access to all UCP resources, regardless of permissions labels that are applied.
 
 - Download the Admin user's client bundle and unzip to a folder of your choice.  See steps 3.1-3.3 for details of how to do this.
-
 - Open a command prompt to the location of the unzipped client bundle and execute the `env.sh` script.
-
 - Run a `docker ps` command and take note of how many containers you can see.
 
 You should see the **nginx1**, **ub1** and **ub2** containers that were launched in Step - You should also see any additional containers that you launched without permissions labels at the end of Task 1.
@@ -647,13 +632,12 @@ You should see the **nginx1**, **ub1** and **ub2** containers that were launched
 
 The operation will also succeed because you are connected to UCP as the **admin** user.
 
-## Step 5 - Test default permissions
+### Test default permissions
 
 In this step you will test access to UCP resources that are not tagged with permissions labels. The actions in this step wil be performed in the Docker UCP web UI.
 
 - Logout of UCP as the **admin** user and log back in as **johnfull**.
 - Click on the **Images** link and click **Pull Image**.
-
 - Pull the "hello-world" image.
 
 ![](images/hello_world_pull.png)
@@ -669,15 +653,12 @@ The network will be successfully created.
 From the previous 4 steps we can see that the user **johnfull** has full access to create networks, pull images, and perform other UCP tasks. This is because **johnfull** has the *Full Access* default permission, giving him full access to all non-tagged UCP resources. His access is only restricted to resources tagged with permissions labels.
 
 - Logout of UCP as **johnfull** and log back in as **kerryres**.
-
 - Click on the **Images** link and pull the "alpine" image.
-
 - Click on the **Networks** link and create a network called "kerry-net".
 
 Similar  to **johnfull**, **kerryres** can also pull images and create networks despite only having the **Restricted Control** default permission. However, there are actions that users with Full Control can do, that users with Restricted Control cannot do such as `docker exec` into containers and lauch **privileged** containers.
 
 - Logout of UCP as **kerryres** and log back in as **barryview**.
-
 - Click on the **Images** link.
 
 Notice that Barry does not even have a **Pull Image** button. This is because **barryview** has the **View Only** default permission. This permission does not allow operations such as pulling images.
@@ -687,13 +668,11 @@ Notice that Barry does not even have a **Pull Image** button. This is because **
 You will get an **Error creating network: access denied** error message because of insufficient permissions.
 
 - Logout of UCP as **barryview** and login as **traceyno**.
-
-1- Notice that Tracey only has links to the following three resource types:
-
-- Applications
-- Containers
-- Nodes
+- Notice that Tracey only has links to the following three resource types:
+  - Applications
+  - Containers
+  - Nodes
 
 This is because Tracey has the **No Access** default permission. However, because Tracey is a members of the Engineering team, she gets access to all of the tagged resources that the Engineering team has access to.
 
-1- Click the **Containers** link and notice that Tracey can see the three containers that have the **view** label attached to them.
+- Click the **Containers** link and notice that Tracey can see the three containers that have the **view** label attached to them.
