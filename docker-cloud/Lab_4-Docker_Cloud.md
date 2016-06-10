@@ -178,7 +178,7 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host - *
 
 2. Click the **Create a Node** icon on the welcome screen
 
-	![weclome_node_create](./images/welcome_node_create.png)
+	![welcome_node_create](./images/welcome_node_create.png)
 
 3. Click **Bring your own node**
 
