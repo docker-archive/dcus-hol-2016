@@ -4,17 +4,30 @@ These tasks for hands-on labs will take you through a typical workflow for Docke
 From install, through deploying various applications, and setting up common role-based access control
 you will be able to quickly familiarize yourself with the features of Docker Universal Control Plane.
 
-TODO: Move the images from imgur into this repository
+> **Difficulty**: Beginner
 
-# Task 2: Deploy a container
+> **Time**: Approximately 45 minutes
+
+> **Tasks**:
+>
+> * [Prerequisites](#prerequisites)
+> * [Install UCP Controller](#install-ucp-controller)
+> * [Attach UCP Nodes](#attach-ucp-nodes)
+
+
+## <a name="prerequisites"></a>Prerequisites
+
+- TODO: Prereqs here
+
+## <a name="install-ucp-controller"></a>Task 1: Install UCP Controller
+## <a name="attach-ucp-nodes"></a>Task 2: Attach UCP Nodes
+
+## <a name="deploy-a-container"></a>Task 3: Deploy a container
 
 In this task you will use USP to deploy a web server from the official NGINX image. The following steps will walk you through this process.
 
 1. Deploy a container
 2. Test the deployment
-
-## Prerequisites
-- UCP setup with 3 nodes connected to the UCP controller
 
 ## Step 1 - Deploy a container
 In this step you will launch a new container based on the NGINX image using the UCP web UI.
