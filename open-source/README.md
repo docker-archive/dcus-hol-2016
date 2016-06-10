@@ -4,15 +4,19 @@
 
 > **Time**: Approximately 40 minutes
 
-> **Tasks**:
+> **Notes**
 >
-> * [Prerequisites](#prerequisites)
-> * You will be using __node-0__, __node-1__, and __node-2__
+> * In this lab you will be using __node-0__, __node-1__, and __node-2__
 > * Ensure that no containers are running on these nodes ```$ docker rm -f $(docker ps -q)```
 > * This lab requires a Docker Hub account. This account is free and will allow you to push and pull images from the Docker public registry. This link describes how to create a Docker Hub account: <a href="https://docs.docker.com/mac/step_five/">https://docs.docker.com/mac/step_five/</a>
 
+> **Tasks**:
+>
+> * [Deploy a Simple Application](#deploy-application)
+> * [Start a Docker Cluster](#start-cluster)
+> * [Deploy a Multi-Service, Multi-Host Application](#multi-application)
 
-## Task 1: Deploy a Simple Application
+## <a name="deploy-application"></a>Task 1: Deploy a Simple Application
 
 ### Set Up Environment
 
@@ -196,7 +200,7 @@ You have now completed Task 1. Before proceeding to the next task clear all of t
 $ docker ps -a
 ```
 
-## Task 2: Start a Docker Cluster
+## <a name="start-cluster"></a>Task 2: Start a Docker Cluster
 
 Up until this point we have been dealing with a single-container application on one host. Real-world applications are typically many apps across many hosts. Each container provides a service that can be written in different languages and use different frameworks. By splitting an application into different services, Docker allows the application components to scale independently of one another.
 
@@ -257,7 +261,7 @@ Repeat the section above on __node-2__
 
 Congratulations, you have now set up a Docker Swarm cluster and completed Task 2!
 
-##Task 3: Deploy a Multi-Service, Multi-Host Application
+## <a name="multi-application"></a>Task 3: Deploy a Multi-Service, Multi-Host Application
 
 We will now deploy a 2-container application comprised of a web front end and a database backend. The frontend is a custom Python application and the backend is Elasticsearch. It's called the Foodtruck app and it creates a great visualization to see all of the different places to get food in San Francisco. The locations are searchable and presented on a map of the city.
 
