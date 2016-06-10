@@ -7,7 +7,7 @@
 > **Tasks**:
 >
 > * [Prerequisites](#prerequisites)
-> * You will be using __node0__, __node1__, and __node2__
+> * You will be using __node-0__, __node-1__, and __node-2__
 > * Ensure that no containers are running on these nodes ```$ docker rm -f $(docker ps -q)```
 > * This lab requires a Docker Hub account. This account is free and will allow you to push and pull images from the Docker public registry. This link describes how to create a Docker Hub account: <a href="https://docs.docker.com/mac/step_five/">https://docs.docker.com/mac/step_five/</a>
 
@@ -16,7 +16,7 @@
 
 ### Set Up Environment
 
-Connect to __node0__
+Connect to __node-0__
 Use the following command to clone the simple app repo from GitHub to node-0
 
 ```
@@ -46,7 +46,7 @@ Next we will use a Dockerfile to create an image and then run a container from t
 
 ### Build the Application
 
-Verify that the Docker is running on __node0__
+Verify that the Docker is running on __node-0__
 
 ```
 $ docker version
@@ -135,11 +135,10 @@ cat-app                             latest                      6b249f008fee    
 We have now built a new container image using the Dockerfile and the contents of the directory that we cloned from GitHub.
 Next we will push the image to a registry so that it can be stored and even used by other people.
 
-With the Docker client, log in with your Docker Hub credentials.
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 
 ```
 docker login
-Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 Username: markchurch
 Password:
 Login Succeeded
@@ -163,7 +162,7 @@ latest: digest: sha256:2ee2217c9d184909846afe3a2f09de70690f439aff29b741f974d8a7c
 
 ### Run the Application
 
-Now create a container with our simple-app image and run it on __node0__ at port 80
+Now create a container with our simple-app image and run it on __node-0__ at port 8080
 
 ```
 $ docker run -itd -p 8080:5000 markchurch/cat-app
@@ -184,14 +183,14 @@ From this output we can see the following:
 * We can see what image was used to create the container
 * We can also see if and how the container is exposed outside the host (in this case on port 5000 of the host interfaces)
 
-Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of __node0__. Type ```http://<ip address>:8080``` into the browser and you will see your container running.
+Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of __node-0__. Type ```http://<ip address>:8080``` into the browser and you will see your container running.
 
 You should see the following ...
 <p align="center">
 <img src="images/cat.png" width=400px>
 </p>
 
-You have now completed Task 1. Before proceeding to the next task clear all of the containers on __node0__ by running the command ```$ docker rm -f $(docker ps -q)```. You should then see that there are no or stopped containers on the host.
+You have now completed Task 1. Before proceeding to the next task clear all of the containers on __node-0__ by running the command ```$ docker rm -f $(docker ps -q)```. You should then see that there are no or stopped containers on the host.
 
 ```
 $ docker ps -a
@@ -207,11 +206,11 @@ Docker has powerful tools to manage multi-service apps. It has built-in capabili
 
 A Docker Swarm cluster has Swarm managers and Swarm worker nodes. The managers manage and retain the state of the cluster while the worker nodes run application loads. As of Docker 1.12 no external backend or 3rd party components are required for a fully functioning Swarm cluster.
 
-In this part of the demo we will use all three of the nodes in our lab. __node0__ will be our Swarm manager while __node1__ and __node2__ will server as our Swarm worker nodes. Swarm supports a highly available, redundant managers but for the purposes of this lab we will only have a single manager.
+In this part of the demo we will use all three of the nodes in our lab. __node-0__ will be our Swarm manager while __node-1__ and __node-2__ will server as our Swarm worker nodes. Swarm supports a highly available, redundant managers but for the purposes of this lab we will only have a single manager.
 
 ### Create a Swarm Master
 
-Get the internal IP address of __node0__
+Get the internal IP address of __node-0__
 
 ```
 $ ifconfig eth0
@@ -220,7 +219,7 @@ eth0      Link encap:Ethernet  HWaddr 06:67:be:89:1f:b5
 ...
 ```
 
-Create a Swarm manager on __node0__ with its internal IP address
+Create a Swarm manager on __node-0__ with its internal IP address
 
 ```
 $ docker swarm init --listen-addr <IP>:4500
@@ -228,22 +227,22 @@ $ docker swarm init --listen-addr <IP>:4500
 
 ### Join a Worker Node to a Swarm Cluster
 
-Open up a second tab and log in to __node1__ keeping the first tab open
+Open up a second tab and log in to __node-1__ keeping the first tab open
 
 ```
-$ ssh -i key.pem ubuntu@<node1 external IP>
+$ ssh -i key.pem ubuntu@<node-1 external IP>
 fdadfas
 ```
 
-Join the swarm cluster as a worker node with the internal IP address of the Swarm master, __node0__
+Join the swarm cluster as a worker node with the internal IP address of the Swarm master, __node-0__
 
 ```
-$ docker swarm join <node0 IP>:4500
+$ docker swarm join <node-0 IP>:4500
 ```
 
-Repeat step 3 for __node2__
+Repeat step 3 for __node-2__
 
-Go back to the __node0__ tab and note that __node1__ has joined the cluster as a worker node
+Go back to the __node-0__ tab and note that __node-1__ has joined the cluster as a worker node
 
 ```
 docker node ls
@@ -254,7 +253,7 @@ ID              NAME                                          STATUS  AVAILABILI
 
 ```docker node ls``` shows us all of the nodes that are in a given Swarm cluster. Here we can see the hostname, the unique ID of the host, and the role of the host in the cluster. The ```*``` denotes the host that we are currently running the Docker command from.
 
-Repeat the section above on __node2__
+Repeat the section above on __node-2__
 
 Congratulations, you have now set up a Docker Swarm cluster and completed Task 2!
 
