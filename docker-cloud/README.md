@@ -33,7 +33,7 @@ To create a Docker ID:
 
 4. Click `Sign up`
 
-5. Check your email (**including your spam folder**) for an email with the subject `Please confrim email for your Docker ID`
+5. Check your email (**including your spam folder**) for an email with the subject `Please confirm email for your Docker ID`
 
 6. Click the `Confirm Your Email` link in the body of the message
 
