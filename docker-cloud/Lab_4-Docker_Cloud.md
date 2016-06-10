@@ -4,256 +4,304 @@
 
 > **Time**: Approximately 40 minutes
 
-> **Tasks**:
-> 
-> + [Prerequisites](#prerequisites)
-> 
-> 	+ [Install the Docker Cloud CLI](#cli-install)
-> 	+ [Install the Docker Cloud Agent on a Node](#install_node)
-> 	+ [Deploy a service](#deploy_service)
-> 	+ [Setup a CI/CD pipeline and deploy a multi-service application](#deploy_app)
+In this lab you will deploy a web application using Docker Cloud. You will complete the following tasks as part of the lab:
+
+- [Configure the prerequisites](#prerequisits)
+- [Install the Docker Cloud CLI on a management host](#cli-install)
+- [Deploy the Docker Cloud agent on a Docker host](#install_node)
+- [Deploy a service](#deploy_service)
+  - [Check the service](#check_service)
+- [Deploy an application using a CI/CD pipeline](#deploy_app)
+  - [Configure Docker Cloud autobuilds](#autobuild)
+  - [Test autobuilds](#test_autobuild)
+  - [Configure and test autodeploy](#autodeploy)
 
 ## What is Docker Cloud?
-Docker Cloud is a hosted service that provides a Registry with build and testing facilities for Dockerized application images, tools to help you set up and manage your host infrastructure, and deployment features to help you automate deploying your images to your infrastructure.
 
+Docker Cloud is the best way to deploy and manage Dockerized applications. Docker Cloud makes it easy for you to manage and deploy the full spectrum of applications, from single container apps to distributed microservices stacks, to any cloud or on-premises infrastructure.
 
 ## <a name="prerequisites"></a>Prerequisites
 
+In order to complete this lab you will need all of the following:
+
+- A Docker ID
+- A management host (you can use your laptop or one of the nodes from your lab)
+- A GitHub account
+
 ### Obtain a Docker ID
-If you do not already have a Docker ID, you will need to create one now. Creating a Docker ID is free, and allows you to access both Docker Cloud and Docker Hub. 
+
+If you do not already have a Docker ID, you will need to create one now. Creating a Docker ID is free, and allows you to access both [Docker Cloud](https://cloud.docker.com) and [Docker Hub](https://hub.docker.com).
+
+If you already have a Docker ID, skip to the next prerequisite.
 
 To create a Docker ID:
 
-1. Use your web browser to visit `http://cloud.docker.com`
+1. Use your web browser to visit [`https://cloud.docker.com`](https://cloud.docker.com)
 
 2. Near the bottom middle of the screen click `Create Account`
 
-3. Choose a Docker ID, as well as supply your email address, and choose a password
+3. Choose a Docker ID, supply your email address, and choose a password
 
 4. Click `Sign up`
 
-5. Check your email (**including your spam folder**) for an email with the subject `Please confrim email for your Docker ID`
+5. Check your email (**including your spam folder**) for an email with the subject `Please confirm email for your Docker ID`
 
 6. Click the `Confirm Your Email` link in the body of the message
 
 7. You should be redirected back to `https://cloud.docker.com`
 
+You now have a Docker ID. Remember to keep the password safe and secure.
 
-### Choose a local Docker environment
-Before beginning this lab, you will need to select an option for working with a local Docker environment 
+### Choose a management host
 
-**Option 1 (recommended)**: We recommend that you install the Docker for Mac or Docker for Windows beta on your laptop. If you'd like to do this please refer to **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there. 
+As part opf this lab you will need a designated machine that has the Docker Cloud CLI installed. The remainder of this document will refer to this as the *management host*. You have two option for this:
 
-If you choose this option, you will execute install the Docker Cloud CLI and executecommands in a terminal or command window on your local machine.
+- **Option 1 (recommended)**: Install the Docker for Mac or Docker for Windows beta on your laptop and use this as your *management host*. If you'd like to do this please refer to **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there.  ***FAO MIKE we still need this previous sentence nailing down with links etc.***
 
-**Option 2**: If you do not wish to install any software locally, you will need to SSH into `node-2` to install the Docker Cloud CLI and execute any commands.  To SSH into `node-2` type the following, substituting the information provided to you over email. 
+  If you choose this option, you will install the Docker Cloud CLI and execute commands in a terminal or command window on your laptop.
 
-	ssh -i <your ssh key name>.pem <username>@<node-2 ip address>
+- **Option 2**: If you do not wish to install any software locally, you will need to SSH into `node-2` of your lab, install the Docker Cloud CLI and execute any commands from that machine.  
 
-### GitHub or BitBucket Account
-In order to complete the CI/CD portions of this lab, you will need an account on either GitHub or BitBucket. Please visit the site of your choosing, and create an account if you do not already have one. 
+  Use the following command to SSH into `node-2` of your lab, substituting the information specific to your lab that you received via email.  ***FAO MIKE I'm assuming attendees will have been emailed info on their labs??***
 
+  ```
+	ssh -i <your ssh key name>.pem <username>@<node-2 public ip address>
+  ```
 
-# <a name="cli-install"></a>Step 1: Install The Docker Cloud CLI
+### GitHub account
 
-Docker Cloud provides a Command Line Interface (CLI) tool that you can use
-to interact with the service. We will be using this tool, along with Docker Cloud's web interface as part of this lab today
+*FAO MIKE I removed the reference to Bitbucket as the examples further down are all GitHub specific.*
 
-Installing the Docker Cloud CLI differs based on the operating system you're using. Be sure to use the correct step below (Step 2 for Linux and Windows, Step 3 for Mac OS X()
+In order to complete the CI/CD portions of this lab, you will need an account on GitHub. If you do not already have one you can create one for free at [GitHub](https://github.com).
 
-1. Make sure you are in your chosen local Docker environment. You're either in a local terminal or command window and are using Docker for Mac or Docker for Windows OR you have used SSH to access `node-2` 
+Continue with the lab as soon as you have completed the prerequisites.
 
-2. For Linux and Windows sytems: Execute the following commands on your command line
+# <a name="cli-install"></a>Step 1: Install the Docker Cloud CLI
+
+In this step you will install the Docker Cloud Command Line Interface (CLI) on your *management host*.
+
+The Docker Cloud CLI allows you to interact directly with Docker Cloud, and you will be using it, along with the Docker Cloud web UI, as part of this lab.
+
+Installing the Docker Cloud CLI differs based on the operating system of your *management host*.
+
+1. Make sure you are logged on to your *management host* (local terminal/command window if using Docker for Mac or Docker for Windows, or an SSH session to `node-2`).
+
+2. Install the `docker-cloud` CLI.
+
+  **Linux and Windows systems:** Execute the following command (you will need to have `pip` installed)
 
 		$ pip install docker-cloud
 
-3. For Mac OS X: Exectute the following commands (you will need to have Brew installed)
+  > **FAO MIKE: The Windows install doesn't work for me. Well..... the install works but then `docker-cloud` commands throw back errors. I'm using Windows 10.**
+
+  **Mac OS X:** Execute the following command (you will need to have `Brew` installed)
 
 		$ brew install docker-cloud
 
-4. Check that the CLI installed correctly by typing `docker-cloud -v`. This command will show the version of the Docker Cloud CLI running on your system. 
+4. Verify the install by typing `docker-cloud -v`. This will show the version of the Docker Cloud CLI running on your system.
 
 		$ docker-cloud -v
 		docker-cloud 1.0.2
-		
-> **Note**: If you later want to uninstall the Docker Cloud CLI run either `pip uninstall docker-cloud` on Linux and Windows or `brew uninstall docker-cloud`
 
-# <a name="install_node"></a>Step 2: Install the Docker Cloud Agent on a Node
-A node is another name for a Docker host that is managed by Docker Cloud. Docker Cloud allows administrators to link to several different hosted cloud service providers (such as Microsoft Azure), and create clusters of nodes quicly and easily. This process stands up new nodes on the cloud provider of choice, joins them to a cluster, and installs the Docker Cloud agent. 
+You now have the Docker Cloud CLI installed on your *management host* and are ready to start using Docker Cloud.
 
-However, in some cases, you may already have a node deployed that you want to bring under management. That's the use case we'll be exploring in this next step. We will be installing the Docker Cloud agent onto `node-0` to bring it under management.
+> **Note**: You can uninstall the Docker Cloud CLI by running `pip uninstall docker-cloud` on Linux and Windows, or `brew uninstall docker-cloud`on OS X.
 
-1. Navigate to `https://cloud.docker.com` and login with your Docker ID. 
+# <a name="install_node"></a>Step 2: Deploy the Docker Cloud Agent on a Docker host
+
+*Docker hosts* that are managed by Docker Cloud are called *nodes*. In this step you will install the Docker Cloud agent on a *Docker host* and register it as a *node* with Docker Cloud. Later in the lab you will use Docker Cloud to deploy containers to this node.
+
+Docker Cloud allows you to easily spin up new instances on various cloud platforms and deploy the Docker Cloud agent to them so that they can be Docker Cloud nodes. It also let's you deploy the agent to **existing** Docker hosts so that they can also be Docker Cloud nodes.
+
+In this step you'll deploy the Docker Cloud agent to an existing Docker host - **node-0** in your lab.
+
+> **Note** that this is **node-0** which is different to **node-2** that you *may* have used for your *management host* in the previous step.
+
+1. Navigate to [`https://cloud.docker.com`](https://cloud.docker.com) and login with your Docker ID.
 
 2. Click the **Create a Node** icon on the welcome screen
 
 	![weclome_node_create](./images/welcome_node_create.png)
 
-3. Click **Bring Your Own Node**
+3. Click **Bring your own node**
 
 	![byon_button](./images/byon_button.png)
 
-4. The dialog that appears lists the currently supported distributions of Linux, and provides a command that you can copy.
-    This command includes a token that allows the agent to talk to Docker Cloud.
-    
+4. The dialog that appears lists the supported Operating Systems and provides the command that you will use to deploy the Docker Cloud agent. The command includes a token that allows the agent to communicate and register with Docker Cloud.
+
     ![](images/node-byoh-wizard-v2.png)
 
 5. Copy the command to your clipboard.
 
 6. Open a terminal window and SSH into `node-0`
 
-		ssh -i <your ssh key name>.pem <username>@<node-0 ip address>
+		ssh -i <your ssh key name>.pem <username>@<node-0 public ip address>
 
-7. Paste the command at the command prompt on `node-0`
+7. Paste the command onto the command prompt on `node-0`
 
 		$ curl -Ls https://get.cloud.docker.com/ | sudo -H sh -s c7a941OHAIac9419e837f940fab9aa4f1
+  **Remember to cut and paste the command and token from the Docker Cloud UI and not the one form the example above.**
 
-    The command downloads a script which installs and configures the Docker Cloud Agent, and registers it with Docker Cloud.
-    
+    The command downloads a script which installs and configures the Docker Cloud agent and registers the host as a *node* with Docker Cloud.
+
     Upon completion you should see something similar to:
-    
+
     ```
     -> Configuring dockercloud-agent...
-	-> Starting dockercloud-agent service...
+    -> Starting dockercloud-agent service...
 	dockercloud-agent start/running, process 1893
 	-> Done!
-	
+
 	*******************************************************************************
 	Docker Cloud Agent installed successfully
 	*******************************************************************************
 
 	You can now deploy containers to this node using Docker Cloud
 	```
-    
 
-6. Switch back to your web browser, and confirm that the new Linux host is detected. 
+
+6. Switch back to your web browser and confirm that the new Linux host is detected as shown below.
 
 	![byon_success](./images/byon_success.png)
-	
+
 7. Click **Close Window**
+
+You have successfully added `node-0` as a Docker Cloud *node*. This means Docker Cloud can manage `node-0` and deploy containers to it.
 
 # <a name="deploy_service"></a>Step 3: Deploy a Service
 
-A service is a group of containers of the same **image:tag**. Services make it simple to scale your application. With Docker Cloud, you simply drag a slider to change the number of containers in a service.
+In this step you will use the Docker Cloud web UI to deploy a simple application comprising a single *service*.
+
+A *service* is a group of containers based off the same tagged image (`image:tag`). Services make it simple to scale your application. With Docker Cloud, you simply drag a slider to scale the number of containers in a service up and down.
 
 When you create a service in the Docker Cloud web interface, a wizard walks you through configuring the service in three steps.
 
-+ **Choose a Container Image** Images can come from Docker Cloud's Jumpstarts library, your personal Docker Hub account or Docker Hub's public index, or from third party registries you connect.
-+  **Configure the Service** From here, give the service a name, set the initial number of containers, expose/publish ports, modify the run command or entrypoint, set memory and CPU limits.
-+  **Set Environment variables** Set the edit environment variables and link your service to other existing services in Docker Cloud.
++ **Step 1 - Choose a Container Image:** Docker Cloud supports images form public and private repos on Docker Hub and thid party registries. It also provides a set of *Jumpstart* repos that are designed to make deploying simple applications easy.
++  **Step 2 - Configure the Service:** Services have verious proerties and values that need setting. These include: a service a name, initial number of containers, which ports to expose/publish, the entrypoint command, memory and CPU limits.
++  **Step 3 - Set Environment variables:** Each service has a set of environment variables that are used to configure the service, such as linking your service to other services in Docker Cloud.
 
 > **Note**: In this lab  we won't be working with environment variables or connecting data volumes, but these are also available as optional steps in the wizard.
 
 Let's get started by selecting a service to deploy.
 
-1. In your web browser, from any page on Docker Cloud, click the **Services** icon in the menu on the left hand side of the screen.
+1. Click the **Services** link in the menu on the left hand side of the Docker Cloud web UI.
 
 	![services_icon](images/services_icon.png)
 
-1. Click **Create**.
-	
+2. Click **Create**.
+
 	![](images/create-first-service.png)
-	
-1. Click the rocket icon near the top of the page and look for the  **Miscellaneous** section.
-	
-	
-1. Click the **dockercloud/hello-world** image. This image creates a container that runs NGINX, and shows a simple *hello world* web page.
 
-	![](images/first-service-wizard.png)
+3. Click the rocket icon near the top of the page and click on the **dockercloud/hello-world** image from the **Miscellaneous** section.
 
-Docker Cloud takes us to the Services Wizard where we can configure our service. 
+  This will take you to the **Services\Wizard** page.
 
-For the purposes of this lab, you don't actually need to enter or change
-anything for most of the fields on the Create Service page, but we do need to make sure we expose a port for our container. So, let's do that. 
+    ![](images/first-service-wizard.png)
 
+  The **dockercloud/hello-world** image creates a container (service) that runs an NGINX web server that displays a simple *hello world* web page.
 
-1. Click the **Ports** menu item, 
+  For the purposes of this lab, the only modification you need to make on this page is to expose a port and map it to a node (host) port. Let's do that.
 
-	![](images/service_deployed.png)
-	
-1. Click the **Published** checkbox.
+4. Scroll down to the **Ports** section and place a check in the **Published** checkbox.
 
 	![](images/first-service-ports.png)
-	
-1. We are going to map port 80 in the container to port 8080 on the host. To do this replace **dynamic** with 8080. 
-	
-	> **Note**: Two containers on the same node cannot publish to the same port.
 
-1. Click **Create and deploy**. 
+5. Replace **dynamic** with "8080" and click **Add port**.
 
-	Docker Cloud creates, and deploys your new service. 
+	> **Note**: Two containers on the same node cannot publish to the same port. If you have completed other labs that already have a container on the node using port 8080, this operation will fail.
+
+6. Click **Create and deploy**.
+
+> **FAO MIKE: The service won't deploy using the new web UI. But it deploys fine using the old one.  I've tried several times now and the only way I can get it to launch in the new UI is if I DONT publish a port. Weird and may be one to raise with the team if you have the same issue.**
+
+  Docker Cloud will now create and deploy service. This may take a minute or two while the image is downloaded and the container deployed.
 
 ![](images/first-service-create-and-deploy-button.png)
 
-Next, Cloud sends you to the Service's detailed view. The detailed view contains six informational sections:
+Once the service is deployed you will be shown the detailed view of the Service. This view contains six informational sections:
 
-  - **Containers**: lists the containers that are part of this service and their status. This is also where you'd go to launch more containers to scale a service.
+  - **Containers**: lists the containers that are part of this service and their status. This is also where you'd go to scale the number of containers in the service up or down.
   - **Endpoints**: shows a list of available service and container endpoints.
   - **Triggers**: allows you to set triggers that perform automatic actions such as scaling a node or redeploying an image when the source updates.
   - **Links**: lists the links between services. For this tutorial this section will be empty.
-  - **Volumes**: lists the volumes attached to the service to store data.  For this tutorial this section will be empty.
+  - **Volumes**: lists the volumes attached to the service to store data. For this tutorial this section will be empty.
   - **Environment Variables**: lists the environment variables for the service.
 
 Two additional tabs of information are available for each service:
 
-  - **Logs**: shows check the recent logs from all the containers in this service.
-  - **Timeline**: a timeline of all the API calls, and accompanying logs, that were performed against this service.
+  - **Logs**: shows the recent logs from all the containers in this service.
+  - **Timeline**: a timeline of API calls, and accompanying logs, that were performed against the service.
 
-Let's check on the status of our service
+The service is now deployed and can be reached over the internet on port 8080.
 
-1. Click the **Timeline** tab and select **Service Start** to see a log output similar to the one below. 
-	
+## <a name="check_service"></a>Step 3.1: Check the service
+
+Let's make sure the service is up and listening for requests.
+
+Make sure you are logged in to the Docker Cloud web UI and on the details page of the service deployed in the previous step.
+
+1. Click the **Timeline** tab and select **Service Start** to see a log output similar to the one below.
+
 	> **Note**: It can take a couple of minutes for the container to deploy.
-	
+
 	![](images/first-service-timeline.png)
 
-1. Click back onto the **General** tab
+2. Click back onto the **General** tab
 
-	Notice that the the hello-world status line updates to **Running** once the container deploys successfully.
+	Notice that the hello-world status line shows as **Running** once the service is deployed successfully.
 
-	The **Containers** list shows all of the containers in this service. There should just be one for now.
-	
+	The **Containers** list further down the **General** tab shows all of the containers in this service. There should just be one for now.
+
 	![](images/first-service-container-list.png)
-	
-1. Click the container's name to go to the Container's detail view. 
-	
-	From this page you can see additional information about the containers, such as
-	endpoints, logs, environment variables, volumes, a terminal, and the console
-	timeline.
-	
-	![](images/first-service-container.png)
-	
-	The **Endpoints** section lists the endpoints (ports) that this container is publishing. In the screenshot above, there is a single endpoint: **hello-world-66622790-1.9ab56d66.container.docker.io:8080**. The endpoint is composed of both the container's hostname and a port number.
 
-1. Click the link icon in the **Endpoints** section. This opens a new tab and shows the webpage that the **hello-world** container is hosting.
+3. Click the container's name to go to the container's detail view.
+
+	From this page you can see additional information about the container, such as endpoints, logs, environment variables, volumes, a terminal, and the containers own timeline.
+
+	![](images/first-service-container.png)
+
+	The **Endpoints** section lists the endpoints (ports) that this container is listening on. In the screenshot above, there is a single endpoint: **hello-world-66622790-1.9ab56d66.container.docker.io:8080**. The endpoint is composed of both the container's hostname and a port number.
+
+4. Click the small link icon in the **Endpoints** section to open a new browser tab to the applications home page. You will see the **hello-world** message and the ID of the container that responded to the request (at this point the service only has one container).
 
 	![](images/first-service-webpage.png)
+
+    You can also click the **Service Endpoint** from the Service's detailed view. The main difference between *service endpoints* and *container endpoints* is that service endpoints load balance across all containers that are part of the service.
 
 **Congratulations!** You've successfully deployed your first service using Docker Cloud.
 
 
-# <a name="deploy_app"></a>Step 4: Setup a CI/CD pipeline and deploy a multi-service application
+# <a name="deploy_app"></a>Step 4: Deploy and application using a CI/CD pipeline
 
-One of the most powerful features of Docker Cloud is the ability to define end-to-end  CI/CD pipelines. In this part of the lab we're going to show how you can link your GitHub account to Docker Cloud to facilitate seamless application delivery. 
+One of the most powerful features of Docker Cloud is the ability to define end-to-end CI/CD pipelines. In this part of the lab you're going to link your GitHub account to Docker Cloud to facilitate seamless application delivery.
 
-In order to complete this exercise, you'll need to be logged into GitHub.
+In order to complete this step you'll need to:
+- be logged in to GitHub
+- have Docker Cloud linked to your GitHub account
+- have `git` installed on your *management host*
 
-We'll start by forking a demo repo.
+To link Docker Cloud with GitHub, click your account name in the top right corner of the Docker Cloud web UI. Click **Account settings** and then the **Source providers** link. Click the **power socket** icon and follow the procedure to link your GitHub account.
+
+Now that you've got Docker Cloud linked to your GitHub account We'll start by forking a demo repo.
 
 1. In your web browser navigate to <a href="https://github.com/Cloud-Demo-Team/voting-demo.git"> https://github.com/Cloud-Demo-Team/voting-demo.git</a>.
 
-1. Click the **Fork** button in the upper right hand corner to create your own copy of the repository. 
+2. Click the **Fork** button in the upper right hand corner to create your own copy of the repository.
 
-Now we'll clone the repository into our local Docker environment. The following commands will be executed in the terminal or command window for your local Docker environment. 
+Now we'll clone the repository into our local Docker environment. The following commands will be executed in the terminal or command window for your *management host*.
 
-1. Change to your user directory 
+> Be sure to be logged on and running the next commands from your *management host* and not your *node*.
 
-	`$ cd ~/`
+3 Change to your home directory
 
-1. Clone the repository into our local environment
-		
+  `$ cd` (for Linux machines)
+
+  `$ cd %userprofile%` (for Windows machines)
+
+4. Clone the repository (you will need to have `git` installed and the `git` binary present in your PATH)
+
 		$ git clone https://github.com/<your github user name>/voting-demo.git
-		
+
 		Cloning into 'voting-demo'...
 		remote: Counting objects: 481, done.
 		remote: Total 481 (delta 0), reused 0 (delta 0), pack-reused 481
@@ -261,115 +309,138 @@ Now we'll clone the repository into our local Docker environment. The following 
 		Resolving deltas: 100% (246/246), done.
 		Checking connectivity... done.
 
-1. Change to the repo directory
+  This will create a copy of the forked repo in a directory called `voting-demo` within your home directory.
 
-		$ cd ~/voting-demo
+5. Change directory into the repo directory
 
-1. List the directory contents
+		`$ cd voting-demo`
 
-		$ ls 
-		
-	The various Docker Compose files define how our application would be deployed in various environments (production vs staging for instance). If you open `docker-compose.yml` our app includes 4 services:
-	
+6. List the directory contents
+
+  Linux: `$ ls`
+
+  Windows: `$ dir`
+
+	The various YAML files define how the application will be deployed in various environments such as production and staging.
+
+    If you open `docker-compose.yml` you will see that it defines an app with 4 services:
+
 	+ **votinglb**: A load balancer based on HAProxy
-	+ **voting**: A web front end to allows us to cast votes
-	+ **results**: A web front end that allows us to see the results of our voting
-	+ **redis**: Votes are stored in a Redis data cache
+	+ **voting**: A web front end to allows users to cast votes
+	+ **results**: A web front end that allows you to see the results of the vote
+	+ **redis**: A persistent data store for storing voting data
 
-1. Test the application locally
+7. Test the application locally
 
 		$ docker-compose up -d
 
-	You should see docker compose build several images, and ultimately finish with something like this:
-	
+	This will start the application on you *management host*. You will see Docker Compose build several images and ultimately finish with something like this:
+
 		Creating votingdemo_redis_1
 		Creating votingdemo_voting_1
 		Creating votingdemo_results_1
 		Creating votingdemo_votinglb_1
 
-1. Check to see if the voting front end is working by navigating to `http://localhost` in your web browser. 
+8. Check to see if the voting front end is working by navigating to `http://localhost` in your web browser.
+
+  If this does not work, run a `docker ps` command and open your web browser to the IP address shown next to the `votingdemo_votinglb_1` container
 
 	> **Note**: The voting app is running on port 80
-	
-	![](images/voting.png)
-	
-1. Check to see if the results front end is working by navigating to `http://localhost:8000` in your web browser. 
 
-	> **Note**: You will not see any results until you cast a vote using the voting front end. As you change your vote you can move back to results screen to see the change. 
-	
+	![](images/voting.png)
+
+9. Check to see if the results front end is working by opening a new tab in your browser to `http://localhost:8000`.
+
+  If you had to specify the IP address in the previous step, use the same IP address but append `:8000` to the end.
+
+	> **Note**: You will not see any results until you cast a vote using the voting front end. As you change your vote you can move back to results screen to see the results change.
+
 	![](images/results.png)
 
-Docker Cloud can automatically test changes pushed to your source code repositories using containers. You can enable Autotest on a Docker repository to run tests at each GitHub push, similar to a continuous integration testing service. We're now going to build two repositories (one for the **voting** image and one for the **results** image), and configure them to rebuild the images when a change is pushed to GitHub. 
+Congratulations! You have successfully deployed a simple web app using Docker Cloud.
 
-1. In your web browser return to Docker Cloud and click the **Repositories** icon on the left hand side. 
+# <a name="autobuild"></a>Step 4.1: Configure autobuilds
+
+Docker Cloud can automatically build new images when updates are pushed to a repository on GitHub.
+
+In this step you're going to build two GitHub repositories - one for the **voting** part of the app and one for the **results** part. You'll configure them both so that each time a change is pushed to them an updated Docker image will be built.
+
+1. In your web browser return to Docker Cloud and click the **Repositories** link on the left hand side.
 
 	![](images/repositories.png)
 
-1. Click **Create** near the top right of the page
+2. Click **Create** near the top right of the page
 
-1. Fill in the dialog with the following information
+3. Enter the following information
 
 	+ **Name**: Results
 	+ **Description**: Results service for the Docker voting app
 
-1. Click **Create**
+4. Click **Create**
 
-	You'll be taken to the details page for your new repository. From here we're going to link our GitHub repository, and instruct Docker Cloud to rebuild the image when a change is pushed. 
-	
-1. Click **Edit Repository** near the top right
+	You'll be taken to the details page for ythe new repository. From here you're going to link your GitHub repository and instruct Docker Cloud to rebuild the image whenever a change is pushed to GitHub.
 
-1. Make sure the appropriate organization is populated, and enter **voting-demo** for repository
+5. Click **Edit repository** near the top right of the repository details page
 
-1. Enter **/results** for the Dockerfile path. 
+6. Select the **Build** tab and click the **Link to GitHub** button
+**FAO MIKE Might wanna have an image that shows the Link to GitHub screen.**
 
-1. Make sure **Autobuild** is selected. This is the switch that tells Docker cloud to rebuild the service when a changed is pushed to GitHub
+7. Make sure the appropriate organization is populated, and enter **voting-demo** for repository
 
-	![](images/edit_repo.png)
+8. Enter **/results** for the Dockerfile path.
 
-1. Click **Save**. There should be a pop up notification letting you know that GitHub was successfully pinged. 
+9. Make sure **Autobuild** is selected. This is the switch that tells Docker Cloud to build a new image every time a change is *pushed* to GitHub
 
-1. Click the blue wrench to fire trigger an initial image build.
+	**FAO MIKE The image shown is only very slightly different to the latest version so might be worth keeping as is.**
 
+10. Click **Save**.
+
+  There should be a pop up notification letting you know that GitHub was successfully pinged.
+
+11. Click the blue wrench to trigger an initial image build.
+
+  <image below not working>
 	![](images/wrench.png)
+  It may take a minute or so for the build to complete.
 
-Repeat steps 1-9 with the following exceptions
+Repeat steps 1-11 with the following modifications:
 
-Create Repo (Step 3):
+  Create Repo (Step 3)
+  + **Name**: Voting
+  + **Description**: Voting service for the Docker voting app
 
-+ **Name**: Voting
-+ **Description**: Voting service for the Docker voting app
+Specifying the Dockerfile path (Step 8)
+  + Enter **/voting** for the Dockerfile path
 
-Specifying the Dockerfile path (Step 7):
+Well done! You've created two new repos and configured them to autobuild whenever new changes are pushed to the associated GitHub repos.
 
-+ Enter **/voting** for the Dockerfile path
+# <a name="test_autobuild"></a>Step 4.2: Test autobuilds
 
-Now that we've created our repos, and set them to autobuild on a GitHub push, we're going to see that in action by making a local change, push that to GitHub, and check the status in Docker Cloud
-
-Switch back to your terminal or command window. 
+Switch back the command line of your *management host*. If you are not in the `voting-demo` directory that was created when you cloned the repo earlier, change into it now.
 
 1. Change to the voting directory
 
-		$ cd ~/voting-demo/voting
+		$ cd voting
 
-1. Use vi or your favorite text editor to open `app.py`
+2. Use vi or your favorite text editor to open `app.py`
+  + To use `vi` on Linux: `$ vi app.py`
+  + To use `notepad.exe` on Windows: `$ notepad app.py`
 
-		$ vi app.py
-	
-1. Scroll down to find the lines containing `optionA` and `optionB`, and change **Dev** and **Ops** to **Futbol** and **Soccer**
+3. Scroll down to find the lines containing `optionA` and `optionB`, and change **Dev** and **Ops** to **Futbol** and **Soccer**
 
 		optionA = "Futbol"
 		optionB = "Soccer"
-		
-1. Save your changes
 
-1. Commit changes to the repository and push to GitHub using `git add`, `git commit`, and `git push`
+4. Save your changes
+
+5. Commit changes to the repository and push to GitHub using `git add`, `git commit`, and `git push`
 
 		$ git add *
-		
+
 		$ git commit -m "changing the voting options"
 		[master 2ab640a] changing the voting options
  		1 file changed, 3 insertions(+), 2 deletions(-)
- 		
+
  		$ git push origin master
  		Counting objects: 4, done.
 		Delta compression using up to 8 threads.
@@ -378,19 +449,15 @@ Switch back to your terminal or command window.
 		Total 4 (delta 3), reused 0 (delta 0)
 		To https://github.com/<your github repo>/voting-demo.git
    		c1788a1..2ab640a  master -> master
- 			
-1. Navigate back Docker cloud in your web browser
 
-1. Click **Repositories** in the left-hand menu
+  >**Note:** If you have two factor authentication (2FA) configured on your GitHub account you will need to enter your personal access token (PAT) instead of your password when prompted.
 
-1. Navigate to the **voting** repository and click the repository name
-
-1. Notice the status is flashing **building**
+6. In the Docker Cloud web UI, navigate back to the **voting** repo and notice that the status is **BUILDING**.
 
 	> **Note**: It can take several minutes for a build job to complete
-	
+
 	![](images/building.png)
-	
+
 1. Click the **Timeline** tab near the top of the screen
 
 	![](images/timeline.png)
@@ -398,14 +465,18 @@ Switch back to your terminal or command window.
 1. Click `Build in master:/voting`
 
 	Here you can see the status of the build process
-	
+
 	![](images/build_status.png)
 
-Now that we have Docker Cloud configured to update our images whenever new code is pushed to GitHub, we will configure our voting application to redeploy our services anytime an underlying image is changed. 
+Congratulations. You have configured your Docker Cloud to build a new Docker image each time you push a change to your application's repository on GitHub.
 
-So the flow will end up being: GitHub push -> Autobuild of the affected image -> Autodeploy any containers based on that image
-	
-Applications deployed on Docker Cloud are referred to as **Stacks** and are defined by a YAML file much like they are with Docker Compose. The file we'll be using in this example is `docker-cloud.yml`. The contents are listed below. 
+# <a name="autodeploy"></a>Step 4.2: Configure automated deployments
+
+Now that you have Docker Cloud configured to update your images whenever new code is pushed to GitHub, you will configure the voting application to redeploy each service anytime the underlying image is changed.
+
+The overall flow is as follows: Push changes to GitHub -> Autobuild of the affected Docker Cloud image -> Automatically redeploy the service that uses that image -> Application up to date!
+
+Applications deployed on Docker Cloud are referred to as **Stacks** and are defined by a YAML file much like they are with Docker Compose. In this step you will be using the `docker-cloud.yml` file inside the `voting-demo` directory that you cloned earlier. The contents of the file are listed below.
 
 		redis:
   			image: 'redis:latest'
@@ -435,91 +506,87 @@ Applications deployed on Docker Cloud are referred to as **Stacks** and are defi
 
 This file, like the Docker Compose file we ran earlier, will stand up four services. But there are a couple of things to note:
 
-+ The inclusing of the **autoredploy** flag will cause both the **voting** and **results** services to be redeployed of the underly image is changed
-+ For the **voting** service we are specifying that four containers are started up via the **target_num_containers** tag
++ The inclusion of the **autoredploy** flag will cause both the **voting** and **results** services to be automatically redeployed if the underlying image is changed.
++ The **target_num_containers** flag in the **voting** service will ensure that the service initially starts with four containers.
 
 Let's go ahead and deploy the application.
 
-1. Change into the `voting-demo` directory
+1. On your *management host* Change into the `voting-demo` directory
 
 		$ cd ~/voting-demo
-		
-1. You will need to use vi or your favorite text editor to modify the `docker-cloud.yml` file. Currently the images for **voting** and **results** are pointing at `dockercloud` organization. You need to replace `dockercloud` with your Docker ID.
+
+2. Use `vi` or your favorite text editor to modify the `docker-cloud.yml` file. Currently the images for **voting** and **results** are pointing at the **cloudorg** organization. You need to replace **cloudorg** with your Docker ID.
 
 		results:
   			autoredeploy: true
   			image: '<your Docker ID>'/results:latest'
-  			
+
 	and
 
 		voting:
 			autoredeploy: true
 		  	image: '<your Docker ID>/voting:latest'
-		  	
-	> **Note**: You do NOT need to change the organization for the **haproxy** image. 
 
-1. Authentiate to Docker Cloud
+	> **Note**: You do NOT need to change the organization for the **haproxy** image.
+
+3. Authenticate to Docker
 
 		$ docker login
 		Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 		Username: <your Docker ID>
 		Password: <your Docker ID password>
 		Login Succeeded
-		
-1. Start the stack using the Docker Cloud CLI
+
+4. Start the stack using the Docker Cloud CLI
 
 		$ docker-cloud stack up
 		5087205f-80c5-498a-9005-0ff9a29e48f0
-		
-	> **Note**: You can also stand up stacks using the Docker Cloud web interface.
-	
-Next we'll navigate back to Docker Cloud to see if our service is up and running
 
-1. In your web browser navigate to `https://cloud.docker.com`
+	> **Note**: You can also stand up stacks form the **Stacks** page of the Docker Cloud web interface.
 
-1. Click the **Stacks** icon in the left hand menu. 
-	
+5. Back in the Docker Cloud web UI, click the **Stacks** icon in the left hand menu.
+
 	![](images/stacks_icon.png)
-	
-	You should see your Stack running. 
+
+	You should see your Stack running.
 
 	![](images/stack_running.png)
-	
-1. Click on the stack name, `voting-demo`
 
-1. Scroll down to the **Endpoints** section and click on the link icons at the end of the two lines under **Service Endpoints** 
+6. Click on the stack name - `voting-demo`
 
-	> **Note**: Notice the voting app now says "Futbol VS Soccer" instead of "Dev vs OPs". This is the result of the change we made earlier. 
+7. Scroll down to the **Endpoints** section and click on the small link icons at the end of the two lines under **Service Endpoints**
 
-	> **Note**: As before you won't see anyting on the results page until you vote. 
+  Notice the voting app now says "Futbol VS Soccer" instead of "Dev vs Ops". This is the result of the change we made earlier.
 
-Now that we have our application up and running, let's make a push to GitHub and watch Docker Cloud redeploy our application. 
+	> **Note**: As before you won't see anything on the results page until you vote.
 
-Switch back to your terminal or command window. 
+Now that you have your application up and running, let's push a change to GitHub and watch Docker Cloud redeploy the application.
 
-1. Change to the voting directory
+8. Switch back to your terminal or command window on your *management host*.
+
+9. Change to the voting directory
 
 		$ cd ~/voting-demo/voting
 
-1. Use vi or your favorite text editor to open `app.py`
+10. Use vi or your favorite text editor to open `app.py`
 
 		$ vi app.py
-	
-1. Scroll down to find the lines containing `optionA` and `optionB`, and change **Futbol** and **Soccer** to **Seattle** and **San Francisco**
+
+11. Scroll down to find the lines containing `optionA` and `optionB`, and change **Futbol** and **Soccer** to **Seattle** and **San Francisco**
 
 		optionA = "Seattle"
 		optionB = "San Francisco"
-		
-1. Save your changes
 
-1. Commit changes to the repository and push to GitHub using `git add`, `git commit`, and `git push`
+12. Save your changes
+
+13. Commit changes to the repository and push to GitHub using `git add`, `git commit`, and `git push`
 
 		$ git add *
-		
+
 		$ git commit -m "changing the voting options"
 		[master 2ab640a] changing the voting options
  		1 file changed, 3 insertions(+), 2 deletions(-)
- 		
+
  		$ git push origin master
  		Counting objects: 4, done.
 		Delta compression using up to 8 threads.
@@ -528,46 +595,35 @@ Switch back to your terminal or command window.
 		Total 4 (delta 3), reused 0 (delta 0)
 		To https://github.com/<your github repo>/voting-demo.git
    		c1788a1..2ab640a  master -> master
- 			
-1. Navigate back Docker cloud in your web browser
 
-1. Click **Repositories** in the left-hand menu
+14. Switch back to Docker Cloud in your web browser
 
-1. Navigate to the **voting** repository and click the repository name
+15. Click **Repositories** in the left-hand menu
 
-1. Notice the status is flashing **building**
+16. Navigate to the **voting** repository and click the repository name
+
+17. Notice the status is flashing **BUILDING**
 
 	> **Note**: It can take several minutes for a build job to complete
-	
+
 	![](images/building.png)
-	
-1. Click the **Timeline** tab near the top of the screen
+
+18. Click the **Timeline** tab near the top of the screen
 
 	![](images/timeline.png)
 
-1. Click `Build in master:/voting`
+19. Click the running task `Build in master:/voting`
 
 	Here you can see the status of the build process
-	
+
 	![](images/build_status.png)
-	
-1. Once the build finishes, click on **Stacks** in the left hand menu
 
+20. Once the build finishes you can click on the **Services** link in the left hand menu and see the **voting** service and the **results** service *redeploying*.
 
+  It only takes a few seconds to redeploy each service, so you may miss this.
 
+21. Once both services have redeployed with the updated images, if you refresh the **voting** and **results** web pages (you should still have a tab open for each of them) you will see that the values now show as **Seattle** and **San Francisco**.
 
+Congratulations! You have successfully deployed an application and configured it to automatically redeploy any time changes are pushed to its GitHub repo.
 
-
-	
-	
-
- 
-
- 
-
- 
-		
-
-
-
-
+This completes the Docker Cloud lab.
