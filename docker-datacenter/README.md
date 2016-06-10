@@ -1,4 +1,4 @@
-# DockerCon Seattle Hands-on Labs for Docker Datacenter
+# Docker Datacenter
 
 These tasks for hands-on labs will take you through a typical workflow for Docker Datacenter.
 From install, through deploying various applications, and setting up common role-based access control
