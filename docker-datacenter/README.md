@@ -14,61 +14,55 @@ you will be able to quickly familiarize yourself with the features of Docker Uni
 > * [Install UCP Controller](#install-ucp-controller)
 > * [Attach UCP Nodes](#attach-ucp-nodes)
 
-
 ## <a name="prerequisites"></a>Prerequisites
 
 - TODO: Prereqs here
 
-## <a name="install-ucp-controller"></a>Task 1: Install UCP Controller
-## <a name="attach-ucp-nodes"></a>Task 2: Attach UCP Nodes
+## <a name="install-ucp-controller"></a>Install UCP Controller
+## <a name="attach-ucp-nodes"></a>Attach UCP Nodes
 
-## <a name="deploy-a-container"></a>Task 3: Deploy a container
+## <a name="deploy-a-container"></a>Deploy a container
 
-In this task you will use USP to deploy a web server from the official NGINX image. The following steps will walk you through this process.
+In this task you will use UCP to deploy a web server from the official NGINX image.
 
-1. Deploy a container
-2. Test the deployment
+### Deploy a container
 
-## Step 1 - Deploy a container
 In this step you will launch a new container based on the NGINX image using the UCP web UI.
 
-1. If you have not already done so, log in to UCP with the built-in **admin** account.
-
-2. Click the **Containers** link on left navigation bar.
-
-3. Click on **+ Deploy Container** button.
-
-4. Fill out the Basic Settings as shown below:
+- If you have not already done so, log in to UCP with the built-in **admin** account.
+- Click the **Containers** link on left navigation bar.
+- Click on **+ Deploy Container** button.
+- Fill out the Basic Settings as shown below:
 
 ![](images/basic_settings.png)
 
-5. Expand the **Network** section on the same page and configure the following port mappings:
+- Expand the **Network** section on the same page and configure the following port mappings:
 
 ![](images/port_mappings.png)
 
-6. Hit the **Run Container** button on the right side panel.
+- Hit the **Run Container** button on the right side panel.
 
-  When the operation completes you will see your container listed as shown below. The green circle to the left of the container indicates that the container is in the **running** state.
+When the operation completes you will see your container listed as shown below. The green circle to the left of the container indicates that the container is in the **running** state.
 
 ![](images/deployed_container.png)
 
-7. Click on the row where the container is listed to see the full container details. Then scroll down to the **Ports** section of the page to check the port mappings.
+- Click on the row where the container is listed to see the full container details. Then scroll down to the **Ports** section of the page to check the port mappings.
 
 ![](images/port_mappings_check.png)
 
-## Step 2 - Quick Test
+### Quick Test
 
 In this step you will use your web browser to access the home page of the **nginx_server** container started in the previous step.
 
 In order to access the NGINX container from your web browser you will need the DNS hostname of the node that the container is running on.
 
-1. First, let's take a look at the node our **nginx_server** container is running on. In the container details, you can find the node information.
+- First, let's take a look at the node our **nginx_server** container is running on. In the container details, you can find the node information.
 
 ![](images/node_information.png)
 
-In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.236. However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the public IP, or public DNS name, of the node from the lab details you received (each lab machine you have will have a public and priave IP and DNS).
+In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.23- However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the public IP, or public DNS name, of the node from the lab details you received (each lab machine you have will have a public and priave IP and DNS).
 
-2. Go to your web browser and enter the public IP or public DNS name of the node that the **nginx_server** container is running on.
+- Go to your web browser and enter the public IP or public DNS name of the node that the **nginx_server** container is running on.
 
 You will see the NGINX welcome page.
 
@@ -87,8 +81,8 @@ In this exercise we will deploy a simple multi container application. The applic
 - A Java client that pings the container to get a response
 
 
-1. SSH into your UCP controller AWS machine
-2. Use Git to clone the application repository from https://github.com/johnny-tu/HelloRedis.git
+- SSH into your UCP controller AWS machine
+- Use Git to clone the application repository from https://github.com/johnny-tu/HelloRedis.git
 
 ```
 ubuntu@ucp-controller:~$ git clone https://github.com/johnny-tu/HelloRedis.git
@@ -99,15 +93,15 @@ Unpacking objects: 100% (45/45), done.
 Checking connectivity... done.
 ```
 
-3. You should now see a folder called `HelloRedis`. Change directory into this folder
-4. List the files in the directory. You should see a `docker-compose.yml` file
+- You should now see a folder called `HelloRedis`. Change directory into this folder
+- List the files in the directory. You should see a `docker-compose.yml` file
 
 ```
 ubuntu@ucp-controller:~/HelloRedis$ ls
 docker-compose.prod.yml  docker-compose.yml  Dockerfile  lib  README.md  src
 ```
 
-5. Run `docker-compose up -d`
+- Run `docker-compose up -d`
 
 ```
 ubuntu@ucp-controller:~/HelloRedis$ docker-compose up -d
@@ -143,7 +137,7 @@ Successfully built 9dc249ef701d
 Creating helloredis_javaclient_1
 ```
 
-6. Now run `docker-compose ps`. What can you observe?
+- Now run `docker-compose ps`. What can you observe?
 
 ```
 ubuntu@ucp-controller:~/HelloRedis$ docker-compose ps
@@ -153,13 +147,13 @@ helloredis_javaclient_1   java HelloRedis                  Up
 helloredis_redis_1        docker-entrypoint.sh redis ...   Up      6379/tcp
 ```
 
-7. Switch over to UCP on your web browser
-8. Click on the **Applications** link on the left navigation bar
-9. You should see the following output
+- Switch over to UCP on your web browser
+- Click on the **Applications** link on the left navigation bar
+- You should see the following output
 
 ![](images/ucp02_t4_applications.PNG)
 
-10. click on the **show containers** link on the right side to expand the view of the application
+- click on the **show containers** link on the right side to expand the view of the application
 
 ![](images/ucp02_t4_applications_expanded.PNG)
 
@@ -174,17 +168,17 @@ we use the client bundle.
 The client bundle sets up the certificates needed in order to allow us to use a Docker client or docker-compose on our local machine.
 It will connect our Docker client to the Swarm manager that is running on our UCP controller node.
 
-1. Navigate to your user profile in UCP
+- Navigate to your user profile in UCP
 
 ![](images/ucp02_t4_profile_dropdown.PNG)
 
-2. Click the **Create a Client Bundle** button. This will download a zip file with the necessary keys,
+- Click the **Create a Client Bundle** button. This will download a zip file with the necessary keys,
    certificates and scripts needed to connect your Docker client to Swarm.
 
 ![](images/ucp02_t4_client_bundle.PNG)
 
-3. Unzip the Client Bundle to a folder of your choice
-4. Take note of the files in your folder now. You should see an `env.sh` file
+- Unzip the Client Bundle to a folder of your choice
+- Take note of the files in your folder now. You should see an `env.sh` file
 
 Note that in this example we are using a Windows machine and we have unzipped the bundle to `C:\Docker\ucp_client_bundles\ucp-bundle-admin`.
 Let's examine the directory using the Windows Terminal (CMD)
@@ -213,7 +207,7 @@ Directory of C:\Docker\ucp_client_bundles\ucp-bundle-admin
 Note the certificates and the `env.sh` and `env.cmd` files. For users on Mac OSX or Linux, you will be using the `env.sh` file. Windows users using
 `CMD` terminal will be using `env.cmd`
 
-5. Open `env.sh` and take note of the environment variables that the script is setting
+- Open `env.sh` and take note of the environment variables that the script is setting
 
 Let's take a look at `env.sh`
 ```
@@ -229,8 +223,8 @@ controller node.
 
 Note that in our example the `DOCKER_HOST` is specified with the public IP address of the node. It would also be possible to specify it with the DNS Name
 
-6. Open your terminal and change directory into the folder where you extracted the client bundle zip
-7. Run `source ./env.sh` or `env.cmd`
+- Open your terminal and change directory into the folder where you extracted the client bundle zip
+- Run `source ./env.sh` or `env.cmd`
 
 **For Mac and Linux users**
 
@@ -254,7 +248,7 @@ tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
 
 **Note:** Windows users can opt to use a command line tool such as `git bash` and thus be able to follow the same instructions as Mac and Linux users.
 
-8. Now run `docker info`. You should be able to see all nodes that are connected
+- Now run `docker info`. You should be able to see all nodes that are connected
 
 ```
 C:\Docker\ucp_client_bundles\ucp-bundle-admin>docker info
@@ -313,12 +307,12 @@ com.docker.ucp.license_max_engines=10
 com.docker.ucp.license_expires=2016-05-31 21:53:37 +0000 UTC
 ```
 
-9. Clone the HelloRedis repository https://github.com/johnny-tu/HelloRedis.git into another folder of your choice
-9. Remove the existing HelloRedis application from UCP.
+- Clone the HelloRedis repository https://github.com/johnny-tu/HelloRedis.git into another folder of your choice
+- Remove the existing HelloRedis application from UCP.
 
 ![](images/ucp02_t4_applications_remove.PNG)
 
-10. Launch the application by using the Client Bundle. To do this, you just need to go into the applications folder and run `docker-compose up -d`
+- Launch the application by using the Client Bundle. To do this, you just need to go into the applications folder and run `docker-compose up -d`
 
    You may notice the following error
 
@@ -343,7 +337,7 @@ Now run, `$docker-compose -f docker-compose.prod.yml up -d` to launch the applic
 
 The `-f` option allows users to specify a specific compose file to use
 
-11. Take note of the nodes each container is running on. You should see that both containers are on the same node. This is the expected behavior due to how networking works on older Compose applications. Later in the course we will learn how to deploy application containers across multiple nodes.
+1- Take note of the nodes each container is running on. You should see that both containers are on the same node. This is the expected behavior due to how networking works on older Compose applications. Later in the course we will learn how to deploy application containers across multiple nodes.
 
 ![](images/ucp02_t4_helloredis.PNG)
 
@@ -351,10 +345,10 @@ The `-f` option allows users to specify a specific compose file to use
 
 For the following section, use what you have learnt just now and complete the steps listed below.
 
-1. Now that you've deployed your first application, it's time to try another example. Go to https://github.com/prakhar1989/FoodTrucks
-2. Clone the `FoodTrucks` repo into your local PC or Mac
-3. Deploy the `FoodTrucks` application into UCP. Remember to use the Client Bundle
-4. View the application in your web browser
+- Now that you've deployed your first application, it's time to try another example. Go to https://github.com/prakhar1989/FoodTrucks
+- Clone the `FoodTrucks` repo into your local PC or Mac
+- Deploy the `FoodTrucks` application into UCP. Remember to use the Client Bundle
+- View the application in your web browser
 
 If you completed all the steps correctly, you should see a very cool application that allows you to search for food trucks in San Francisco
 
@@ -368,22 +362,22 @@ If you completed all the steps correctly, you should see a very cool application
 
 ## Deploy FoodTruck Application again
 
-1. Remove all the applications you have deployed on UCP so far.
-2. Click on the **Compose Application** button on the **Applications** page
+- Remove all the applications you have deployed on UCP so far.
+- Click on the **Compose Application** button on the **Applications** page
 
 ![](images/ucp02_t5_compose_application.PNG)
 
-3. On the Create Application window, give your application a name. i.e. "FoodTrucks" and upload the FoodTruck Docker Compose file.
+- On the Create Application window, give your application a name. i.e. "FoodTrucks" and upload the FoodTruck Docker Compose file.
    You can copy and paste the docker-compose.yml file from your FoodTruck applications folder or upload by selecting the file from your PC or Mac.
    Then click on **Create**
 
 ![](images/ucp02_t5_create_application_screen.PNG)
 
-4. Note the output of the action, then click done.
+- Note the output of the action, then click done.
 
 ![](images/ucp02_t5_create_application_output.PNG)
 
-5. You should now see your FoodTrucks application listed on the **Applications** page.
+- You should now see your FoodTrucks application listed on the **Applications** page.
 
 ## Deploy
 
@@ -391,10 +385,10 @@ If you completed all the steps correctly, you should see a very cool application
 
 In this task you will complete the following four steps.
 
-1. Create new users
-2. Create a team and add users
-3. Assign permissions to team
-4. Deploy containers
+- Create new users
+- Create a team and add users
+- Assign permissions to team
+- Deploy containers
 
 ## Pre-requisites
 
@@ -412,25 +406,25 @@ In this step you will create the 4 new users shown below.
 | barryview  | Barry View        | View Only           |
 | traceyno   | Tracey No         | No Access           |
 
-1. Click **Users & Teams** from the left navigation pane.
+- Click **Users & Teams** from the left navigation pane.
 
 ![](images/users_teams.png)
 
-2. Click **Create User**.
+- Click **Create User**.
 
 ![](images/create_user.png)
 
-3. Fill out the **Create User** form with the details provided in the table above. The screenshot below shows the form filled out with the details for the *John Full* user.
+- Fill out the **Create User** form with the details provided in the table above. The screenshot below shows the form filled out with the details for the *John Full* user.
 
 ![](images/john_full_details.png)
 
 > Be sure to make a note of the password that you set for each user. You will need this in future labs.
 
-4. Click **Create User**.
+- Click **Create User**.
 
 Repeat steps 1-4 for all users in the table above. Be sure to select the appropriate permissions from the **Default Permissions** dropdown.
 
-> **Note:** The *Default Permissions* configured in the above step are not the same as the permissions you will set in Step 3. *Default Permissions* apply to non-labelled resources. The permissions you will set in Step 3 will only apply to resources that are labelled appropriately.
+> **Note:** The *Default Permissions* configured in the above step are not the same as the permissions you will set in Step - *Default Permissions* apply to non-labelled resources. The permissions you will set in Step 3 will only apply to resources that are labelled appropriately.
 
 ## Step 2 - Create a team and add users
 
@@ -438,19 +432,19 @@ Users can be grouped into teams for simpler management.
 
 This step will walk you through the process of creating a team and adding users to the team.
 
-1. Create a team called **Engineering** by clicking the ** + Create** button shown in the image below.
+- Create a team called **Engineering** by clicking the ** + Create** button shown in the image below.
 
 ![](images/create_team.png)
 
-2. Set the **TEAM NAME** to "Engineering" and make sure **TYPE** is "Managed".
+- Set the **TEAM NAME** to "Engineering" and make sure **TYPE** is "Managed".
 
 > **Managed** teams have their accounts and passwords managed by UCP rather than an external LDAP service.
 
-3. Make sure the Engineering team is selected and click the **Add User to Team** button form the **Members** tab.
+- Make sure the Engineering team is selected and click the **Add User to Team** button form the **Members** tab.
 
 ![](images/add_user_to_team.png)
 
-4. Add all four new users to the team by clicking the **Add to Team** button next to each of them and then click **Done**. Do not add yourself (usually "admin") to the team.
+- Add all four new users to the team by clicking the **Add to Team** button next to each of them and then click **Done**. Do not add yourself (usually "admin") to the team.
 
 All four users are now members of the Engineering team.
 
@@ -460,11 +454,11 @@ Labels are central to permissions in Docker UCP.
 
 In this step you will create a new label and assign the Engineering team "View Only" access to that label. In Step 4 you will start a new container and apply that same label to the container. As a result, members of the Engineering team will have "View Only" access to the container.
 
-1. With the **Engineering** team selected, go to the **Permissions** tab and click **+ Add Label**.
+- With the **Engineering** team selected, go to the **Permissions** tab and click **+ Add Label**.
 
 ![](images/add_label.png)
 
-2. Create the following three labels and click **Add Label**.
+- Create the following three labels and click **Add Label**.
 
 | LABEL            |   PERMISSION         |
 | :-------------   |   :------------------|
@@ -478,11 +472,11 @@ The labels will now be listed on the **Permissions** tab of the Engineering team
 
 In this step you will start a new container with the "view" label. You will also start one or more container without any label.
 
-1. Select **Containers** from the left hand pane, and click **+ Deploy Container**.
+- Select **Containers** from the left hand pane, and click **+ Deploy Container**.
 
 ![](images/deploy_container.png)
 
-1. Fill out the Deploy form with the following details and then click **Run Container**.
+- Fill out the Deploy form with the following details and then click **Run Container**.
 
 ![](images/nginx_deploy_details.png)
 
@@ -493,11 +487,11 @@ In the next exercise you will explore the implications of running containers wit
 # Task 2 - Test User Access
 
 In this task you will complete the following steps:
-1. Test permission labels
-2. Test container access from the web UI
-3. Test container access from the command line
-4. Test admin access form the command line
-5. Test default permissions
+- Test permission labels
+- Test container access from the web UI
+- Test container access from the command line
+- Test admin access form the command line
+- Test default permissions
 
 ## Pre-requisites
 
@@ -507,25 +501,25 @@ In this task you will complete the following steps:
 
 Docker UCP uses labels to implement permissions and access control. In the previous lab (Task 1) you deployed the "nginx1" container with the "view" label. You also assigned the Engineering team "View Only" access to all resources tagged with the "view" label. In this step you will log back in to UCP as "johnfull" and verify that you only have view access to the "nginx1" container.
 
-1. Logout of UCP and log back in as user **johnfull**
+- Logout of UCP and log back in as user **johnfull**
 
-2. Click on the **Containers** link in the left pane.
+- Click on the **Containers** link in the left pane.
 
   Confirm that you can only see the "nginx1" container (with the "view" label). The other containers that you deployed with no labels will not be visible.
 
-3. Click the controls button to the right of the container (three dots) and attempt to **Stop** the container. The action will fail and you will see an error message like the one shown below.
+- Click the controls button to the right of the container (three dots) and attempt to **Stop** the container. The action will fail and you will see an error message like the one shown below.
 
 ![](images/stop_error.png)
 
-4. Click on the container to view its details.
+- Click on the container to view its details.
 
-5. Scroll down to the **Labels** section and verify the presence of the **view** label.
+- Scroll down to the **Labels** section and verify the presence of the **view** label.
 
 ![](images/view_label.png)
 
-6. Click the **Containers** link in the left pane.
+- Click the **Containers** link in the left pane.
 
-7. Click the **+ Deploy Container** button to deploy a new container with the following basic options.
+- Click the **+ Deploy Container** button to deploy a new container with the following basic options.
 
 ![](images/ubuntu_deploy.png)
 
@@ -533,7 +527,7 @@ Docker UCP uses labels to implement permissions and access control. In the previ
 
 ![](images/deploy_view_error.png)
 
-8. Repeat the previous action two more times, but configure the containers as shown in the table below:
+- Repeat the previous action two more times, but configure the containers as shown in the table below:
 
 | Image Name | Container Name  | Permissions Label |
 | :--------- | :---------------| :---------------- |
@@ -547,17 +541,17 @@ Docker UCP uses labels to implement permissions and access control. In the previ
 
 In this step you will attempt to perform certain actions while logged in as the **johnfull** user. Depending on which permissions labels are in force will determine whether these actions succeed or fail.
 
-1. Click on the container **ub1**. Then click the **Console** tab.
+- Click on the container **ub1**. Then click the **Console** tab.
 
 ![](images/container_console_link.png)
 
-2. Click on the **Run** button with "bash" specified in the field.
+- Click on the **Run** button with "bash" specified in the field.
 
   This action is the GUI equivalent of running a `docker exec` command. In this case, you are trying to execute a `bash` terminal inside the **ub1** container.
 
   You will get an error message saying *Error attempting to open exec session*. This is because the you are logged in as **johnfull** who is a member of the **Engineering** team, and the **Engineering** team only have *Restricted Control* to the **ub1** container via the **restricted** label. *Restricted Control* does not allow you to open exec sessions to a container.
 
-4. Now try the same thing with the **ub2** container.
+- Now try the same thing with the **ub2** container.
 
    This time the bash terminal will launch successfully. This is because the user **johnfull** is a member of the **Engineering** team which has *Full Control* over the **ub2** container via the **run** label.
 
@@ -567,17 +561,17 @@ In this step you will attempt to perform certain actions while logged in as the 
 
 In this step you will create and download a **client bundle** for the **johnfull** user, connect to UCP using the client bundle, and perform some tests from the command line. You can do this from either a Windows or Mac. The steps below are from a Windows machine.
 
-1. Click the **johnfull** dropdown in the top right corner and select **Profile**.
+- Click the **johnfull** dropdown in the top right corner and select **Profile**.
 
-2. Scroll to the bottom of the profile screen and click **Create a Client Bundle**.
+- Scroll to the bottom of the profile screen and click **Create a Client Bundle**.
 
   This will download the client bundle to your local machine as a zipped archive file.
 
-3. Unzip the contents of the archive file and open a command prompt to the location of the extracted contents. On a Windows machine this is likely to be C:\Users\your-user\Downloads\ucp-bundle-johnfull.
+- Unzip the contents of the archive file and open a command prompt to the location of the extracted contents. On a Windows machine this is likely to be C:\Users\your-user\Downloads\ucp-bundle-johnfull.
 
   The examples in this tutorial are using Git Bash. Feel free to use a command line tool of your choice.
 
-4. List the files in your current directory.
+- List the files in your current directory.
 
 ```
 nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
@@ -585,14 +579,14 @@ $ ls
 ca.pem  cert.pem  cert.pub  env.cmd  env.ps1  env.sh  key.pem
 ```
 
-5. Execute the `source.sh` shell script.
+- Execute the `source.sh` shell script.
 
 ```
 nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
 $ source env.sh
 ```
 
-6. Run a `docker ps` command to list the containers.
+- Run a `docker ps` command to list the containers.
 
 The output should contain the "nginx1", "ub1", and "ub2" containers created in the previous steps.
 
@@ -605,11 +599,11 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED             STATUS   
 0fe093853832   nginx      "nginx -g 'daemon off"   About an hour ago   Up About an hour    80/tcp, 443/tcp   nginx1
 ```
 
-7. Run `docker exec -it ub1 bash` to open a `bash` terminal on the "ub2" container.
+- Run `docker exec -it ub1 bash` to open a `bash` terminal on the "ub2" container.
 
 This will result in an *Error response from daemon: access denied* error. This is because the "ub1" container is tagged with the "restricted" label, which maps the *Restricted Control* permission to members of the Engineering team.
 
-8. Repeat the same command for the **ub2** container.
+- Repeat the same command for the **ub2** container.
 
 This time the command works because the **ub2** container is tagged with the **run** label which maps the *Full Control* permission to members of the Engineering team. Restricted Control does not allow users to `docker exec` into a container.
 
@@ -618,23 +612,23 @@ This time the command works because the **ub2** container is tagged with the **r
 
 In this step you will attempt to launch a console form the UCP web UI, as well as the **admin** user's client bundle.
 
-1. Logout of UCP as **johnfull** and log back in as the **admin** user
+- Logout of UCP as **johnfull** and log back in as the **admin** user
 
-2. Click the **Containers** link in the left of the web UI and click the **ub1** container.
+- Click the **Containers** link in the left of the web UI and click the **ub1** container.
 
-3. Click the **Console** tab and then click the **Run** button to run a `bash` terminal.
+- Click the **Console** tab and then click the **Run** button to run a `bash` terminal.
 
 This time the terminal opens. This is because the "admin" user has full access to all UCP resources, regardless of permissions labels that are applied.
 
-4. Download the Admin user's client bundle and unzip to a folder of your choice.  See steps 3.1-3.3 for details of how to do this.
+- Download the Admin user's client bundle and unzip to a folder of your choice.  See steps 3.1-3.3 for details of how to do this.
 
-5. Open a command prompt to the location of the unzipped client bundle and execute the `env.sh` script.
+- Open a command prompt to the location of the unzipped client bundle and execute the `env.sh` script.
 
-6. Run a `docker ps` command and take note of how many containers you can see.
+- Run a `docker ps` command and take note of how many containers you can see.
 
-You should see the **nginx1**, **ub1** and **ub2** containers that were launched in Step 1. You should also see any additional containers that you launched without permissions labels at the end of Task 1.
+You should see the **nginx1**, **ub1** and **ub2** containers that were launched in Step - You should also see any additional containers that you launched without permissions labels at the end of Task 1.
 
-7. Run `docker exec` and open a `bash` terminal to the "ub1" container
+- Run `docker exec` and open a `bash` terminal to the "ub1" container
 
 The operation will also succeed because you are connected to UCP as the **admin** user.
 
@@ -642,17 +636,16 @@ The operation will also succeed because you are connected to UCP as the **admin*
 
 In this step you will test access to UCP resources that are not tagged with permissions labels. The actions in this step wil be performed in the Docker UCP web UI.
 
-1. Logout of UCP as the **admin** user and log back in as **johnfull**.
+- Logout of UCP as the **admin** user and log back in as **johnfull**.
+- Click on the **Images** link and click **Pull Image**.
 
-2. Click on the **Images** link and click **Pull Image**.
-
-3. Pull the "hello-world" image.
+- Pull the "hello-world" image.
 
 ![](images/hello_world_pull.png)
 
 The image pull operation will be successful.
 
-4. Click on the **Networks** link and click **+ Create Network** to create a new network called "johns-net".
+- Click on the **Networks** link and click **+ Create Network** to create a new network called "johns-net".
 
 Just give the network a name and click **Create**.
 
@@ -660,27 +653,27 @@ The network will be successfully created.
 
 From the previous 4 steps we can see that the user **johnfull** has full access to create networks, pull images, and perform other UCP tasks. This is because **johnfull** has the *Full Access* default permission, giving him full access to all non-tagged UCP resources. His access is only restricted to resources tagged with permissions labels.
 
-5. Logout of UCP as **johnfull** and log back in as **kerryres**.
+- Logout of UCP as **johnfull** and log back in as **kerryres**.
 
-6. Click on the **Images** link and pull the "alpine" image.
+- Click on the **Images** link and pull the "alpine" image.
 
-7. Click on the **Networks** link and create a network called "kerry-net".
+- Click on the **Networks** link and create a network called "kerry-net".
 
 Similar  to **johnfull**, **kerryres** can also pull images and create networks despite only having the **Restricted Control** default permission. However, there are actions that users with Full Control can do, that users with Restricted Control cannot do such as `docker exec` into containers and lauch **privileged** containers.
 
-8. Logout of UCP as **kerryres** and log back in as **barryview**.
+- Logout of UCP as **kerryres** and log back in as **barryview**.
 
-9. Click on the **Images** link.
+- Click on the **Images** link.
 
 Notice that Barry does not even have a **Pull Image** button. This is because **barryview** has the **View Only** default permission. This permission does not allow operations such as pulling images.
 
-10. Click the **Networks** link and create a network called "barry-net".
+- Click the **Networks** link and create a network called "barry-net".
 
 You will get an **Error creating network: access denied** error message because of insufficient permissions.
 
-11. Logout of UCP as **barryview** and login as **traceyno**.
+- Logout of UCP as **barryview** and login as **traceyno**.
 
-12. Notice that Tracey only has links to the following three resource types:
+1- Notice that Tracey only has links to the following three resource types:
 
 - Applications
 - Containers
@@ -688,4 +681,4 @@ You will get an **Error creating network: access denied** error message because 
 
 This is because Tracey has the **No Access** default permission. However, because Tracey is a members of the Engineering team, she gets access to all of the tagged resources that the Engineering team has access to.
 
-13. Click the **Containers** link and notice that Tracey can see the three containers that have the **view** label attached to them.
+1- Click the **Containers** link and notice that Tracey can see the three containers that have the **view** label attached to them.
