@@ -11,15 +11,26 @@ you will be able to quickly familiarize yourself with the features of Docker Uni
 > **Tasks**:
 >
 > * [Prerequisites](#prerequisites)
-> * [Install UCP Controller](#install-ucp-controller)
-> * [Attach UCP Nodes](#attach-ucp-nodes)
+> * [Install UCP](#install-ucp)
+> * [Deploy a Container](#deploy-a-container)
+> * [Deploy an Application](#deploy-an-application)
+> * [Deploy an Application With the UCP UI](#deploy-ucp-interface)
+> * [Create Users and Teams](#create-users-teams)
+> * [Test User Access](#test-user-access)
 
 ## <a name="prerequisites"></a>Prerequisites
 
 - TODO: Prereqs here
 
-## <a name="install-ucp-controller"></a>Install UCP Controller
-## <a name="attach-ucp-nodes"></a>Attach UCP Nodes
+## <a name="install-ucp-controller"></a>Install UCP
+
+### Install UCP
+
+- TODO
+
+### Attach nodes
+
+- TODO
 
 ## <a name="deploy-a-container"></a>Deploy a container
 
@@ -68,19 +79,21 @@ You will see the NGINX welcome page.
 
 ![](images/nginx_welcome.png)
 
-You have successfully launched a web container using the Docker UCP web UI.# Task 4 - Deploy a simple application on UCP
+You have successfully launched a web container using the Docker UCP web UI
 
-## Pre-requisites
+## <a name="deploy-an-application"></a>Deploy A Simple Application With UCP
+
+### Pre-requisites
 
 - You must have [Docker Toolbox](https://www.docker.com/products/docker-toolbox) installed on your local machine
+- TODO: ^ Is this needed?
 
-## Deploy an application using Docker Compose
+### Deploy an application using Docker Compose
 
 In this exercise we will deploy a simple multi container application. The application will be run using **Docker Compose** and contains 2 services (containers)
+
 - A Redis Container
 - A Java client that pings the container to get a response
-
-
 - SSH into your UCP controller AWS machine
 - Use Git to clone the application repository from https://github.com/johnny-tu/HelloRedis.git
 
@@ -159,7 +172,9 @@ helloredis_redis_1        docker-entrypoint.sh redis ...   Up      6379/tcp
 
 You will notice that when we expand the the view of the `helloredis` application, we also see each service that the application is composed of.
 
-## Using the Client Bundle
+### Using the Client Bundle
+
+TODO - Fix EC2 reference below
 
 Manually logging into the EC2 instance to run docker-compose to deploy your applications is not very convenient and in a lot of cases not possible.
 After all, you wouldn't want to give SSH access to too many people. So instead of SSHing into the machine in order to deploy our applications,
@@ -314,7 +329,7 @@ com.docker.ucp.license_expires=2016-05-31 21:53:37 +0000 UTC
 
 - Launch the application by using the Client Bundle. To do this, you just need to go into the applications folder and run `docker-compose up -d`
 
-   You may notice the following error
+You may notice the following error
 
 ```
 johnny@JT MINGW64 ~/Documents/GitHub/HelloRedis (master)
@@ -341,7 +356,7 @@ The `-f` option allows users to specify a specific compose file to use
 
 ![](images/ucp02_t4_helloredis.PNG)
 
-## Deploy another application
+### Deploy another application
 
 For the following section, use what you have learnt just now and complete the steps listed below.
 
@@ -354,13 +369,13 @@ If you completed all the steps correctly, you should see a very cool application
 
 ![](images/ucp02_t4_foodtrucks.PNG)
 
-## Task 5 - Deploy Applications using the UCP Web Interface
+## <a name="deploy-ucp-interface"></a>Deploy Applications using the UCP Web Interface
 
-## Pre-requisites
+### Pre-requisites
 
 - UCP installed and 2 nodes joined to the UCP controller
 
-## Deploy FoodTruck Application again
+### Deploy FoodTruck Application again
 
 - Remove all the applications you have deployed on UCP so far.
 - Click on the **Compose Application** button on the **Applications** page
@@ -379,9 +394,9 @@ If you completed all the steps correctly, you should see a very cool application
 
 - You should now see your FoodTrucks application listed on the **Applications** page.
 
-## Deploy
+### Deploy
 
-# Task 1 - Create Users and Teams
+## <a name="create-users-teams"></a>Create Users and Teams
 
 In this task you will complete the following four steps.
 
@@ -484,7 +499,7 @@ Repeat the above steps to deploy one or more containers without any label. Be su
 
 In the next exercise you will explore the implications of running containers with labels.
 
-# Task 2 - Test User Access
+## <a name="test-user-access"></a>Test User Access
 
 In this task you will complete the following steps:
 - Test permission labels
