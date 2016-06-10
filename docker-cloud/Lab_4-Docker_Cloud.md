@@ -1,5 +1,8 @@
 # Lab 4: Docker Cloud
 
+##IMPORTANT: If you intend to do the Universal Control Plane lab today, you should do that BEFORE completing this lab.
+
+
 > **Difficulty**: Beginner
 
 > **Time**: Approximately 40 minutes
@@ -18,7 +21,7 @@ In this lab you will deploy a web application using Docker Cloud. You will compl
 
 ## What is Docker Cloud?
 
-Docker Cloud is the best way to deploy and manage Dockerized applications. Docker Cloud makes it easy for you to manage and deploy the full spectrum of applications, from single container apps to distributed microservices stacks, to any cloud or on-premises infrastructure.
+Docker Cloud is a SaaS-based service for deploying and managing Dockerized applications. Docker Cloud makes it easy for you to manage and deploy the full spectrum of applications, from single container apps to distributed microservices stacks, to any cloud or on-premises infrastructure.
 
 ## <a name="prerequisites"></a>Prerequisites
 
@@ -27,6 +30,7 @@ In order to complete this lab you will need all of the following:
 - A Docker ID
 - A management host (you can use your laptop or one of the nodes from your lab)
 - A GitHub account
+- Git installed locally on your machine
 
 ### Obtain a Docker ID
 
@@ -56,25 +60,80 @@ You now have a Docker ID. Remember to keep the password safe and secure.
 
 As part opf this lab you will need a designated machine that has the Docker Cloud CLI installed. The remainder of this document will refer to this as the *management host*. You have two option for this:
 
-- **Option 1 (recommended)**: Install the Docker for Mac or Docker for Windows beta on your laptop and use this as your *management host*. If you'd like to do this please refer to **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there.  ***FAO MIKE we still need this previous sentence nailing down with links etc.***
+####Option 1 (recommended): Use your own laptop
+Install the Docker for Mac or Docker for Windows beta on your laptop and use this as your *management host*. If you'd like to do this please refer to **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there.  ***FAO MIKE we still need this previous sentence nailing down with links etc.***
 
-  If you choose this option, you will install the Docker Cloud CLI and execute commands in a terminal or command window on your laptop.
+> **Note**: If you choose this option, you will install the Docker Cloud CLI and execute commands in a terminal or command window on your laptop.
 
-- **Option 2**: If you do not wish to install any software locally, you will need to SSH into `node-2` of your lab, install the Docker Cloud CLI and execute any commands from that machine.  
+####Option 2: Use an Azure-based virtual machine
+If you do not wish to install any software locally, you will need to:
+	- SSH into **Second v1.11 node**, 
+	- Add the local user to the Docker group
 
-  Use the following command to SSH into `node-2` of your lab, substituting the information specific to your lab that you received via email.  ***FAO MIKE I'm assuming attendees will have been emailed info on their labs??***
+> **Note**:	If you choose this option, you will install the Docker Cloud CLI and execute commands on **Second v1.11 node**.  
 
-  ```
-	ssh -i <your ssh key name>.pem <username>@<node-2 public ip address>
-  ```
+To configure `Second v.1.11 node` as your *management host*:
 
+1. Use the following command to SSH into **Second v1.11 node** of your lab, substituting the information you received via email. 
+	  
+	For example:
+	  		
+		$ ssh labuser@v111node1-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net
+	  		
+	 When prompted enter the password for **Second v1.11 node** provided in your welcome email. 
+  	
+1. Add the local user to the Docker group on **Second v1.11 node** by typing the following:
+	 
+		$ sudo usermod -aG docker <username>
+	
+	Enter the password for **Second v1.11 node** if prompted	
+	
+	The output should be similar to this:
+	
+	```	
+	$ sudo usermod -aG docker labuser
+	[sudo] password for labuser:
+	sent invalidate(passwd) request, exiting
+	sent invalidate(group) request, exiting
+	```	
+	
+1. Exit the current session by entering the `exit` command
+
+1. SSH back into **Second v1.11 node** by repeating step 1
+
+1. Validate everything is working by checking your Docker version
+
+	```
+	$ docker version
+	Client:
+	 Version:      1.11.2
+	 API version:  1.23
+	 Go version:   go1.5.4
+	 Git commit:   b9f10c9
+	 Built:        Wed Jun  1 21:47:50 2016
+	 OS/Arch:      linux/amd64
+	
+	Server:
+	 Version:      1.11.2
+	 API version:  1.23
+	 Go version:   go1.5.4
+	 Git commit:   b9f10c9
+	 Built:        Wed Jun  1 21:47:50 2016
+	 OS/Arch:      linux/amd64
+	```
+
+		
+  
 ### GitHub account
-
-*FAO MIKE I removed the reference to Bitbucket as the examples further down are all GitHub specific.*
 
 In order to complete the CI/CD portions of this lab, you will need an account on GitHub. If you do not already have one you can create one for free at [GitHub](https://github.com).
 
 Continue with the lab as soon as you have completed the prerequisites.
+
+### Git installed 
+If you are using your own laptop for you *management host*, you'll need to make sure you have `git` installed (it's already installed if you are using `Second v.1.11 node`). 
+
+Visit <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">the git website</a> for information how how to install `git`
 
 # <a name="cli-install"></a>Step 1: Install the Docker Cloud CLI
 
@@ -84,15 +143,13 @@ The Docker Cloud CLI allows you to interact directly with Docker Cloud, and you 
 
 Installing the Docker Cloud CLI differs based on the operating system of your *management host*.
 
-1. Make sure you are logged on to your *management host* (local terminal/command window if using Docker for Mac or Docker for Windows, or an SSH session to `node-2`).
+1. Make sure you are logged on to your *management host* (local terminal/command window if using Docker for Mac or Docker for Windows, or an SSH session to **Second v1.11 node**).
 
 2. Install the `docker-cloud` CLI.
 
-  **Linux and Windows systems:** Execute the following command (you will need to have `pip` installed)
+  **Linux and Windows systems:** Execute the following command (if you do not have pip installed, you will be prompted to install it using the command `sudo apt-get install python-pip`)
 
-		$ pip install docker-cloud
-
-  > **FAO MIKE: The Windows install doesn't work for me. Well..... the install works but then `docker-cloud` commands throw back errors. I'm using Windows 10.**
+		$ sudo pip install docker-cloud
 
   **Mac OS X:** Execute the following command (you will need to have `Brew` installed)
 
@@ -101,7 +158,7 @@ Installing the Docker Cloud CLI differs based on the operating system of your *m
 4. Verify the install by typing `docker-cloud -v`. This will show the version of the Docker Cloud CLI running on your system.
 
 		$ docker-cloud -v
-		docker-cloud 1.0.2
+		docker-cloud 1.0.4
 
 You now have the Docker Cloud CLI installed on your *management host* and are ready to start using Docker Cloud.
 
@@ -113,9 +170,9 @@ You now have the Docker Cloud CLI installed on your *management host* and are re
 
 Docker Cloud allows you to easily spin up new instances on various cloud platforms and deploy the Docker Cloud agent to them so that they can be Docker Cloud nodes. It also let's you deploy the agent to **existing** Docker hosts so that they can also be Docker Cloud nodes.
 
-In this step you'll deploy the Docker Cloud agent to an existing Docker host - **node-0** in your lab.
+In this step you'll deploy the Docker Cloud agent to an existing Docker host - **First v1.11 node** in your lab.
 
-> **Note** that this is **node-0** which is different to **node-2** that you *may* have used for your *management host* in the previous step.
+> **Note** that this is **First v1.11 node** which is different to **Second v1.11 node** that you *may* have used for your *management host* in the previous step.
 
 1. Navigate to [`https://cloud.docker.com`](https://cloud.docker.com) and login with your Docker ID.
 
@@ -133,11 +190,11 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host - *
 
 5. Copy the command to your clipboard.
 
-6. Open a terminal window and SSH into `node-0`
+6. Open a terminal window and SSH into **First v1.11 node**
 
-		ssh -i <your ssh key name>.pem <username>@<node-0 public ip address>
+		ssh <username>@<First v1.11 DNS name>
 
-7. Paste the command onto the command prompt on `node-0`
+7. Paste the command onto the command prompt on **First v1.11 node**
 
 		$ curl -Ls https://get.cloud.docker.com/ | sudo -H sh -s c7a941OHAIac9419e837f940fab9aa4f1
   **Remember to cut and paste the command and token from the Docker Cloud UI and not the one form the example above.**
@@ -166,7 +223,7 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host - *
 
 7. Click **Close Window**
 
-You have successfully added `node-0` as a Docker Cloud *node*. This means Docker Cloud can manage `node-0` and deploy containers to it.
+You have successfully added **First v1.11 node** as a Docker Cloud *node*. This means Docker Cloud can manage **First v1.11 node** and deploy containers to it.
 
 # <a name="deploy_service"></a>Step 3: Deploy a Service
 
