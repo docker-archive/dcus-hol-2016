@@ -185,7 +185,7 @@ From this output we can see the following:
 
 You should see the following ...
 <p align="center">
-<img src="./cat.png" width=400px>
+<img src="images/cat.png" width=400px>
 </p>
 
 
