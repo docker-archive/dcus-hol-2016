@@ -92,11 +92,11 @@ However, in some cases, you may already have a node deployed that you want to br
 
 2. Click the **Create a Node** icon on the welcome screen
 
-TODO: ![welcome_node_create](./images/welcome_node_create.png)
+![welcome_node_create](images/welcome_node_create.png)
 
 3. Click **Bring Your Own Node**
 
-![byon_button](./images/byon_button.png)
+![byon_button](images/byon_button.png)
 
 4. The dialog that appears lists the currently supported distributions of Linux and provides a command that you can copy.
     This command includes a token that allows the agent to talk to Docker Cloud.
@@ -135,7 +135,7 @@ TODO: ![welcome_node_create](./images/welcome_node_create.png)
 
 TODO: Fix this screenshot - Either frame it or crop it.
 
-![byon_success](./images/byon_success.png)
+![byon_success](images/byon_success.png)
 	
 7. Click **Close Window**
 
