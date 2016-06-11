@@ -182,7 +182,7 @@ Next we will push the image to a registry so that it can be stored and even used
 
 ### Push the Image
 
-**Step 5:** Login with your Docker ID to push and pull images from Docker Hub with `docker login`. 
+**Step 1:** Login with your Docker ID to push and pull images from Docker Hub with `docker login`. 
 
 ```
 $ docker login
@@ -192,7 +192,7 @@ Password:
 Login Succeeded
 ```
 
-**Step 6:** Now push your image to the Docker Hub with `docker push <Your Dockerhub ID>/foodtruck-web`. Later in this lab we will be pulling the image down from the Dockerhub to different hosts.
+**Step 2:** Now push your image to the Docker Hub with `docker push <Your Dockerhub ID>/foodtruck-web`. Later in this lab we will be pulling the image down from the Dockerhub to different hosts.
 
 ```
 $ docker push markchurch/foodtruck-web
