@@ -27,7 +27,58 @@ you will be able to quickly familiarize yourself with the features of Docker Uni
 
 ## <a name="install-ucp-controller"></a>Install UCP
 
-### Install UCP
+The first step is to install UCP.  We have done some work for you, for this Hands-on Lab all you will need to do is:
+
+1. Install the UCP Controller
+2. Add the two nodes
+3. Install the client bundle
+
+### Install the UCP controller
+
+To install UCP you use the `docker/ucp` image. This image has commands to
+install, configure, and backup UCP. To find what commands and options are
+available, check the [reference documentation](../reference/install.md).
+
+To install UCP:
+
+1. Log in to the machine where you want to install UCP.
+
+2. Use the `docker/ucp install` command to install UCP.
+
+    In this example we'll be running the install command interactively, so that
+    the command prompts for the necessary configuration values.
+    You can also use flags to pass values to the install command.
+
+    ```bash
+    $ docker run --rm -it --name ucp \
+      -v /var/run/docker.sock:/var/run/docker.sock \
+      docker/ucp install -i \
+      --host-address <$UCP_PUBLIC_IP>
+    ```
+
+    Where:
+
+    * i, specify to run the install command interactively,
+    * host-address, is the public IP where users or a load balancer can access
+    UCP,
+    * Also, include the `--external-server-cert` flag if you're using server
+    certificates signed by an external CA.
+
+    </br>
+    When installing Docker UCP, overlay networking is automatically configured
+    for you. If you are running Docker CS Engine 1.10, or have custom
+    configurations on your Docker CS Engine, you need to restart the Docker
+    daemon at this point.
+
+3. Check that the UCP web application is running.
+
+    In your browser, navigate to the address where you've installed UCP.
+
+    If you're not using an external CA, your browser warns that UCP is
+    an unsafe site. This happens because you're accessing UCP using HTTPS
+    but the certificates used by UCP are not trusted by your browser.
+
+    ![](../images/login.png)
 
 - TODO
 
@@ -87,9 +138,6 @@ You have successfully launched a web container using the Docker UCP web UI
 ## <a name="deploy-an-application"></a>Deploy A Simple Application With UCP
 
 ### Pre-requisites
-
-- You must have [Docker Toolbox](https://www.docker.com/products/docker-toolbox) installed on your local machine
-- TODO: ^ Is this needed?
 
 ### Deploy an application using Docker Compose
 
