@@ -20,9 +20,9 @@
 
 ### Set Up Environment
 
-Connect to **node-0**.
+**Step 1:** Connect to **node-0**. (How will the users connect to nodes??)
 
-Use the following command to clone the FoodTrucks repo from GitHub to node-0. You can see this repo for yourself by going to https://github.com/mark-church/FoodTrucks.
+**Step 2:** Use the following command to clone the FoodTrucks repo from GitHub to node-0. You can see this repo for yourself by going to https://github.com/mark-church/FoodTrucks.
 
 ```
 node-0:$ git clone https://github.com/mark-church/FoodTrucks.git
@@ -35,7 +35,7 @@ Resolving deltas: 100% (133/133), done.
 Checking connectivity... done.
 ```
 
-Change directory to `FoodTrucks` and examine the list of files in the repo by using `tree -L 2`
+**Step 3:** Change directory to `FoodTrucks` and examine the list of files in the repo by using `tree -L 2`
 
 ```
 $ cd FoodTrucks
@@ -71,7 +71,7 @@ Next we will use a Dockerfile to create an image and then run a container from t
 
 ### Build the Image
 
-1. Verify that the Docker is running on **node-0** with `docker version`
+**Step 1:** Verify that the Docker is running on **node-0** with `docker version`
 
 ```
 $ docker version
@@ -92,7 +92,7 @@ Server:
  OS/Arch:      linux/amd64
 ```
 
-2. Now inspect the Dockerfile with `cat Dockerfile` to see how its parameters will build the container image.
+**Step 2:** Now inspect the Dockerfile with `cat Dockerfile` to see how its parameters will build the container image.
 
 ```
 $ cat Dockerfile
@@ -124,7 +124,7 @@ CMD [ "python", "./app.py" ]
 
 **CMD**: The main purpose of a CMD is to provide defaults for an executing container.
 
-3. Now we're going to build a `foodtruck-web` image from the Dockerfile. We will build an image from the current directory and then tag the image with our own Dockerhub ID and the image name. Run the command `docker build -t <Your Dockerhub ID>/foodtruck-web . ` with the Dockerhub ID that you registered with. Some of the output below is removed to show the individual steps of the build process.
+**Step 3:** Now we're going to build a `foodtruck-web` image from the Dockerfile. We will build an image from the current directory and then tag the image with our own Dockerhub ID and the image name. Run the command `docker build -t <Your Dockerhub ID>/foodtruck-web . ` with the Dockerhub ID that you registered with. Some of the output below is removed to show the individual steps of the build process.
 
 ```
 $ docker build -t markchurch/foodtruck-web .
@@ -170,7 +170,7 @@ This will take roughly 2 minutes so take some time to take read up on Dockerfile
 ##### NIGEL - some comments about what each block of commands is doing in the above Dockerfile
 
 
-3. Run `docker images` and confirm that the image is listed
+**Step 4:** Run `docker images` and confirm that the image is listed
 
 ```
 $ docker images
@@ -182,7 +182,7 @@ Next we will push the image to a registry so that it can be stored and even used
 
 ### Push the Image
 
-4. Login with your Docker ID to push and pull images from Docker Hub with `docker login`. 
+**Step 5:** Login with your Docker ID to push and pull images from Docker Hub with `docker login`. 
 
 ```
 $ docker login
@@ -192,7 +192,7 @@ Password:
 Login Succeeded
 ```
 
-5. Now push your image to the Docker Hub with `docker push <Your Dockerhub ID>/foodtruck-web`. Later in this lab we will be pulling the image down from the Dockerhub to different hosts.
+**Step 6:** Now push your image to the Docker Hub with `docker push <Your Dockerhub ID>/foodtruck-web`. Later in this lab we will be pulling the image down from the Dockerhub to different hosts.
 
 ```
 $ docker push markchurch/foodtruck-web
@@ -253,7 +253,7 @@ Status: Downloaded newer image for elasticsearch:latest
 
 ```
 
-3. Deploy our `foodtruck-web` image as a container on the `foodnet` network. We will expose port 5000 externally which is where our application can be accessed from the outside.
+3. Deploy our `foodtruck-web` image as a container on the `foodnet` network. We will expose port 80 externally which is where our application can be accessed from the outside.
 
 ```
 $ docker run -d --name web -p 80:5000 --net foodnet markchurch/foodtruck-web
