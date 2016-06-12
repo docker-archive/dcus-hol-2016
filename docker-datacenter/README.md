@@ -1,7 +1,5 @@
 # Docker Datacenter
 
-- TODO: - Remove all references to AWS and EC2 - This might require different screenshots also
-
 These tasks for hands-on labs will take you through a typical workflow for Docker Datacenter.
 From install, through deploying various applications, and setting up common role-based access control
 you will be able to quickly familiarize yourself with the features of Docker Universal Control Plane.
@@ -66,22 +64,23 @@ To install UCP:
     an unsafe site. This happens because you're accessing UCP using HTTPS
     but the certificates used by UCP are not trusted by your browser.  
 
-    ![](../images/login.png)
 
 ### Attach Nodes
 
-- Now that we have our controller-node installed with UCP.  We have to join other nodes to our controller node:
+Now that we have our controller-node installed with UCP.  We have to join other nodes to our controller node:
 
 1. Log into your second VM (Node-1) and 
 2. Run the UCP join command:
 
-```bash
+2. Use the join command, to join the node to the cluster:
+
+    ```bash
     $ docker run --rm -it --name ucp \
       -v /var/run/docker.sock:/var/run/docker.sock \
-      -v $BACKUP_PATH/backup.tar:/backup.tar \
-      docker/ucp join -i --replica
+      docker/ucp join -i
     ```
-3. Repeat steps 1 and 2 on your third VM (Node-2).
+
+3. Repeat steps 1 and 2 on the other node (Node-2) you want to add to your UCP cluster.
 4. Check the cluster state.
 
     The Dashboard page of UCP should list all your controller nodes.
