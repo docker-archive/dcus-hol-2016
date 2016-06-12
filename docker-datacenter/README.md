@@ -85,14 +85,14 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 
     The Dashboard page of UCP should list all your controller nodes.
 
-    ![UCP nodes page](../images/replica-nodes.png)
+![](images/replica-nodes.png)
  
 ## Download a client certificate
 
 To download a client certificate bundle, **log into UCP**, and navigate to your
 **profile page**.
 
-![](../images/cli-based-access-1.png)
+![](images/cli-based-access-1.png)
 
 Click the **Create a Client Bundle** button, to download the certificate bundle.
 
