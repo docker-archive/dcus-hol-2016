@@ -220,6 +220,8 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host - *
 6. Switch back to your web browser and confirm that the new Linux host is detected as shown below.
 
 	![byon_success](./images/byon_success.png)
+	
+	> **Note**: In some instances the agent will successfully install, but the web interface does not automatically update. If after a minute or two your web interface continues to indicate that it's waiting for the agent to connect, refresh the Docker cloud page. 
 
 7. Click **Close Window**
 
@@ -229,7 +231,7 @@ You have successfully added **First v1.11 node** as a Docker Cloud *node*. This 
 
 In this step you will use the Docker Cloud web UI to deploy a simple application comprising a single *service*.
 
-A *service* is a group of containers based off the same tagged image (`image:tag`). Services make it simple to scale your application. With Docker Cloud, you simply drag a slider to scale the number of containers in a service up and down.
+A *service* is a group of containers based off the same tagged image (`image:tag`). 
 
 When you create a service in the Docker Cloud web interface, a wizard walks you through configuring the service in three steps.
 
@@ -269,7 +271,6 @@ Let's get started by selecting a service to deploy.
 
 6. Click **Create and deploy**.
 
-> **FAO MIKE: The service won't deploy using the new web UI. But it deploys fine using the old one.  I've tried several times now and the only way I can get it to launch in the new UI is if I DONT publish a port. Weird and may be one to raise with the team if you have the same issue.**
 
   Docker Cloud will now create and deploy service. This may take a minute or two while the image is downloaded and the container deployed.
 
@@ -370,7 +371,7 @@ Now we'll clone the repository into our local Docker environment. The following 
 
 5. Change directory into the repo directory
 
-		`$ cd voting-demo`
+		$ cd voting-demo
 
 6. List the directory contents
 
