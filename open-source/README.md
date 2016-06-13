@@ -6,9 +6,9 @@
 
 > **Notes**
 >
-> * In this lab you will be using **node-0**, **node-1**, and **node-2**
+> * In this lab you will be using **v112node0**, **v112node1**, and **v112node2**
 > * Ensure that no containers are running on these nodes ```$ docker rm -f $(docker ps -q)```
-> * This lab requires a Docker Hub account. This account is free and will allow you to push and pull images from the Docker public registry. This link describes how to create a Docker Hub account: <a href="https://docs.docker.com/mac/step_five/">https://docs.docker.com/mac/step_five/</a>
+> * This lab requires a Docker ID. This account is free and will allow you to push and pull images from the Docker public registry. This link describes how to create a Docker ID: <a href="https://docs.docker.com/mac/step_five/">https://docs.docker.com/mac/step_five/</a>
 
 > **Tasks**:
 >
@@ -20,12 +20,14 @@
 
 ### Set Up Environment
 
-**Step 1:** Connect to **node-0**. (How will the users connect to nodes??)
+**Step 1:** Connect to **v112node0**. Use the username, password, and  DNS Name provided in your email for **v112node0** 
 
-**Step 2:** Use the following command to clone the FoodTrucks repo from GitHub to node-0. You can see this repo for yourself by going to https://github.com/mark-church/FoodTrucks.
+```$ ssh labuser@v112node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net```
+
+**Step 2:** Use the following command to clone the FoodTrucks repo from GitHub to v112node0. You can see this repo for yourself by going to https://github.com/mark-church/FoodTrucks.
 
 ```
-node-0:$ git clone https://github.com/mark-church/FoodTrucks.git
+v112node0:$ git clone https://github.com/mark-church/FoodTrucks.git
 Cloning into 'FoodTrucks'...
 remote: Counting objects: 357, done.
 remote: Compressing objects: 100% (27/27), done.
@@ -71,7 +73,7 @@ Next we will use a Dockerfile to create an image and then run a container from t
 
 ### Build the Image
 
-**Step 1:** Verify that the Docker is running on **node-0** with `docker version`
+**Step 1:** Verify that the Docker is running on **v112node0** with `docker version`
 
 ```
 $ docker version
@@ -124,7 +126,10 @@ CMD [ "python", "./app.py" ]
 
 **CMD**: The main purpose of a CMD is to provide defaults for an executing container.
 
-**Step 3:** Now we're going to build a `foodtruck-web` image from the Dockerfile. We will build an image from the current directory and then tag the image with our own Dockerhub ID and the image name. Run the command `docker build -t <Your Dockerhub ID>/foodtruck-web . ` with the Dockerhub ID that you registered with. Some of the output below is removed to show the individual steps of the build process.
+**Step 3:** Now we're going to build a `foodtruck-web` image from the Dockerfile. We will build an image from the current directory and then tag the image with our own Dockerhub ID and the image name. Run the command `docker build -t <Your Dockerhub ID>/foodtruck-web . ` with the Dockerhub ID that you registered with. 
+
+For Example:
+> **Note**: Some of the output below is removed to show the individual steps of the build process.
 
 ```
 $ docker build -t markchurch/foodtruck-web .
@@ -163,14 +168,13 @@ Step 11 : CMD python ./app.py
  ---> Using cache
  ---> e015bed6be19
 Successfully built e015bed6be19
- ```
-This will take roughly 2 minutes so take some time to take read up on Dockerfiles here: https://docs.docker.com/engine/reference/builder/
-
-
-##### NIGEL - some comments about what each block of commands is doing in the above Dockerfile
-
+```
+ 
+This will take roughly 2 minutes so take some time to take read up on <a href="https://docs.docker.com/engine/reference/builder/">Dockerfiles</a>.
 
 **Step 4:** Run `docker images` and confirm that the image is listed
+
+> **Note**: Your listing should indicate your Docker ID not *markchurch*
 
 ```
 $ docker images
@@ -178,6 +182,7 @@ REPOSITORY                 TAG                 IMAGE ID            CREATED      
 markchurch/foodtruck-web   latest              e20087618c79        3 minutes ago       589.1 MB
 ```
 We have now built a new container image using the Dockerfile and the contents of the directory that we cloned from GitHub.
+
 Next we will push the image to a registry so that it can be stored and even used by other people.
 
 ### Push the Image
@@ -187,7 +192,7 @@ Next we will push the image to a registry so that it can be stored and even used
 ```
 $ docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-Username: markchurch
+Username: <your Docker ID>
 Password:
 Login Succeeded
 ```
@@ -218,8 +223,6 @@ Now we're going to create a containers from the `elasticsearch` and `foodtruck-w
 
 1. Let's create a private network for these containers to use. They will be able to communicate with eachother but containers in other networks will not be able to communicate with them.
 
-
-
 ```
 $ docker network create foodnet
 6c794a6c5129a360b65e384d7a92dc0758c81048ce4c1068def53653233c1ab5
@@ -227,7 +230,9 @@ $ docker network create foodnet
 
 By default the `docker network create` will create a `bridge` network and assign it an available private subnet
 
-2. Deploy elasticsearch on the `foodnet` network and name it `es`. '-d' is used to deploy the application in the background and not connected to this terminal. Because the elasticsearch image is not already stored locally the Docker engine will pull it down from the Docker Hub.
+2. User the `docker run` command Deploy elasticsearch on the `foodnet` network and name it `es`.  `-d` is used to deploy the application in the background and not connected to this terminal. 
+
+Finally, Because the elasticsearch image is not already stored locally the Docker engine will pull it down from the Docker Hub.
 
 ```
 $ docker run -d --name es --net foodnet elasticsearch
@@ -253,7 +258,9 @@ Status: Downloaded newer image for elasticsearch:latest
 
 ```
 
-3. Deploy our `foodtruck-web` image as a container on the `foodnet` network. We will expose port 80 externally which is where our application can be accessed from the outside.
+3. Use `docker run` to deploy our `foodtruck-web` image as a container on the `foodnet` network. We will expose port 80 externally which is where our application can be accessed from the outside.
+
+> **Note**: Be sure to use your Docker ID, not *markchurch* when entering the command belwo
 
 ```
 $ docker run -d --name web -p 80:5000 --net foodnet markchurch/foodtruck-web
@@ -277,7 +284,13 @@ From this output we can see the following:
 * We can see what image was used to create the container
 * We can also see if and how the container is exposed outside the host (in this case on port 5000 of the host interfaces)
 
-5. Lastly, let's use the browser to connect to our live container. Look up the public facing IP address of **node-0**. Type ```http://<ip address>``` into the browser and you will see your container running.
+5. Lastly, let's use the browser to connect to our live container.
+
+Type ```http://<v112node0 DNS name>``` into the browser and you will see your container running.
+
+
+For example: 
+```http://v112node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net``` 
 
 You should see the following ...
 <p align="center">
@@ -286,18 +299,18 @@ You should see the following ...
 
 Congratulations, you have now completed Task 1!
 
-5. Before proceeding to the next task clear all of the containers on **node-0** by running the command ```$ docker rm -f $(docker ps -q)```. You should then see that there are no or stopped containers on the host.
-
-```
-$ docker rm -f $(docker ps -q)
-```
+5. Before proceeding to the next task clear all of the containers on **v112node0** by running the command ```$ docker rm -f $(docker ps -q)```. You should then see that there are no or stopped containers on the host.
+	
+	```
+	$ docker rm -f $(docker ps -q)
+	```
 
 
 
 6. Check that there aren't any container running on **host-0**
-```
-$ docker ps -a
-```
+	```
+	$ docker ps -a
+	```
 
 ## <a name="start-cluster"></a>Task 2: Start a Docker Cluster
 
@@ -309,43 +322,48 @@ Docker has powerful tools to manage multi-host and clustered apps. It has built-
 
 A Docker Swarm cluster has Swarm managers and Swarm worker nodes. The managers manage and retain the state of the cluster while the worker nodes run application loads. As of Docker 1.12 no external backend or 3rd party components are required for a fully functioning Swarm cluster.
 
-In this part of the demo we will use all three of the nodes in our lab. **node-0** will be our Swarm manager while **node-1** and **node-2** will server as our Swarm worker nodes. Swarm supports a highly available, redundant managers but for the purposes of this lab we will only have a single manager.
+In this part of the demo we will use all three of the nodes in our lab. **v112node0** will be our Swarm manager while **v112node1** and **v112node2** will server as our Swarm worker nodes. Swarm supports a highly available, redundant managers but for the purposes of this lab we will only have a single manager.
 
 ### Create a Swarm Master
 
-Get the internal IP address of **node-0**
+1. If you are not already, SSH into **v112node0**
 
-```
-$ ifconfig eth0
-eth0      Link encap:Ethernet  HWaddr 06:67:be:89:1f:b5
-          inet addr:172.31.22.238  Bcast:172.31.31.255  Mask:255.255.240.0
-...
-```
+	For example:
 
-Create a Swarm manager on **node-0** with its internal IP address
+		$ ssh labuser@v112node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net
 
-```
-$ docker swarm init --listen-addr <IP>:4500
- ```
+1. Get the internal IP address of **v112node0**
 
-### Join a Worker Node to a Swarm Cluster
+	```
+	$ ifconfig eth0
+	eth0      Link encap:Ethernet  HWaddr 06:67:be:89:1f:b5
+	          inet addr:172.31.22.238  Bcast:172.31.31.255  Mask:255.255.240.0
+	```
 
-Open up a second tab and log in to **node-1** keeping the first tab open
+1. Create a Swarm manager on **v112node0** with its internal IP address
 
-```
-$ ssh -i key.pem ubuntu@<node-1 external IP>
-fdadfas
-```
+		$ docker swarm init --listen-addr <IP>:4500
+	
 
-Join the swarm cluster as a worker node with the internal IP address of the Swarm master, **node-0**
+### Join a Worker Nodes to a Swarm Cluster
 
-```
-$ docker swarm join <node-0 IP>:4500
-```
+1. Open up a second tab in your terminal and log in to **v112node1** keeping the first tab open
 
-Repeat step 3 for **node-2**
+	For example:
 
-Go back to the **node-0** tab and note that **node-1** has joined the cluster as a worker node
+			$ ssh labuser@v112node1-0e239220f4c7aca2-4.cloudapp.net
+
+	
+1. Join the swarm cluster as a worker node with the internal IP address of the Swarm master, **v112node0** 
+
+	> **Note**: This is the IP address you got in the previous section, not the IP addresss of the current host. 
+
+		$ docker swarm join <v112node0 IP>:4500
+
+
+Repeat step Steps 1 and 2 for **v112node2**
+
+Go back to the **v112node0** tab and note that **v112node1** and **v112node2** have joined the cluster as worker nodes
 
 ```
 docker node ls
@@ -355,8 +373,6 @@ ID              NAME                                          STATUS  AVAILABILI
 ```
 
 ```docker node ls``` shows us all of the nodes that are in a given Swarm cluster. Here we can see the hostname, the unique ID of the host, and the role of the host in the cluster. The ```*``` denotes the host that we are currently running the Docker command from.
-
-Repeat the section above on **node-2**
 
 Congratulations, you have now set up a Docker Swarm cluster and completed Task 2!
 
@@ -386,6 +402,7 @@ $ docker service create --scale 1 --name es --network ovnet elasticsearch
 
 4. Deploy our `foodtruck-web` image from Task 1 using your Dockerhub ID. Run 'docker service create --scale 1 --name web --network ovnet -p 5000:5000 <Your Dockerhub ID>/foodtruck-web`
 
+> **Note**: Replace *markchurch* with your Docker ID
 ```
 $ docker service create --scale 1 --name web --network ovnet -p 80:5000 markchurch/foodtruck-web
 6owy7eqtymnym3cceuqkxbocq
@@ -407,7 +424,7 @@ $ docker service inspect web
 
 ```
 
-7. Now that we have verified that our containers have been succesfully deployed, use the browser to see our application in action. Type `<node-0 IP>:5000` into the address bar of the browser.
+7. Now that we have verified that our containers have been succesfully deployed, use the browser to see our application in action. Type `<v112node0 IP>:5000` into the address bar of the browser.
 
 
 
@@ -435,7 +452,7 @@ d74qivq1q22hycetivps6rfxq  web.1  web      markchurch/foodtruck-web  RUNNING 9 m
 
 We can see that all five `web` containers are up and running.
 
-**Step 3:** Now go to your web browser and type in any one of the node's external IP address such as `http://<Any Node External IP>`.
+**Step 3:** Now go to your web browser and type in any one of the node's external IP address such as `http://<Any Node DNS Name>`.
 
 You should be able to see our application live. Hit refresh a couple times. Do you notice that the container ID and internal IP are changing? That is because the Swarm is automtically load balancing on port 5000 for every external IP address in our cluster. 
 
