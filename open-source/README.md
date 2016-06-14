@@ -321,12 +321,12 @@ Perform all of these steps from **v112node0**.
 
    The `-d` flag tells Docker to run the `es` container in the background and not attach it to your local terminal.
 
-3. Deploy the web front-end component of the app on the `foodnet` network and expose port 80 so that the application can be accessed on port 80.
+3. Deploy the web front-end component of the app on the `foodnet` network and expose port 8080 so that the application can be accessed on port 8080.
 
    Remember to substitute your Docker ID.
 
    ```
-   ubuntu@v112node0:~/FoodTrucks/$ docker run -d --name web -p 80:5000 --net foodnet markchurch/foodtruck-web
+   ubuntu@v112node0:~/FoodTrucks/$ docker run -d --name web -p 8080:5000 --net foodnet markchurch/foodtruck-web
    c2ac7b80eaa6fc2759e80d40a3382277bd437b0294816f41f22130f11de16b3d
    ```
 
@@ -335,11 +335,11 @@ Perform all of these steps from **v112node0**.
    ```
    $ docker ps
    CONTAINER ID    IMAGE                       COMMAND                  CREATED              STATUS              PORTS                    NAMES
-   c2ac7b80eaa6    markchurch/foodtruck-web    "python ./app.py"        9 seconds ago        Up 8 seconds        0.0.0.0:80->5000/tcp     web
+   c2ac7b80eaa6    markchurch/foodtruck-web    "python ./app.py"        9 seconds ago        Up 8 seconds        0.0.0.0:8080->5000/tcp     web
    49c901f8cecb    elasticsearch               "/docker-entrypoint.s"   About a minute ago   Up About a minute   9200/tcp, 9300/tcp       es
    ```
 
-   The output above shows that both containers are up and running. You can see that one is based on the `elasticsearch` image and the other on the `<you-docker-id>/foodtruck-web` image. You can also see that port 80 on the Docker host is mapped to port 5000 on the web front-end container.
+   The output above shows that both containers are up and running. You can see that one is based on the `elasticsearch` image and the other on the `<you-docker-id>/foodtruck-web` image. You can also see that port 8080 on the Docker host is mapped to port 5000 on the web front-end container.
 
 5. Point your web browser to the app.
 
@@ -561,12 +561,12 @@ You will perform this procedure from **v112node0**.
    1wpdd1qnv86k  es    1      elasticsearch
    ```
 
-3. Deploy the web front-end using the `foodtruck-web` image you created earlier and expose it on port 80.
+3. Deploy the web front-end using the `foodtruck-web` image you created earlier and expose it on port 8080.
 
    Remember to substitute `markchurch` with your own Docker ID.
 
    ```
-   ubuntu@v112node0:~/FoodTrucks/$ docker service create --scale 1 --name web --network ovnet -p 80:5000 markchurch/foodtruck-web
+   ubuntu@v112node0:~/FoodTrucks/$ docker service create --scale 1 --name web --network ovnet -p 8080:5000 markchurch/foodtruck-web
    br6bnsntlh0b0j49074p7fwr2
    ```
 
@@ -596,7 +596,7 @@ You will perform this procedure from **v112node0**.
 
 Well done. You have deployed the FoodTruck app to your new Swarm using Docker services.
 
-#### Step 3.3 - Scale the app
+#### <a name="scale-application"></a>Step 3.3: Scale the application
 
 One of the great things about *services* is that you can scale them up and down to meet demand. In this step you'll scale the web front-end service up and then back down.
 
@@ -643,7 +643,7 @@ Before moving on to the next step, scale the `web` service back up to 5. This wi
 ubuntu@v112node0:~/FoodTrucks/$ docker service update --scale 5 web
 ```
 
-#### Step 3.4 - Recover from a node failure
+#### <a name="recover-application"></a>Step 3.4: Recover from a host failure
 
 Now let's simulate a worker node failure and see how the swarm deals with it.
 
