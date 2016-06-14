@@ -221,7 +221,7 @@ In order to access the NGINX container from your web browser you will need the D
 
 ![](images/node_information.png)
 
-In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.23- However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the public IP, or public DNS name, of the node from the lab details you received (each lab machine you have will have a public and priave IP and DNS).
+In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.23 - However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the hostname of the node from the lab details you received.
 
 - Go to your web browser and enter the hostname of the node that the **nginx_server** container is running on.
 
