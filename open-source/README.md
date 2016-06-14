@@ -73,7 +73,30 @@ Next we will use a Dockerfile to create an image and then run a container from t
 
 ### Build the Image
 
-**Step 1:** Verify that the Docker is running on **v112node0** with `docker version`
+**Step 0:** 
+
+Add the local user to the Docker group on **v112node0** by typing the following:
+	 
+		$ sudo usermod -aG docker <username>
+	
+Enter the password for **v112node0** if prompted	
+	
+The output should be similar to this:
+		
+	$ sudo usermod -aG docker labuser
+	[sudo] password for labuser:
+	sent invalidate(passwd) request, exiting
+	sent invalidate(group) request, exiting
+	
+Exit the current session by entering the `exit` command
+
+SSH back into **v112node0**
+	
+	$ ssh labuser@v112node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net
+
+**Step 1:** 	
+
+Verify that the Docker is running on **v112node0** with `docker version`
 
 ```
 $ docker version
@@ -97,6 +120,8 @@ Server:
 **Step 2:** Now inspect the Dockerfile with `cat Dockerfile` to see how its parameters will build the container image.
 
 ```
+$ cd FoodTrucks
+
 $ cat Dockerfile
 FROM ubuntu:14.04
 
@@ -339,6 +364,8 @@ In this part of the demo we will use all three of the nodes in our lab. **v112no
 	eth0      Link encap:Ethernet  HWaddr 06:67:be:89:1f:b5
 	          inet addr:172.31.22.238  Bcast:172.31.31.255  Mask:255.255.240.0
 	```
+
+	In this case the IP Address is `172.31.22.238` as indicated by the `inet addr` field. 
 
 1. Create a Swarm manager on **v112node0** with its internal IP address
 
