@@ -19,6 +19,13 @@ In this lab you will deploy a web application using Docker Cloud. You will compl
   - [Test autobuilds](#test_autobuild)
   - [Configure and test autodeploy](#autodeploy)
 
+##Document conventions
+When you encounter a prhase in between `<` and `>`  you are meant to subititute in a different value. 
+
+For instance if you see `ssh <username>@<hostname>` you would actually type something like `ssh labuser@v111node0-adaflds023asdf-23423kjl.appnet.com`
+
+You will be asked to SSH into various nodes. These nodes are referred to as **v111node0**, **v111node1** etc. These tags correspond to the very beginning of the hostnames you will find in your welcome email. 
+
 ## What is Docker Cloud?
 
 Docker Cloud is a SaaS-based service for deploying and managing Dockerized applications. Docker Cloud makes it easy for you to manage and deploy the full spectrum of applications, from single container apps to distributed microservices stacks, to any cloud or on-premises infrastructure.
@@ -67,26 +74,26 @@ Install the Docker for Mac or Docker for Windows beta on your laptop and use thi
 
 ####Option 2: Use an Azure-based virtual machine
 If you do not wish to install any software locally, you will need to:
-	- SSH into **Second v1.11 node**, 
+	- SSH into **v111node1**, 
 	- Add the local user to the Docker group
 
-> **Note**:	If you choose this option, you will install the Docker Cloud CLI and execute commands on **Second v1.11 node**.  
+> **Note**:	If you choose this option, you will install the Docker Cloud CLI and execute commands on **v111node1**.  
 
 To configure `Second v.1.11 node` as your *management host*:
 
-1. Use the following command to SSH into **Second v1.11 node** of your lab, substituting the information you received via email. 
+1. Use the following command to SSH into **v111node1** of your lab, substituting the hostname and password you received via email. 
 	  
 	For example:
 	  		
 		$ ssh labuser@v111node1-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net
 	  		
-	 When prompted enter the password for **Second v1.11 node** provided in your welcome email. 
+	 When prompted enter the password for **v111node1** provided in your welcome email. 
   	
-1. Add the local user to the Docker group on **Second v1.11 node** by typing the following:
+1. Add the local user to the Docker group on **v111node1** by typing the following:
 	 
-		$ sudo usermod -aG docker <username>
+		$ sudo usermod -aG docker <username for v111node1>
 	
-	Enter the password for **Second v1.11 node** if prompted	
+	Enter the password from your welcome email for **v111node1** if prompted	
 	
 	The output should be similar to this:
 	
@@ -99,7 +106,7 @@ To configure `Second v.1.11 node` as your *management host*:
 	
 1. Exit the current session by entering the `exit` command
 
-1. SSH back into **Second v1.11 node** by repeating step 1
+1. SSH back into **v111node1** by repeating step 1
 
 1. Validate everything is working by checking your Docker version
 
@@ -143,7 +150,7 @@ The Docker Cloud CLI allows you to interact directly with Docker Cloud, and you 
 
 Installing the Docker Cloud CLI differs based on the operating system of your *management host*.
 
-1. Make sure you are logged on to your *management host* (local terminal/command window if using Docker for Mac or Docker for Windows, or an SSH session to **Second v1.11 node**).
+1. Make sure you are logged on to your *management host* (local terminal/command window if using Docker for Mac or Docker for Windows, or an SSH session to **v111node1**).
 
 2. Install the `docker-cloud` CLI.
 
@@ -158,7 +165,9 @@ Installing the Docker Cloud CLI differs based on the operating system of your *m
 4. Verify the install by typing `docker-cloud -v`. This will show the version of the Docker Cloud CLI running on your system.
 
 		$ docker-cloud -v
-		docker-cloud 1.0.4
+		docker-cloud 1.0.5
+
+> **Note**: The actual version number may differ than what is shown above. 
 
 You now have the Docker Cloud CLI installed on your *management host* and are ready to start using Docker Cloud.
 
@@ -170,9 +179,13 @@ You now have the Docker Cloud CLI installed on your *management host* and are re
 
 Docker Cloud allows you to easily spin up new instances on various cloud platforms and deploy the Docker Cloud agent to them so that they can be Docker Cloud nodes. It also let's you deploy the agent to **existing** Docker hosts so that they can also be Docker Cloud nodes.
 
-In this step you'll deploy the Docker Cloud agent to an existing Docker host - **First v1.11 node** in your lab.
+In this step you'll deploy the Docker Cloud agent to an existing Docker host (**v111node0**) in your lab.
 
-> **Note** that this is **First v1.11 node** which is different to **Second v1.11 node** that you *may* have used for your *management host* in the previous step.
+> **Note** that this is **v111node0** which is different than **v111node1** that you *may* have used for your *management host* in the previous step.
+
+1. Open a terminal window and SSH into **v111node0** (you can find the hostname and password in your welcome email)
+
+		ssh <username>@<v111node0 hostname>
 
 1. Navigate to [`https://cloud.docker.com`](https://cloud.docker.com) and login with your Docker ID.
 
@@ -190,11 +203,9 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host - *
 
 5. Copy the command to your clipboard.
 
-6. Open a terminal window and SSH into **First v1.11 node**
+6. Navigate back to your terminal session for **v111node0**
 
-		ssh <username>@<First v1.11 DNS name>
-
-7. Paste the command onto the command prompt on **First v1.11 node**
+7. Paste the command onto the command prompt on **v111node0**
 
 		$ curl -Ls https://get.cloud.docker.com/ | sudo -H sh -s c7a941OHAIac9419e837f940fab9aa4f1
   **Remember to cut and paste the command and token from the Docker Cloud UI and not the one form the example above.**
@@ -219,13 +230,14 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host - *
 
 6. Switch back to your web browser and confirm that the new Linux host is detected as shown below.
 
+	> **Note**: In some instances the agent will successfully install, but the web interface does not automatically update. If after a minute or two your web interface continues to indicate that it's waiting for the agent to connect, refresh the Docker cloud page. 
+
 	![byon_success](./images/byon_success.png)
 	
-	> **Note**: In some instances the agent will successfully install, but the web interface does not automatically update. If after a minute or two your web interface continues to indicate that it's waiting for the agent to connect, refresh the Docker cloud page. 
 
 7. Click **Close Window**
 
-You have successfully added **First v1.11 node** as a Docker Cloud *node*. This means Docker Cloud can manage **First v1.11 node** and deploy containers to it.
+You have successfully added **v111node0** as a Docker Cloud *node*. This means Docker Cloud can manage **v111node0** and deploy containers to it.
 
 # <a name="deploy_service"></a>Step 3: Deploy a Service
 
@@ -340,6 +352,8 @@ In order to complete this step you'll need to:
 
 To link Docker Cloud with GitHub, click your account name in the top right corner of the Docker Cloud web UI. Click **Account settings** and then the **Source providers** link. Click the **power socket** icon and follow the procedure to link your GitHub account.
 
+![](./images/power_socket.jpg)
+
 Now that you've got Docker Cloud linked to your GitHub account We'll start by forking a demo repo.
 
 1. In your web browser navigate to <a href="https://github.com/Cloud-Demo-Team/voting-demo.git"> https://github.com/Cloud-Demo-Team/voting-demo.git</a>.
@@ -348,7 +362,7 @@ Now that you've got Docker Cloud linked to your GitHub account We'll start by fo
 
 Now we'll clone the repository into our local Docker environment. The following commands will be executed in the terminal or command window for your *management host*.
 
-> Be sure to be logged on and running the next commands from your *management host* and not your *node*.
+> **Note**: Be sure to be logged on and running the next commands from your *management host*
 
 3 Change to your home directory
 
@@ -392,14 +406,14 @@ Now we'll clone the repository into our local Docker environment. The following 
 
 		$ docker-compose up -d
 
-	This will start the application on you *management host*. You will see Docker Compose build several images and ultimately finish with something like this:
+	This will start the application on your *management host*. You will see Docker Compose build several images and ultimately finish with something like this:
 
 		Creating votingdemo_redis_1
 		Creating votingdemo_voting_1
 		Creating votingdemo_results_1
 		Creating votingdemo_votinglb_1
 
-8. Check to see if the voting front end is working by navigating to `http://localhost` in your web browser.
+8. Check to see if the voting front end is working by navigating to either `http://localhost` if you are using Docker for Mac or Docker for windows OR the hostname of **v111node1** in your web browser.
 
   If this does not work, run a `docker ps` command and open your web browser to the IP address shown next to the `votingdemo_votinglb_1` container
 
@@ -407,9 +421,7 @@ Now we'll clone the repository into our local Docker environment. The following 
 
 	![](images/voting.png)
 
-9. Check to see if the results front end is working by opening a new tab in your browser to `http://localhost:8000`.
-
-  If you had to specify the IP address in the previous step, use the same IP address but append `:8000` to the end.
+9. Check to see if the results front end is working by opening a new tab in your browser to either`http://localhost:8000` or `http://<hostname for v111node1>:8000` depending on which option you chose for your *management host*
 
 	> **Note**: You will not see any results until you cast a vote using the voting front end. As you change your vote you can move back to results screen to see the results change.
 
