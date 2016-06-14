@@ -452,7 +452,7 @@ In this step you're going to build two GitHub repositories - one for the **votin
 
 5. Click **Edit repository** near the top right of the repository details page
 
-6. Select the **Build** tab and click the **Link to GitHub** button
+6. Select the **Builds** tab and click the **Link to GitHub** button
 
 7. Make sure the appropriate organization is populated, and enter **voting-demo** for repository
 
@@ -460,16 +460,11 @@ In this step you're going to build two GitHub repositories - one for the **votin
 
 9. Make sure **Autobuild** is selected. This is the switch that tells Docker Cloud to build a new image every time a change is *pushed* to GitHub
 
-10. Click **Save**.
+10. Click **Save and Build** at the bottom of the page.
 
-  There should be a pop up notification letting you know that GitHub was successfully pinged.
+  You will be taken back to your repository page, notice the status is flashing `building`, It may take a minute or so for the build to complete.
 
-11. Click the blue wrench to trigger an initial image build.
-
-	![](images/wrench.jpg)
-
-  It may take a minute or so for the build to complete.
-
+### Create a second repository
 Repeat steps 1-11 with the following modifications:
 
   Create Repo (Step 3)
@@ -483,7 +478,9 @@ Well done! You've created two new repos and configured them to autobuild wheneve
 
 # <a name="test_autobuild"></a>Step 4.2: Test autobuilds
 
-Switch back the command line of your *management host*. If you are not in the `voting-demo` directory that was created when you cloned the repo earlier, change into it now.
+Switch back the command line of your *management host*. 
+
+> **Note**: If you are not in the `voting-demo` directory that was created when you cloned the repo earlier, change into it now.
 
 1. Change to the voting directory
 

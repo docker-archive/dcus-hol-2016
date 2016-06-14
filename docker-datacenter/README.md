@@ -197,7 +197,7 @@ In this step you will launch a new container based on the NGINX image using the 
 
 ![](images/basic_settings.png)
 
-- Expand the **Network** section on the same page and configure the following port mappings:
+- Scroll down the page, and expand the **Network** section on the same page and configure the following port mappings:
 
 ![](images/port_mappings.png)
 
@@ -219,15 +219,15 @@ In order to access the NGINX container from your web browser you will need the D
 
 - First, let's take a look at the node our **nginx_server** container is running on. In the container details, you can find the node information.
 
-![](images/node_information.png)
+![](images/node_name.jpg)
 
-In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.23 - However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the hostname of the node from the lab details you received.
+In this particular example, the **nginx_server** container is running on the **v111node1** node with an IP of 10.0.0.55 - However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the hostname of the node from the lab details you received.
 
-- Go to your web browser and enter the hostname of the node that the **nginx_server** container is running on.
+- Go to your web browser and enter the hostname (found in your registration email) of the node that the **nginx_server** container is running on.
 
 You will see the NGINX welcome page.
 
-![](images/nginx_welcome.png)
+![](images/nginx.jpg)
 
 You have successfully launched a web container using the Docker UCP web UI
 
