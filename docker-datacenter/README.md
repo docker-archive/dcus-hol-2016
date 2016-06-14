@@ -47,7 +47,7 @@ To install UCP:
 
 		$ sudo usermod -aG docker <username>
 	
-	Enter the password for **v111node** if prompted	
+	Enter the password for **v111node0** if prompted	
 	
 	The output should be similar to this:
 	
@@ -78,9 +78,9 @@ To install UCP:
 
 	When prompted enter the following values:
 	
-	*Password*: enter a password of your choosing
+	- **Password**: enter a password of your choosing
 	
-	*Additional Aliases*: enter your the hostname for **v111node0** (for example: v111node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net)
+	- **Additional Aliases**: enter your the hostname for **v111node0** (for example: v111node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net)
 	
 	> **Note**: The install with finish with a message to log into your UCP controller at an IP address similar to 10.0.0.2. Ignore this. 
 	
@@ -126,7 +126,28 @@ To install UCP:
 
 Now that we have our controller-node installed with UCP.  We have to join other nodes to our controller node:
 
-1. Log into your second VM (v111node1) and 
+1. Log into your second VM (v111node1) 
+
+		$ ssh <username>@<v111node1 hostname>
+		
+1. You need to add the current user to the Docker group on your machine. This allows you to use Docker without using `sudo`. 
+
+		$ sudo usermod -aG docker <username>
+	
+	Enter the password for **v111node1** if prompted	
+	
+	The output should be similar to this:
+	
+	```	
+	$ sudo usermod -aG docker labuser
+	[sudo] password for labuser:
+	sent invalidate(passwd) request, exiting
+	sent invalidate(group) request, exiting
+	```	
+	
+1. Exit the current session by entering the `exit` command
+
+1. Log back into **v111node1** as you did in step 1.
 
 2. Use the join command, to join the node to the cluster:
 
@@ -136,7 +157,21 @@ Now that we have our controller-node installed with UCP.  We have to join other 
       docker/ucp join -i
     ```
 
-3. Repeat steps 1 and 2 on the other node (v111node2) you want to add to your UCP cluster.
+	Enter the following values:
+	- **URL for the UCP Server**: `https://<v111node0 hostname>` (Enter `y` at the prompt)
+	- **UCP Admin**: admin
+	- **UCP Password**: Password your chose initially
+	- **Additional Aliases**: v111node1 hostname
+	
+
+
+3. Repeat steps 1 through 5 on the other node (**v111node2**) you want to add to your UCP cluster.
+
+	Enter the following values when prompted:
+	- **URL for the UCP Server**: `https://<v111node0 hostname>` (Enter `y` at the prompt)
+	- **UCP Admin**: admin
+	- **UCP Password**: Password your chose initially
+	- **Additional Aliases**: v111node2 hostname
 
 4. Check the cluster state by returning to the UCP Dashboard in our browser. 
 
@@ -144,53 +179,6 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 
 ![](images/replica-nodes.png)
  
-## Download a client certificate
-
-To download a client certificate bundle, **log into UCP**, and navigate to your
-**profile page** by clicking on your username in the right hand corner. 
-
-![](images/cli-based-access-1.png)
-
-Click the **Create a Client Bundle** button, to download the certificate bundle.
-
-
-## Use the client certificate
-
-Once you've downloaded a client certificate bundle, you can use it to
-authenticate your requests.
-
-Navigate to the directory where you downloaded the bundle, and unzip it. Then
-run the `env.sh` script to start using the client certificates.
-
-```bash
-$ unzip ucp-bundle-dave.lauper.zip
-$ cd ucp-bundle-dave.lauper
-$ eval $(<env.sh)
-```
-
-The env.sh script updates the `DOCKER_HOST` and `DOCKER_CERT_PATH`
-environment variables to use the certificates you downloaded.
-
-From now on, when you use the Docker CLI client, it includes your client
-certificates as part of the request to the Docker Engine. You can now use the
-`docker info` command to see if the certificates are being sent to the Docker
-Engine.
-
-```bash
-$ docker info
-
-Containers: 11
-Nodes: 2
- ucp: 192.168.99.100:12376
-  └ Status: Healthy
- ucp-node: 192.168.99.101:12376
-  └ Status: Healthy
-Cluster Managers: 1
- 192.168.99.104: Healthy
-  └ Orca Controller: https://192.168.99.100:443
-  └ Swarm Manager: tcp://192.168.99.100:3376
-  └ KV: etcd://192.168.99.100:12379
-```
 
 ## <a name="deploy-a-container"></a>Deploy a container
 
@@ -233,7 +221,7 @@ In order to access the NGINX container from your web browser you will need the D
 
 In this particular example, the **nginx_server** container is running on the **node--1** node with an IP of 10.0.18.23- However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the public IP, or public DNS name, of the node from the lab details you received (each lab machine you have will have a public and priave IP and DNS).
 
-- Go to your web browser and enter the public IP or public DNS name of the node that the **nginx_server** container is running on.
+- Go to your web browser and enter the hostname of the node that the **nginx_server** container is running on.
 
 You will see the NGINX welcome page.
 
@@ -243,7 +231,7 @@ You have successfully launched a web container using the Docker UCP web UI
 
 ## <a name="deploy-an-application"></a>Deploy A Simple Application With UCP
 
-# Task 4 - Deploy a simple application on UCP
+# Task 4 - Deploy a simple application on UCP via the Command Line
 
 > **Difficulty**: Beginner
 
@@ -266,9 +254,8 @@ In this step you will use **Docker Compose** to deploy a simple multi-container 
   - Redis
   - A Java client that pings the container to get a response
 
-1. SSH into your UCP controller as the built-in **ubuntu** user.
+1. SSH into **v111node0** as you have done previously
 
-  Your UCP controller is probably `v111node0` in your lab.
 
 2. Use `git` to clone the application repository from https://github.com/johnny-tu/HelloRedis.git
 
@@ -360,255 +347,13 @@ In this step you will use **Docker Compose** to deploy a simple multi-container 
    ![](http://i.imgur.com/wmOfC22.png)
 
 
-## Step 2 - Using the Client Bundle
-
-Manually logging into (SSH) the UCP node to run `docker-compose` to deploy your applications is not always convenient, and in a lot of cases is not possible. This is where the **client bundle** helps out.
-
-The **client bundle** sets up your local machine with the certificates and other settings needed for you to issue `docker` and `docker-compose` commands to UCP.
-
-This step is broken up into the following two sub-steps:
-
-  - Configure your environment to use the Client Bundle
-  - Deploy the app with the Client Bundle
-
-### Step 2.1 - Configure your environment to use the Client Bundle
-
-1. Navigate to your user profile in UCP.
-
-   ![](images/ucp02_t4_profile_dropdown.PNG)
-
-2. Click the **Create a Client Bundle** button. This will download a **zip** file with the necessary keys, certificates, and scripts needed to connect your Docker client to UCP.
-
-   ![](images/ucp02_t4_client_bundle.PNG)
-
-  Your browser may warn you about the download. Be sure to choose the option to keep the downloaded file.
-
-3. Unzip the **Client Bundle** to a folder of your choice and open a command prompt to that location.
-
-4. List the files in the folder that you have just unzipped the client bundle contents to.
-
-   In this example we are using a Windows machine and we have unzipped the bundle to `C:\Docker\ucp_client_bundles\ucp-bundle-admin`.
-   Let's examine the directory using the Windows command prompt (CMD).
-
-   ```
-   C:\Docker\ucp_client_bundles\ucp-bundle-admin> dir
-    Volume in drive C is OS
-    Volume Serial Number is 10D0-EAA3
-
-    Directory of C:\Docker\ucp_client_bundles\ucp-bundle-admin
-
-   20/05/2016  04:54 PM    <DIR>          .
-   20/05/2016  04:54 PM    <DIR>          ..
-   20/05/2016  04:52 PM             3,684 ca.pem
-   20/05/2016  04:52 PM             5,392 cert.pem
-   20/05/2016  04:52 PM               450 cert.pub
-   20/05/2016  04:52 PM               623 env.cmd
-   20/05/2016  04:52 PM               662 env.ps1
-   20/05/2016  04:52 PM               609 env.sh
-   20/05/2016  05:23 PM    <DIR>          HelloRedis
-   20/05/2016  04:52 PM             1,679 key.pem
-               7 File(s)         13,099 bytes
-               3 Dir(s)  595,220,852,736 bytes free
-
-   ```
-
-   As shown above, the directory contains the TLS keys and certificates, as well as a set of files named `env.cmd`, `env.ps1`, and `env.sh`. The `env.*` files are scripts that configure your current shell/environment so that it can send `docker` and `docker-compose` commands to your UCP controller.
-
-   Windows users can use the `env.cmd` or `env.ps1` scripts. OS X and Linux users can use the `env.sh` script.
-
-   > **Note:** Windows users can opt to use a command line tool such as `git bash` and thus be able to follow the same instructions for Mac and Linux users.
-
-5. Inspect the contents of the `env.sh` file and take note of the environment variables it is setting.
-
-   ```
-   export DOCKER_TLS_VERIFY=1
-   export DOCKER_CERT_PATH="$(pwd)"
-   export DOCKER_HOST=tcp://ec2-54-187-21-127.us-west-2.compute.amazonaws.com:443
-   ```
-
-   The `DOCKER_TLS_VERIFY` variable turns on TLS verification between our Docker Client and the Docker Engine you want to communicate with (UCP controller).
-   The `DOCKER_CERT_PATH` variable specifies where our TLS certificates and private key is located. In this case it is in the same folder as our `env.sh` script.
-   The `DOCKER_HOST` variable specifies the address of the Docker Host you are connecting the client to. In this case your UCP controller node.
-
-6. Execute the script that is appropriate to your Operating System:
-
-
-
-  **Windows PowerShell**
-
-  ```
-  > . .\env.ps1
-  ```
-
-  Note the structure of the command above - the two dots. The first dot tells PowerShell to *dot-source* the script so that the environment variables it sets persist after the script finishes executing. The second dot combined with the backslash tell PowerShell to execute the script from the current directory. There is a space between the two dots but not between the second dot and the backslash :-D
-
-  If your system does not allow the execution of PowerShell scripts you may need to use the `Set-ExecutionPolicy Unrestricted` PowerShell cmdlet to enable script execution. You may have to run this from a PowerShell terminal opened with the `Run as Administrator` option. You may still be prompted to allow this script to execute. If you had to change your execution policy, you may wish to change it back to restricted after executing the script (`Set-ExecutionPolicy Restricted`).
-
-  **Windows command prompt**
-
-  ```
-  > env.cmd
-  ```
-
-  **Mac OS X and Linux**
-
-  ```
-  $ source ./env.sh
-  ```
-
-   To verify that that the script worked, check the value of the variables.
-
-  **Windows PowerShell**
-
-  ```
-  > GetChildItem Env:
-  ```
-
-  The Docker related variables will be listed towards the top.
-
-  **Windows command prompt**
-
-  ```
-  > set
-  ```
-
-  The Docker related variables will be listed towards the top.
-
-  **Mac OS X and Linux**
-
-   ```
-   $ env | grep DOCKER
-   ```
-
-7. Now run `docker info` to verify that your local environment has been configured correctly. You should see the UCP controller and nodes listed as shown below.
-
-   ```
-   C:\Docker\ucp_client_bundles\ucp-bundle-admin>docker info
-   Containers: 17
-    Running: 17
-    Paused: 0
-    Stopped: 0
-   Images: 41
-   Server Version: swarm/1.1.3
-   Role: primary
-   Strategy: spread
-   Filters: health, port, dependency, affinity, constraint
-   Nodes: 3
-    ucp-controller: 10.0.15.6:12376
-      Status: Healthy
-      Containers: 12
-      Reserved CPUs: 0 / 1
-      Reserved Memory: 0 B / 3.859 GiB
-      Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
-      Error: (none)
-      UpdatedAt: 2016-05-24T05:04:06Z
-    ucp-v111node0: 10.0.7.110:12376
-      Status: Healthy
-      Containers: 2
-      Reserved CPUs: 0 / 1
-      Reserved Memory: 0 B / 3.859 GiB
-      Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
-      Error: (none)
-      UpdatedAt: 2016-05-24T05:04:20Z
-    ucp-v111node1: 10.0.28.145:12376
-      Status: Healthy
-      Containers: 3
-      Reserved CPUs: 0 / 1
-      Reserved Memory: 0 B / 3.859 GiB
-      Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
-      Error: (none)
-      UpdatedAt: 2016-05-24T05:04:23Z
-   Cluster Managers: 1
-    10.0.15.6: Healthy
-      Orca Controller: https://10.0.15.6:443
-      Swarm Manager: tcp://10.0.15.6:2376
-      KV: etcd://10.0.15.6:12379
-   Plugins:
-    Volume:
-    Network:
-   Kernel Version: 4.2.0-23-generic
-   Operating System: linux
-   Architecture: amd64
-   CPUs: 3
-   Total Memory: 11.58 GiB
-   Name: ucp-controller-ucp-controller
-   ID: 44WM:6P6I:N6WZ:U4OB:RFMN:WKY7:OX3N:3OSU:GTE3:3SDC:FROD:OQ6Z
-   Labels:
-    com.docker.ucp.license_key=4dd1umru9iT8lplNkXi5I1cdZrdxBIl60qyNzB9i6x_b
-    com.docker.ucp.license_max_engines=10
-    com.docker.ucp.license_expires=2016-05-31 21:53:37 +0000 UTC
-   ```
-
-### Step 2.2 - Deploy the app with the Client Bundle
-
-8. Clone the **HelloRedis** repository into another folder of your choice
-
-  ```
-  > git clone https://github.com/johnny-tu/HelloRedis.git
-  ```
-
-9. Remove the existing HelloRedis application from UCP.
-
-   ![](http://i.imgur.com/7oQCz2i.png)
-
-10. Launch the application by using the Client Bundle.
-
-   To do this, change directory into the folder that you cloned the `HelloRedis` repo into and run `docker-compose up -d`
-
-   You may notice the following error
-
-   ```
-   > docker-compose up -d
-   helloredis_redis_1 is up-to-date
-   Creating helloredis_javaclient_1
-   unable to find a node that satisfies image==helloredis_javaclient
-   ....
-   ```
-
-   If you look inside the `docker-compose.yml` file, you will see that the `javaclient` service is defined with a `build` instruction. This is not advised on productions runs, especially when Docker Compose is interacting with Swarm or UCP. This is because Compose does not have the ability to build an image across every node in the cluster - Ii will build on the node the container is scheduled on. This can sometimes lead to errors if Swarm tries to schedule a container on a node without the image.
-
-   Best practice for production deployments is to only use pre-built images that are available through Registries such as Docker Hub and Docker Trusted Registry.
-
-11. Inspect the contents of the `docker-compose.prod.yml` with your favorite text editor. Be sure to open the file with **prod** in the name.
-
-  ```
-  javaclient:
-  image: trainingteam/hello-redis:1.0
-  links:
-    - redis:redisdb
-  redis:
-  image: redis
-  ```
-
-  Notice that there are no `build` instructions in this file. All images referenced are pre-built images that are on Docker Hub - `trainingteam/hello-redis:1.0` and `redis`.
-
-12. Start the production version of the application with the following command (be sure to use the compose file with **prod** in its name).
-
-  ```
-  > docker-compose -f docker-compose.prod.yml up -d
-  ```
-
-   The `-f` option lets you tell Docker Compose to use a specific file instead of the default `docker-compose.yml`.
-
-13. Switch to the Docker UCP web UI and click the **Applications** link in the left hand bar.
-
-   Notice that both containers in the app are running on the same UCP node.
-
-   ![](http://i.imgur.com/BBibEhc.png)
-
-   This is because the HelloRedis application uses a Compose v1 file as well as container *links*. When you have container links defined,
-   Compose will run all linked containers on the same node. However, links are no longer the recommended method for connecting containers. The preferred method is *container networking*, which is supported in v2 Compose files.
-
-You now know how to deploy Docker Compose applications from your local machine using **Client Bundles**.
-
-
 ## <a name="deploy-ucp-interface"></a>Deploy Applications using the UCP Web Interface
 
 ### Deploy FoodTruck Application
 
 In this step you'll clone the `FoodTrucks` GitHub repo locally, deploy it to UCP using the UI, and work out how to connect to it with your web browser.
 
-1. Clone the `FoodTrucks` repo to your local machine.
+1. In a terminal window, Clone the `FoodTrucks` repo to your **local** machine.
 
    ```
    $ git clone https://github.com/prakhar1989/FoodTrucks
@@ -664,16 +409,15 @@ docker-compose.yml  flask-app/  setup-aws-ecs.sh*  shot.png
 
    The IP address that is shown in the screenshot above is the nodes private IP. You cannot reach this IP address from the internet.
 
-4. Now that you know the node and port the application's web front-end is operating on, make a note of the nodes public IP or DNS name from your lab details.
+4. Now that you know the node and port the application's web front-end is operating on, make a note of the node's hostname from your lab details.
 
 5. Point your browser to the application.
 
   To do this, combine the nodes public IP or public DNS with port 5000 as follows:
+  
+  - `<hostname>:5000`
 
-  - `<public-IP>:5000`
-  - `<public-DNS>:5000`
-
-  For example: `http://ec2-54-171-186-72.eu-west-1.compute.amazonaws.com:5000`.
+  For example: `http://v111node1-3634b10bff8349cb9dc6b4fe3649b571-22.cloudapp.net:5000`.
 
   If you completed all the steps correctly, you will see a very cool application that allows you to search for food trucks in San Francisco.
 
@@ -682,7 +426,7 @@ docker-compose.yml  flask-app/  setup-aws-ecs.sh*  shot.png
   Congratulations. You've successfully deployed application to Docker UCP using the UCP Web Interface.
 
 
-## <a name="create-users-teams"></a>Create Users and Teams
+## <a name="create-users-teams"></a>Create Users and Teams (OPtiona
 
 In this task you will complete the following four steps.
 
