@@ -21,7 +21,7 @@ you will be able to quickly familiarize yourself with the features of Docker Uni
 ## <a name="prerequisites"></a>Prerequisites
 
 - Three VMs with Docker Engine 1.11 Installed
-- Each VM will be referred to as Node-0, Node-1, and Node-2
+- Each VM will be referred to as v111node0, v111node1, and v111node2
 
 ## <a name="install-ucp-controller"></a>Install UCP
 
@@ -39,7 +39,28 @@ available, check the [reference documentation](../reference/install.md).
 
 To install UCP:
 
-1. Log in to your first VM (Node-0) where you will install UCP.  Node-0 will act as your controller node.
+1. Log in to your first VM (v111node0) where you will install UCP.  v111node0 will act as your controller node. You will find the hostname, username, and password in your email 
+
+		$ ssh <username>@<v111node0 hostname>
+		
+1. You need to add the current user to the Docker group on your machine. This allows you to use Docker without using `sudo`. 
+
+		$ sudo usermod -aG docker <username>
+	
+	Enter the password for **v111node** if prompted	
+	
+	The output should be similar to this:
+	
+	```	
+	$ sudo usermod -aG docker labuser
+	[sudo] password for labuser:
+	sent invalidate(passwd) request, exiting
+	sent invalidate(group) request, exiting
+	```	
+	
+1. Exit the current session by entering the `exit` command
+
+1. Log back into **v111node0** as you did in step 1. 
 
 2. Use the `docker/ucp install` command to install UCP.
 
@@ -52,25 +73,60 @@ To install UCP:
         --name ucp \
         -v /var/run/docker.sock:/var/run/docker.sock \
         docker/ucp \
-        install
+        install -i
     ```
 
+	When prompted enter the following values:
+	
+	*Password*: enter a password of your choosing
+	
+	*Additional Aliases*: enter your the hostname for **v111node0** (for example: v111node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net)
+	
+	> **Note**: The install with finish with a message to log into your UCP controller at an IP address similar to 10.0.0.2. Ignore this. 
+	
+1. Log into your UCP cluster by pointing your browser to 'https://<v111node0 hostname>'
 
-3. Check that the UCP web application is running.
+	> **Note**: use `https://` not `http://`
+	
+	Username: admin
+	
+	Password: the password you chose in the previous step
 
-    In your browser, navigate to the address where you've installed UCP.
+   > **Note**: If you're not using an external CA, your browser warns that UCP is an unsafe site. This happens because you're accessing UCP using HTTPS but the certificates used by UCP are not trusted by your browser.  
 
-    If you're not using an external CA, your browser warns that UCP is
-    an unsafe site. This happens because you're accessing UCP using HTTPS
-    but the certificates used by UCP are not trusted by your browser.  
+1. When prompted for a UCP licnse, click `Skip for now`
+
+ 	![](./images/skip.jpg)
+ 	
+### Licensing your installation
+ 	
+1. The UCP dashboard will load. Click the link in the orange banner to create and download a trail license. Follow the prompts to complete the process
+
+	> **Note**: After entering your information to obtain the license, you will be promted to install the CS engine and Docker Datacenter, just click `Next` on each of those screens. 
+	
+	Finish by clicking `Download license` and make a note of where the license file is downloaded. 
+	
+1. In your browser return to the UCP Dashboard. 
+
+1. In the left hand menu at the bottom, select settings. 
+
+	> **Note**: If your menu is collapsed you will only see gear icon. To expand your menu click the "hamburger" in top left corner. 
+	
+1. Click `License` adn then `choose file`
+
+	![](./images/license.jpg)
+	
+1. Navigate to where your license was downloaded, and double click the `docker_subscription.lic` file.
+
+1. Click `Upload License`. You should get a success notification in the lower right hand corner.  	
+
 
 
 ### Attach Nodes
 
 Now that we have our controller-node installed with UCP.  We have to join other nodes to our controller node:
 
-1. Log into your second VM (Node-1) and 
-2. Run the UCP join command:
+1. Log into your second VM (v111node1) and 
 
 2. Use the join command, to join the node to the cluster:
 
@@ -80,8 +136,9 @@ Now that we have our controller-node installed with UCP.  We have to join other 
       docker/ucp join -i
     ```
 
-3. Repeat steps 1 and 2 on the other node (Node-2) you want to add to your UCP cluster.
-4. Check the cluster state.
+3. Repeat steps 1 and 2 on the other node (v111node2) you want to add to your UCP cluster.
+
+4. Check the cluster state by returning to the UCP Dashboard in our browser. 
 
     The Dashboard page of UCP should list all your controller nodes.
 
@@ -90,7 +147,7 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 ## Download a client certificate
 
 To download a client certificate bundle, **log into UCP**, and navigate to your
-**profile page**.
+**profile page** by clicking on your username in the right hand corner. 
 
 ![](images/cli-based-access-1.png)
 
@@ -211,7 +268,7 @@ In this step you will use **Docker Compose** to deploy a simple multi-container 
 
 1. SSH into your UCP controller as the built-in **ubuntu** user.
 
-  Your UCP controller is probably `node-0` in your lab.
+  Your UCP controller is probably `v111node0` in your lab.
 
 2. Use `git` to clone the application repository from https://github.com/johnny-tu/HelloRedis.git
 
@@ -445,7 +502,7 @@ This step is broken up into the following two sub-steps:
       Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
       Error: (none)
       UpdatedAt: 2016-05-24T05:04:06Z
-    ucp-node-0: 10.0.7.110:12376
+    ucp-v111node0: 10.0.7.110:12376
       Status: Healthy
       Containers: 2
       Reserved CPUs: 0 / 1
@@ -453,7 +510,7 @@ This step is broken up into the following two sub-steps:
       Labels: executiondriver=, kernelversion=4.2.0-23-generic, operatingsystem=Ubuntu 14.04.4 LTS, storagedriver=aufs
       Error: (none)
       UpdatedAt: 2016-05-24T05:04:20Z
-    ucp-node-1: 10.0.28.145:12376
+    ucp-v111node1: 10.0.28.145:12376
       Status: Healthy
       Containers: 3
       Reserved CPUs: 0 / 1
