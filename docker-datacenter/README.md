@@ -173,11 +173,13 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 	- **UCP Password**: Password your chose initially
 	- **Additional Aliases**: v111node2 hostname
 
-4. Check the cluster state by returning to the UCP Dashboard in our browser. 
+4. Check the cluster state by returning to the UCP Dashboard in our browser and choosing the `nodes` option from the left hand menu.
 
-    The Dashboard page of UCP should list all your controller nodes.
+    The node's page of UCP should list all your nodes.
+    
+    
 
-![](images/replica-nodes.png)
+![](images/nodes.jpg)
  
 
 ## <a name="deploy-a-container"></a>Deploy a container
