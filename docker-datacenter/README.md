@@ -62,12 +62,11 @@ To install UCP:
 
 1. Log back into **v111node0** as you did in step 1. 
 
-2. Use the `docker/ucp install` command to install UCP.
+2. UCP is installed via a Docker container (`docker/ucp`).
 
     In this example we'll be running the install command interactively, so that
     the command prompts for the necessary configuration values.
-    You can also use flags to pass values to the install command.
-
+    
     ```bash
     $ docker run --rm -it \
         --name ucp \
@@ -80,11 +79,11 @@ To install UCP:
 	
 	- **Password**: enter a password of your choosing
 	
-	- **Additional Aliases**: enter your the hostname for **v111node0** (for example: v111node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net)
+	- **Additional Aliases**: enter your the hostname for **v111node0** which can be found in your email (for example: v111node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net)
 	
-	> **Note**: The install with finish with a message to log into your UCP controller at an IP address similar to 10.0.0.2. Ignore this. 
+	> **Note**: The install with finish with a message to log into your UCP controller at an IP address similar to 10.0.0.2. Ignore this, the address supplied is a private IP, and cannot be used to access UCP.
 	
-1. Log into your UCP cluster by pointing your browser to 'https://<v111node0 hostname>'
+1. Log into your UCP cluster by pointing your browser to `https://<v111node0 hostname>` (you can find your hostname in the email you received)
 
 	> **Note**: use `https://` not `http://`
 	
@@ -126,7 +125,7 @@ To install UCP:
 
 Now that we have our controller-node installed with UCP.  We have to join other nodes to our controller node:
 
-1. Log into your second VM (v111node1) 
+1. Log into your second VM (**v111node1**) (You can find your username, password, and hostname in the email you received)
 
 		$ ssh <username>@<v111node1 hostname>
 		
@@ -219,7 +218,7 @@ In order to access the NGINX container from your web browser you will need the D
 
 - First, let's take a look at the node our **nginx_server** container is running on. In the container details, you can find the node information.
 
-![](images/node_name.jpg)
+![](images/node.jpg)
 
 In this particular example, the **nginx_server** container is running on the **v111node1** node with an IP of 10.0.0.55 - However, this is the private IP address of the node and you will not be able to use this address to connect to the web server. Locate the hostname of the node from the lab details you received.
 
@@ -245,10 +244,6 @@ This task will walk you through the steps of deploying simple applications to Do
 - Use the **Client Bundle** to deploy the app
 - Deploy and connect to a web app
 
-## Pre-requisites
-
-- You must have [Docker Toolbox](https://www.docker.com/products/docker-toolbox) installed on your local machine
-
 ## Step 1 - Deploy an application using Docker Compose
 
 In this step you will use **Docker Compose** to deploy a simple multi-container application. The application contains the following 2 services (containers).
@@ -256,7 +251,9 @@ In this step you will use **Docker Compose** to deploy a simple multi-container 
   - Redis
   - A Java client that pings the container to get a response
 
-1. SSH into **v111node0** as you have done previously
+1. `ssh` into **v111node0** as you have done previously
+
+		$ ssh labuser@<v111node0 hostname>
 
 
 2. Use `git` to clone the application repository from https://github.com/johnny-tu/HelloRedis.git
@@ -355,36 +352,32 @@ In this step you will use **Docker Compose** to deploy a simple multi-container 
 
 In this step you'll clone the `FoodTrucks` GitHub repo locally, deploy it to UCP using the UI, and work out how to connect to it with your web browser.
 
-1. In a terminal window, Clone the `FoodTrucks` repo to your **local** machine.
+Below is the Docker compose file for `FoodTrucks`
 
-   ```
-   $ git clone https://github.com/prakhar1989/FoodTrucks
-   Cloning into 'FoodTrucks'...
-   remote: Counting objects: 322, done.
-   remote: Total 322 (delta 0), reused 0 (delta 0), pack-Recreusede 322ivi
-   Receiving objects: 100% (322/322), 2.86 MiB | 823.00 KiB/s, done.
-   Resolving deltas: 100% (120/120), done.
-   Checking connectivity... done.
-   ```
+```
+es:
+  image: elasticsearch
+web:
+  image: prakhar1989/foodtrucks-web
+  command: python app.py
+  ports:
+    - "5000:5000"
+  volumes:
+    - .:/code
+  links:
+    - es
+```
 
-2. Change into the `FoodTrucks` directory that you just cloned the repo into and view the contents of the directory.
-
-   ```
-   $ cd FoodTrucks
-   $ ls
-   aws-compose.yml     Dockerfile  README.md          setup-docker.sh*  utils/
-docker-compose.yml  flask-app/  setup-aws-ecs.sh*  shot.png
-   ```
-
-3. Return to the UCP web-interface and click on the **Compose Application** button on the **Applications** page
+3. In the UCP web-interface click on the **Compose Application** button on the **Applications** page
 
 ![](images/ucp02_t5_compose_application.PNG)
 
-4. On the Create Application window, give your application a name. i.e. "FoodTrucks" and upload the FoodTruck Docker Compose file.
-   You can copy and paste the docker-compose.yml file from your FoodTruck applications folder or upload by selecting the file from your PC or Mac.
+4. In the Create Application window, give your application a name. i.e. "FoodTrucks".
+
+   Copy and paste the Docker compose file from above and paste it into the compose window in UCP
+   
    Then click on **Create**
 
-![](images/ucp02_t5_create_application_screen.PNG)
 
 - Note the output of the action, then click done.
 
@@ -403,11 +396,13 @@ docker-compose.yml  flask-app/  setup-aws-ecs.sh*  shot.png
 
 2. Click the `foodtrucks_web_1` web container.
 
-3. Make note of the node and port that it's running on.   
+3. Make note of the node. Then scroll down and note theport that it's running on.   
 
-  ![](http://i.imgur.com/JxurnNc.png)
+  ![](./images/ft_node.jpg)
+  
+  ![](./images/ft_port.jpg)
 
-   The screenshot above shows the container running on `node--1` and port `5000`.
+   The screenshot above shows the container running on `v111node1` and port `5000`.
 
    The IP address that is shown in the screenshot above is the nodes private IP. You cannot reach this IP address from the internet.
 
