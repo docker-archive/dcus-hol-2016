@@ -13,7 +13,6 @@ you will be able to quickly familiarize yourself with the features of Docker Uni
 > * [Prerequisites](#prerequisites)
 > * [Install UCP](#install-ucp)
 > * [Deploy a Container](#deploy-a-container)
-> * [Deploy an Application](#deploy-an-application)
 > * [Deploy an Application With the UCP UI](#deploy-ucp-interface)
 > * [Create Users and Teams](#create-users-teams)
 > * [Test User Access](#test-user-access)
