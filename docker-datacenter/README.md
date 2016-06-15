@@ -159,7 +159,7 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 	Enter the following values:
 	- **URL for the UCP Server**: `https://<v111node0 hostname>` (Enter `y` at the prompt)
 	- **UCP Admin**: admin
-	- **UCP Password**: Password your chose initially
+	- **UCP Password**: Password you chose initially
 	- **Additional Aliases**: v111node1 hostname
 	
 
@@ -169,7 +169,7 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 	Enter the following values when prompted:
 	- **URL for the UCP Server**: `https://<v111node0 hostname>` (Enter `y` at the prompt)
 	- **UCP Admin**: admin
-	- **UCP Password**: Password your chose initially
+	- **UCP Password**: Password you chose initially
 	- **Additional Aliases**: v111node2 hostname
 
 4. Check the cluster state by returning to the UCP Dashboard in our browser and choosing the `nodes` option from the left hand menu.
@@ -230,123 +230,7 @@ You will see the NGINX welcome page.
 
 You have successfully launched a web container using the Docker UCP web UI
 
-## <a name="deploy-an-application"></a>Deploy A Simple Application With UCP
-
-# Task 4 - Deploy a simple application on UCP via the Command Line
-
-> **Difficulty**: Beginner
-
-> **Time**: Approximately 15 minutes
-
-This task will walk you through the steps of deploying simple applications to Docker UCP. You will complete the following steps in this task.
-
-- Use **Docker Compose** to deploy a web app
-- Use the **Client Bundle** to deploy the app
-- Deploy and connect to a web app
-
-## Step 1 - Deploy an application using Docker Compose
-
-In this step you will use **Docker Compose** to deploy a simple multi-container application. The application contains the following 2 services (containers).
-
-  - Redis
-  - A Java client that pings the container to get a response
-
-1. `ssh` into **v111node0** as you have done previously
-
-		$ ssh labuser@<v111node0 hostname>
-
-
-2. Use `git` to clone the application repository from https://github.com/johnny-tu/HelloRedis.git
-
-   ```bash
-   $ git clone https://github.com/johnny-tu/HelloRedis.git
-   Cloning into 'HelloRedis'...
-   remote: Counting objects: 45, done.
-   remote: Total 45 (delta 0), reused 0 (delta 0), pack-reused 45
-   Unpacking objects: 100% (45/45), done.
-   Checking connectivity... done.
-   ```
-
-   This will clone the repo into a new directory called `HelloRedis` within your home directory - `/home/ubuntu/HelloRedis`.
-
-3. Change directory into `HelloRedis`
-
-  ```bash
-  $ cd HelloRedis
-  ```
-
-4. List the files in the directory.
-
-   ```bash
-   $ ls
-   docker-compose.prod.yml  docker-compose.yml  Dockerfile  lib  README.md  src
-   ```
-
-5. Use **Docker Compose** to bring up the application defined in the `docker-compose.yml` file. You must run the command from the `HelloRedis` directory.
-
-   ```bash
-   $ docker-compose up -d
-   Pulling redis (redis:latest)...
-   latest: Pulling from library/redis
-   ...
-   ...
-   Digest: sha256:ddb31adb1f61405ee59fc9c569c2b09f1796d0f2190e78d84b873f2d930236c1
-   Status: Downloaded newer image for redis:latest
-   Creating helloredis_redis_1
-   Building javaclient
-   Step 1 : FROM java:7
-    ---> 9f4357ff2eef
-   Step 2 : COPY /src /HelloRedis/src
-    ---> eabdb34fe077
-   Removing intermediate container fd05659c730a
-   Step 3 : COPY /lib /HelloRedis/lib
-    ---> 16a65528b2ce
-   Removing intermediate container 9f52240204e6
-   Step 4 : WORKDIR /HelloRedis
-    ---> Running in 686c4bd65d85
-    ---> 01d9a0c2a101
-   Removing intermediate container 686c4bd65d85
-   Step 5 : RUN javac -cp lib/jedis-2.1.0-sources.jar -d . src/HelloRedis.java
-    ---> Running in f829db30c628
-    ---> 9f08dd8a743c
-   Removing intermediate container f829db30c628
-   Step 6 : CMD java HelloRedis
-    ---> Running in 0e070b1cd994
-    ---> 9dc249ef701d
-   Removing intermediate container 0e070b1cd994
-   Successfully built 9dc249ef701d
-   Creating helloredis_javaclient_1
-
-   ```
-
-  This brings up the application defined in `docker-compose.yml`.
-
-6. Run `docker-compose ps` to verify that the application started correctly and is still running.
-
-   ```bash
-   $ docker-compose ps
-            Name                        Command               State    Ports
-   ---------------------------------------------------------------------------
-   helloredis_javaclient_1   java HelloRedis                  Up
-   helloredis_redis_1        docker-entrypoint.sh redis ...   Up      6379/tcp
-   ```
-
-  The output above shows that the Java client service and the Redis database service are both up and running.
-
-7. Open the UCP Web UI with your web browser.
-
-8. Click the **Applications** link on the left navigation bar.
-
-9. You will see the following output
-
-   ![](http://i.imgur.com/e3JjZLY.png)  
-
-10. Click the **Show Containers** link on the right side to view the Redis and Java client containers that make up the application.
-
-   ![](http://i.imgur.com/wmOfC22.png)
-
-
-## <a name="deploy-ucp-interface"></a>Deploy Applications using the UCP Web Interface
+## <a name="deploy-ucp-interface"></a>Deploy an Application using the UCP Web Interface
 
 ### Deploy FoodTruck Application
 
@@ -396,7 +280,7 @@ web:
 
 2. Click the `foodtrucks_web_1` web container.
 
-3. Make note of the node. Then scroll down and note theport that it's running on.   
+3. Make note of the node. Then scroll down and note the port that it's running on.   
 
   ![](./images/ft_node.jpg)
   
