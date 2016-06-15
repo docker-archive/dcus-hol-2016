@@ -233,7 +233,12 @@ You have successfully launched a web container using the Docker UCP web UI
 
 ### Deploy FoodTruck Application
 
-In this step you'll clone the `FoodTrucks` GitHub repo locally, deploy it to UCP using the UI, and work out how to connect to it with your web browser.
+In this step you'll depoy a multi-container application (`FoodTrucks`) using the UCP web interface, and work out how to connect to it with your web browser.
+
+Docker Compose files are used to describe applications in UCP. They can specify services, networks, and volumes. In our case, we'll be deploying two services:
+
+- Elasticsearch using the official image
+- Web which is a python application based on Flask that shows the location of food trucks around San Francisco
 
 Below is the Docker compose file for `FoodTrucks`
 
@@ -257,16 +262,16 @@ web:
 
 4. In the Create Application window, give your application a name. i.e. "FoodTrucks".
 
-   Copy and paste the Docker compose file from above and paste it into the compose window in UCP
+   Copy and paste the Docker Compose file from above, and paste it into the compose window in UCP
    
    Then click on **Create**
 
 
-- Note the output of the action, then click done.
+	A pop up will detail the progress of the application deployment, and indicate when it's successfully completed. When it has, click **Done**
 
 ![](images/ucp02_t5_create_application_output.PNG)
 
-- You should now see your FoodTrucks application listed on the **Applications** page.
+- Click on **Applications** from the left hadn menu, and you should now see your FoodTrucks application listed.
 
 ###View the Food Truck App in Your Browser
 
@@ -287,19 +292,21 @@ web:
 
    The screenshot above shows the container running on `v111node1` and port `5000`.
 
-   The IP address that is shown in the screenshot above is the nodes private IP. You cannot reach this IP address from the internet.
+   > **Note**: The IP address that is shown in the screenshot above is the nodes private IP. You cannot reach this IP address from the internet.
 
 4. Now that you know the node and port the application's web front-end is operating on, make a note of the node's hostname from your lab details.
 
 5. Point your browser to the application.
 
-  To do this, combine the nodes public IP or public DNS with port 5000 as follows:
+  To do this, combine the node's hostname (from your registration email) with port 5000 as follows:
   
   - `<hostname>:5000`
 
   For example: `http://v111node1-3634b10bff8349cb9dc6b4fe3649b571-22.cloudapp.net:5000`.
 
   If you completed all the steps correctly, you will see a very cool application that allows you to search for food trucks in San Francisco.
+  
+  > **Note**: It can sometimes take a minute or two for the webapp to display. This is due to the application pulling in data to display. 
 
   ![](http://i.imgur.com/vOkgc2l.jpg)
 
