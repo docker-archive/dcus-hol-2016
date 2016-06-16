@@ -1,42 +1,14 @@
-# DockerCon 2016 Hands On Labs
-
-This respository contains the lab guides for the hands on labs that will be featured at DockerCon in Seattle.
-
-We will feature 5 labs this year:
-
-+ Docker Open Source
-+ Docker Cloud
-+ Docker for Developers (Pinata)
-+ Docker Datacenter
-+ Windows Docker Support
-
-You can read all about the labs on <a href="https://docker.atlassian.net/wiki/display/CustomerSuccess/DCUS+Hands+On+Labs">the confluence page</a>.
-
----
-
-# Start of Final Text
-
-TODO: Remove all text this line and above
-
-
 # DockerCon US 2016 Hands-On Labs (HOL)
 
 ![dcus2016](images/dockercon.png)
 
 Welcome to DockerCon! This repo contains a series of hands-on labs to help you gain experience in various Docker features, products, and solutions. Depending on your experience, each lab requires between 30-45 minutes to complete. They range in difficulty from easy to advanced.
 
-If you are at DockerCon US 2016, you must register before beginning the labs. Once you register, TODO: FIX THIS LINE Azure instances you need for each lab. You'll receive an email with connection information. Begin by following this procedure here:
+If you are at DockerCon US 2016, you must register before beginning the labs. Once you register, TODO: FIX THIS LINE Azure instances you need for each lab. You'll receive an email with connection information.
 
-## Prerequisites
-
-- TODO: Add intruction/note to do `sudo usermod -aG docker <username>` to instructions somewhere
-- TODO: Recommended order if a particpant want to do them all?
-- TODO: Note that 'Docker Cloud' lab should be completed last
-
-Then, go onto to complete the labs.
+---
 
 ## Lab 01. [Docker Open Source](https://github.com/docker/dcus-hol-2016/tree/master/open-source)
-**Difficulty**: TODO
 
 TODO: Intro text
 
@@ -45,7 +17,7 @@ TODO: Intro text
 
 TODO: Intro text
 
-## Lab 03. [Docker for Developers (Pinata)]() - TODO: Fix Link
+## Lab 03. [Docker for Developers](https://github.com/docker/dcus-hol-2016/tree/master/docker-developer)
 **Difficulty**: TODO
 
 TODO: Intro text
@@ -55,12 +27,10 @@ TODO: Intro text
 
 TODO: Intro text
 
-## Lab 05. [Windows Docker Support]() - TODO: Fix Link
+## Lab 05. [Windows Server Containers and Docker](https://github.com/docker/dcus-hol-2016/tree/master/windows-containers)
 **Difficulty**: TODO
 
 TODO: Intro text
-
-
 
 ## Contribute Your Own Labs
 
