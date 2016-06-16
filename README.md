@@ -4,7 +4,9 @@
 
 Welcome to DockerCon! This repo contains a series of hands-on labs to help you gain experience in various Docker features, products, and solutions. Depending on your experience, each lab requires between 30-45 minutes to complete. They range in difficulty from easy to advanced.
 
-If you are at DockerCon US 2016, you must register before beginning the labs. Once you register, TODO: FIX THIS LINE Azure instances you need for each lab. You'll receive an email with connection information.
+If you are at DockerCon US 2016, you must register before beginning the labs. Once you register, you'll receive an email with connection information for your assigned [Microsoft Azure](https://azure.microsoft.com) instances.
+
+You can then choose one or more of the following lab tutorials to go through.
 
 ---
 
