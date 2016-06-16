@@ -13,22 +13,18 @@ If you are at DockerCon US 2016, you must register before beginning the labs. On
 TODO: Intro text
 
 ## Lab 02. [Docker Datacenter](https://github.com/docker/dcus-hol-2016/tree/master/docker-datacenter)
-**Difficulty**: TODO
 
 TODO: Intro text
 
 ## Lab 03. [Docker for Developers](https://github.com/docker/dcus-hol-2016/tree/master/docker-developer)
-**Difficulty**: TODO
 
 TODO: Intro text
 
 ## Lab 04. [Windows Server Containers and Docker](https://github.com/docker/dcus-hol-2016/tree/master/windows-containers)
-**Difficulty**: TODO
 
 TODO: Intro text
 
 ## Lab 05. [Docker Cloud](https://github.com/docker/dcus-hol-2016/tree/master/docker-cloud)
-**Difficulty**: TODO
 
 TODO: Intro text
 
