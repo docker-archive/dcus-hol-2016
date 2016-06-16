@@ -19,10 +19,10 @@ You will complete the following steps as part of this lab.
 
 You will need all of the following to complete this lab:
 
-- Windows Server 2016 Technical Preview 5
-- The Containers feature
+- Windows Server 2016 Technical Preview 5 with the Containers feature enabled
 - Visual Studio Code
 - Docker Engine
+- An RDP client installed on your local laptop
 
 All of these should be installed and ready to use on your Azure VM.
 
@@ -30,7 +30,7 @@ All of these should be installed and ready to use on your Azure VM.
 
 In this step you'll open the sample app in Visual Studio Code (VS Code).
 
-1. If you are not already logged on to the Azure VM for the Windows Server Container lab, do so now.
+1. If you are not already logged on to the Azure VM for the Windows Server Container lab, do so now. You can find the connection information in the registration email you received. 
 
 2. Open VS Code by double-clicking the **Visual Studio Code** icon on the desktop.
 
