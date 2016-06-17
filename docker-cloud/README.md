@@ -1,6 +1,6 @@
 # Lab 4: Docker Cloud
 
-##IMPORTANT: If you intend to do the Universal Control Plane lab today, you should do that BEFORE completing this lab.
+##IMPORTANT: If you intend to do the Docker Datacenter lab today, you should do that BEFORE completing this lab.
 
 
 > **Difficulty**: Beginner
