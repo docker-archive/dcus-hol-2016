@@ -91,7 +91,7 @@ The name of the file - **Dockerfile** - is case-sensitive, so be sure to use a c
 
   ```
   FROM microsoft/dotnet
-  ADD ConsoleApp/ConsoleApp
+  ADD ConsoleApp /ConsoleApp
   CMD dotnet run -p C:\Consoleapp
   ```
 
