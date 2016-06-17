@@ -4,10 +4,11 @@
 
 > **Time**: Approximately 15 minutes
 
-This lab will provide a core introduction to Windows Server Containers and the Docker Engine on Windows. You will pull Docker images for Windows, build an application, Dockerize it, and iterate on it.
+> This lab will provide a core introduction to Windows Server Containers and the Docker Engine on Windows. You will pull Docker images for Windows, build an application, Dockerize it, and iterate on it.
 
-You will complete the following steps as part of this lab.
+> You will complete the following steps as part of this lab.
 
+>
 - [Step 1 - Open the project in VS Code](#open_proj)
 - [Step 2 - Run the app](#run_app)
 - [Step 3 - Create a Dockerfile](#create_dockerfile)
@@ -214,7 +215,9 @@ In this step you'll modify the app, rebuild it, Dockerize it again, and test it.
 
   Uh oh! An error.
 
-  The changes you made to the application (adding the **TaylorsConsoleWriter** line) require the **msvcr120.dll** file. However, the file is not present inside the image we created. This is because the DLL is included with Visual Studio, so it's not obvious that it needs explicitly adding to the project.
+  The changes you made to the application (adding the **TaylorsConsoleWriter** line) require the **msvcr120.dll** file. However, the file is not present inside the Docker image we created. 
+  
+  This is because the DLL is included with Visual Studio, so it's not obvious that it needs to be explicitly added to the project. With a Docker image, we need to package up the application and all the dependencies, so we'll need to add **msvcr120.dll** to the Docker image. 
 
 8. Add the dependency to the image by adding the following two lines to your Dockerfile immediately below the **FROM** instruction.
 
@@ -223,7 +226,7 @@ In this step you'll modify the app, rebuild it, Dockerize it again, and test it.
   RUN start /wait c:\vcredist_x64.exe /q /norestart
   ```
 
-  Adding these lines will add the **vcredist_x64.exe** file into the image and then execute it. This will install the missing DDL to the image.
+  Adding these lines will add the **vcredist_x64.exe** file into the Docker image and then execute it. This will install the missing DDL to the Docker image.
 
   Your **Dockerfile** should now look like this.
 
@@ -247,6 +250,18 @@ In this step you'll modify the app, rebuild it, Dockerize it again, and test it.
 
   ```
   > docker run --rm app:3
+  
+  Project Consoleapp (.NETCoreApp,Version=v1.0) will be compiled because Input items removed from last build. 
+  Compiling Consoleapp for .NETCoreApp,Version=v1.0
+  
+  Compilation succeeded.
+    	0 Warning(s)
+   		0 Error(s)
+    
+   Time elapsed 00:00:04.1672457
+   
+   Hello World!
+   Hello World from my 'improved' console writer!
   ```
 
 Congratulations. You've fixed the missing dependency and your Dockerized app is working again.
