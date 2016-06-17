@@ -5,7 +5,7 @@
 
 > **Difficulty**: Beginner
 
-> **Time**: Approximately 40 minutes
+> **Time**: Approximately 45 minutes
 
 > In this lab you will deploy a web application using Docker Cloud. You will complete the following tasks as part of the lab:
 
