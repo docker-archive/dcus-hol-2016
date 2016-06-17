@@ -420,7 +420,7 @@ In this step you're going to build two GitHub repositories - one for the **votin
 
 3. Enter the following information
 
-	+ **Name**: Results
+	+ **Name**: results
 	+ **Description**: Results service for the Docker voting app
 
 4. Click **Create**
@@ -443,7 +443,7 @@ In this step you're going to build two GitHub repositories - one for the **votin
 Repeat steps 1-11 with the following modifications:
 
   Create Repo (Step 3)
-  + **Name**: Voting
+  + **Name**: voting
   + **Description**: Voting service for the Docker voting app
 
 Specifying the Dockerfile path (Step 8)
