@@ -7,9 +7,9 @@
 
 > **Time**: Approximately 40 minutes
 
-In this lab you will deploy a web application using Docker Cloud. You will complete the following tasks as part of the lab:
+> In this lab you will deploy a web application using Docker Cloud. You will complete the following tasks as part of the lab:
 
-- [Task 0: Configure the prerequisites](#prerequisits)
+> - [Task 0: Configure the prerequisites](#prerequisits)
 - [Task 1: Install the Docker Cloud CLI on a management host](#cli-install)
 - [Task 2: Deploy the Docker Cloud agent on a Docker host](#install_node)
 - [Task 3: Deploy a service](#deploy_service)
@@ -224,7 +224,7 @@ A *service* is a group of containers based off the same tagged image (`image:tag
 When you create a service in the Docker Cloud web interface, a wizard walks you through configuring the service in three steps.
 
 + **Step 1 - Choose a Container Image:** Docker Cloud supports images form public and private repos on Docker Hub and thid party registries. It also provides a set of *Jumpstart* repos that are designed to make deploying simple applications easy.
-+  **Step 2 - Configure the Service:** Services have verious proerties and values that need setting. These include: a service a name, initial number of containers, which ports to expose/publish, the entrypoint command, memory and CPU limits.
++  **Step 2 - Configure the Service:** Services have various properties and values that need setting. These include: a service a name, initial number of containers, which ports to expose/publish, the entrypoint command, memory and CPU limits.
 +  **Step 3 - Set Environment variables:** Each service has a set of environment variables that are used to configure the service, such as linking your service to other services in Docker Cloud.
 
 > **Note**: In this lab  we won't be working with environment variables or connecting data volumes, but these are also available as optional steps in the wizard.
@@ -251,9 +251,10 @@ Let's get started by selecting a service to deploy.
 
 4. Scroll down to the **Ports** section and place a check in the **Published** checkbox.
 
-	![](images/first-service-ports.png)
 
-5. Replace **dynamic** with "8080" and click **Add port**.
+5. Replace **dynamic** with "8080".
+
+	![](images/port_8080.jpg)
 
 	> **Note**: Two containers on the same node cannot publish to the same port. If you have completed other labs that already have a container on the node using port 8080, this operation will fail.
 
@@ -425,8 +426,6 @@ In this step you're going to build two GitHub repositories - one for the **votin
 4. Click **Create**
 
 	You'll be taken to the details page for ythe new repository. From here you're going to link your GitHub repository and instruct Docker Cloud to rebuild the image whenever a change is pushed to GitHub.
-
-5. Click **Edit repository** near the top right of the repository details page
 
 6. Select the **Builds** tab and click the **Link to GitHub** button
 
@@ -668,3 +667,9 @@ Now that you have your application up and running, let's push a change to GitHub
 Congratulations! You have successfully deployed an application and configured it to automatically redeploy any time changes are pushed to its GitHub repo.
 
 This completes the Docker Cloud lab.
+
+In this lab you learned how to configure a node with Docker Cloud, create a service from the Docker Cloud jumpstart images, and then deploy this service to your own node using the Docker Cloud UI.
+
+Next, you defined an end-to-end CI/CD pipeline by configuring Docker Cloud autobuilds and then configured the application to automatically redeploy any time changes are pushed to its GitHub repo.
+
+Feel free to continue to explore additional features of Docker Cloud!
