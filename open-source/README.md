@@ -396,11 +396,12 @@ In this part of the demo you will use all three of the nodes in your lab. __v112
 2. Get the internal/private IP address of __v112node0__.
 
    ```bash
-   ubuntu@v112node0:~/FoodTrucks/$ ifconfig eth0
+   ubuntu@v112node0:~/FoodTrucks/$ ip a ls dev eth0 | sed -n "s,.*inet  *\([^/]*\)/.*,\1,p"
    eth0      Link encap:Ethernet  HWaddr 06:67:be:89:1f:b5
              inet addr:172.31.22.238  Bcast:172.31.31.255  Mask:255.255.240.0
    ...
    ```
+   
 
    In the example above, the internal IP address is **172.31.22.238** as indicated by the `inet addr` field.
 
