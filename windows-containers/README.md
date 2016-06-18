@@ -1,4 +1,4 @@
-# Windows Server Containers and Docker
+# Lab 4: Windows Server Containers and Docker
 
 > **Difficulty**: Beginner
 

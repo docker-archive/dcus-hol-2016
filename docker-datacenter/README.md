@@ -1,4 +1,4 @@
-# Docker Datacenter
+# Lab 2: Docker Datacenter
 
 These tasks for hands-on labs will take you through a typical workflow for Docker Datacenter.
 From install, through deploying various applications, and setting up common role-based access control

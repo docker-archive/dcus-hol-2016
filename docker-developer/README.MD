@@ -1,4 +1,4 @@
-# Lab 3: Docker for Developers
+# Lab 1: Docker for Developers
 
 > **Difficulty**: Beginner
 
