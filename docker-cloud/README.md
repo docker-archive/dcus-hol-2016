@@ -1,4 +1,4 @@
-# Lab 4: Docker Cloud
+# Lab 3: Docker Cloud
 
 ##IMPORTANT: If you intend to do the Docker Datacenter lab today, you should do that BEFORE completing this lab.
 
@@ -137,6 +137,9 @@ Installing the Docker Cloud CLI differs based on the operating system of your *m
   **Mac OS X:** Execute the following command (you will need to have `Brew` installed)
 
 		$ brew install docker-cloud
+		
+  > **Note**: If you do not have brew installed, you can install it copy this command into your local command window to install it:
+  `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 4. Verify the install by typing `docker-cloud -v`. This will show the version of the Docker Cloud CLI running on your system.
 
@@ -167,8 +170,6 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host (**
 
 2. Click the **Create a Node** icon on the welcome screen
 
-	![welcome_node_create](./images/welcome_node_create.png)
-
 3. Click **Bring your own node**
 
 	![byon_button](./images/byon_button.png)
@@ -184,6 +185,9 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host (**
 7. Paste the command onto the command prompt on **v111node0**
 
 		$ curl -Ls https://get.cloud.docker.com/ | sudo -H sh -s c7a941OHAIac9419e837f940fab9aa4f1
+
+ If prompted ender the password from your email for **v111node0**
+	
  > **Note**: Remember to cut and paste the command and token from the Docker Cloud UI and not the one form the example above.
 
     The command downloads a script which installs and configures the Docker Cloud agent and registers the host as a *node* with Docker Cloud.
@@ -420,7 +424,7 @@ In this step you're going to build two GitHub repositories - one for the **votin
 
 3. Enter the following information
 
-	+ **Name**: Results
+	+ **Name**: results
 	+ **Description**: Results service for the Docker voting app
 
 4. Click **Create**
@@ -443,7 +447,7 @@ In this step you're going to build two GitHub repositories - one for the **votin
 Repeat steps 1-11 with the following modifications:
 
   Create Repo (Step 3)
-  + **Name**: Voting
+  + **Name**: voting
   + **Description**: Voting service for the Docker voting app
 
 Specifying the Dockerfile path (Step 8)
