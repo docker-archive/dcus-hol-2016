@@ -42,25 +42,8 @@ To install UCP:
 
 		$ ssh <username>@<v111node0 hostname>
 		
-1. You need to add the current user to the Docker group on your machine. This allows you to use Docker without using `sudo`. 
-
-		$ sudo usermod -aG docker <username>
-	
-	Enter the password for **v111node0** if prompted	
-	
-	The output should be similar to this:
-	
-	```	
-	$ sudo usermod -aG docker labuser
-	[sudo] password for labuser:
-	sent invalidate(passwd) request, exiting
-	sent invalidate(group) request, exiting
-	```	
-	
-1. Exit the current session by entering the `exit` command
-
-1. Log back into **v111node0** as you did in step 1. 
-
+	> **Note**: If prompted answer `yes` to add the node to the list of known hosts. 
+		
 2. UCP is installed via a Docker container (`docker/ucp`).
 
     In this example we'll be running the install command interactively, so that
@@ -71,7 +54,7 @@ To install UCP:
         --name ucp \
         -v /var/run/docker.sock:/var/run/docker.sock \
         docker/ucp \
-        install -i
+        install -i --kv-timeout "20000"
     ```
 
 	When prompted enter the following values:
@@ -92,7 +75,7 @@ To install UCP:
 
    > **Note**: If you're not using an external CA, your browser warns that UCP is an unsafe site. This happens because you're accessing UCP using HTTPS but the certificates used by UCP are not trusted by your browser.  
 
-1. When prompted for a UCP licnse, click `Skip for now`
+1. When prompted for a UCP license, click `Skip for now`
 
  	![](./images/skip.jpg)
  	
@@ -108,6 +91,8 @@ To install UCP:
 
 1. In the left hand menu at the bottom, select settings. 
 
+	> **Note**: Sometimes the left hand menu does not render properly, if this is the case, simply refresh the page. 
+
 	> **Note**: If your menu is collapsed you will only see gear icon. To expand your menu click the "hamburger" in top left corner. 
 	
 1. Click `License` adn then `choose file`
@@ -118,8 +103,6 @@ To install UCP:
 
 1. Click `Upload License`. You should get a success notification in the lower right hand corner.  	
 
-
-
 ### Attach Nodes
 
 Now that we have our controller-node installed with UCP.  We have to join other nodes to our controller node:
@@ -128,31 +111,14 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 
 		$ ssh <username>@<v111node1 hostname>
 		
-1. You need to add the current user to the Docker group on your machine. This allows you to use Docker without using `sudo`. 
-
-		$ sudo usermod -aG docker <username>
-	
-	Enter the password for **v111node1** if prompted	
-	
-	The output should be similar to this:
-	
-	```	
-	$ sudo usermod -aG docker labuser
-	[sudo] password for labuser:
-	sent invalidate(passwd) request, exiting
-	sent invalidate(group) request, exiting
-	```	
-	
-1. Exit the current session by entering the `exit` command
-
-1. Log back into **v111node1** as you did in step 1.
-
+	> **Note**: If prompted answer `yes` to add the node to the list of known hosts. 
+			
 2. Use the join command, to join the node to the cluster:
 
     ```bash
     $ docker run --rm -it --name ucp \
       -v /var/run/docker.sock:/var/run/docker.sock \
-      docker/ucp join -i
+      docker/ucp join -i --kv-timeout "20000"
     ```
 
 	Enter the following values:
@@ -160,10 +126,8 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 	- **UCP Admin**: admin
 	- **UCP Password**: Password you chose initially
 	- **Additional Aliases**: v111node1 hostname
-	
 
-
-3. Repeat steps 1 through 5 on the other node (**v111node2**) you want to add to your UCP cluster.
+3. Repeat steps 1 & 2 on the other node (**v111node2**) you want to add to your UCP cluster.
 
 	Enter the following values when prompted:
 	- **URL for the UCP Server**: `https://<v111node0 hostname>` (Enter `y` at the prompt)
@@ -175,10 +139,9 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 
     The node's page of UCP should list all your nodes.
     
-    
-
 ![](images/nodes.jpg)
  
+Congratulations! You've just deployed a UCP cluster, and added two worker nodes to your cluster. 
 
 ## <a name="deploy-a-container"></a>Deploy a container
 
@@ -199,7 +162,7 @@ In this step you will launch a new container based on the NGINX image using the 
 
 ![](images/port_mappings.png)
 
-- Hit the **Run Container** button on the right side panel.
+- Click **Run Container** button on the right side panel.
 
 When the operation completes you will see your container listed as shown below. The green circle to the left of the container indicates that the container is in the **running** state.
 
@@ -475,80 +438,10 @@ This time the bash terminal will launch successfully. This is because the user *
 
 ![](images/ub2_deploy.png)
 
-### Test container access from the command line
-
-In this step you will create and download a **client bundle** for the **johnfull** user, connect to UCP using the client bundle, and perform some tests from the command line. You can do this from either a Windows or Mac. The steps below are from a Windows machine.
-
-- Click the **johnfull** dropdown in the top right corner and select **Profile**.
-
-- Scroll to the bottom of the profile screen and click **Create a Client Bundle**.
-
-This will download the client bundle to your local machine as a zipped archive file.
-
-- Unzip the contents of the archive file and open a command prompt to the location of the extracted contents. On a Windows machine this is likely to be C:\Users\your-user\Downloads\ucp-bundle-johnfull.
-
-The examples in this tutorial are using Git Bash. Feel free to use a command line tool of your choice.
-
-- List the files in your current directory.
-
-```
-nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
-$ ls
-ca.pem  cert.pem  cert.pub  env.cmd  env.ps1  env.sh  key.pem
-```
-
-- Execute the `source.sh` shell script.
-
-```
-nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnfull
-$ source env.sh
-```
-
-- Run a `docker ps` command to list the containers.
-
-The output should contain the "nginx1", "ub1", and "ub2" containers created in the previous steps.
-
-```
-nigel@surfacewah MINGW64 ~/Downloads/ucp-bundle-johnful
-$ docker ps
-CONTAINER ID   IMAGE      COMMAND                  CREATED             STATUS              PORTS             NAMES
-26483416a3ef   ubuntu     "/bin/bash"              About an hour ago   Up About an hour                      ub2
-656e3e4c0ccf   ubuntu     "/bin/bash"              About an hour ago   Up About an hour                      ub1
-0fe093853832   nginx      "nginx -g 'daemon off"   About an hour ago   Up About an hour    80/tcp, 443/tcp   nginx1
-```
-
-- Run `docker exec -it ub1 bash` to open a `bash` terminal on the "ub2" container.
-
-This will result in an *Error response from daemon: access denied* error. This is because the "ub1" container is tagged with the "restricted" label, which maps the *Restricted Control* permission to members of the Engineering team.
-
-- Repeat the same command for the **ub2** container.
-
-This time the command works because the **ub2** container is tagged with the **run** label which maps the *Full Control* permission to members of the Engineering team. Restricted Control does not allow users to `docker exec` into a container.
-
-
-### Test admin access form the command line
-
-In this step you will attempt to launch a console form the UCP web UI, as well as the **admin** user's client bundle.
-
-- Logout of UCP as **johnfull** and log back in as the **admin** user
-- Click the **Containers** link in the left of the web UI and click the **ub1** container.
-- Click the **Console** tab and then click the **Run** button to run a `bash` terminal.
-
-This time the terminal opens. This is because the "admin" user has full access to all UCP resources, regardless of permissions labels that are applied.
-
-- Download the Admin user's client bundle and unzip to a folder of your choice.  See steps 3.1-3.3 for details of how to do this.
-- Open a command prompt to the location of the unzipped client bundle and execute the `env.sh` script.
-- Run a `docker ps` command and take note of how many containers you can see.
-
-You should see the **nginx1**, **ub1** and **ub2** containers that were launched in Step - You should also see any additional containers that you launched without permissions labels at the end of Task 1.
-
-- Run `docker exec` and open a `bash` terminal to the "ub1" container
-
-The operation will also succeed because you are connected to UCP as the **admin** user.
 
 ### Test default permissions
 
-In this step you will test access to UCP resources that are not tagged with permissions labels. The actions in this step wil be performed in the Docker UCP web UI.
+In this step you will test access to UCP resources that are not tagged with permissions labels. 
 
 - Logout of UCP as the **admin** user and log back in as **johnfull**.
 - Click on the **Images** link and click **Pull Image**.
@@ -558,7 +451,7 @@ In this step you will test access to UCP resources that are not tagged with perm
 
 The image pull operation will be successful.
 
-- Click on the **Networks** link and click **+ Create Network** to create a new network called "johns-net".
+- Click on the **Networks** link and click **+ Create Network** to create a new network called "johns-net". Set the driver to **bridge**
 
 Just give the network a name and click **Create**.
 
@@ -568,7 +461,7 @@ From the previous 4 steps we can see that the user **johnfull** has full access 
 
 - Logout of UCP as **johnfull** and log back in as **kerryres**.
 - Click on the **Images** link and pull the "alpine" image.
-- Click on the **Networks** link and create a network called "kerry-net".
+- Click on the **Networks** link and create a network called "kerry-net" with the **bridge** driver. 
 
 Similar  to **johnfull**, **kerryres** can also pull images and create networks despite only having the **Restricted Control** default permission. However, there are actions that users with Full Control can do, that users with Restricted Control cannot do such as `docker exec` into containers and lauch **privileged** containers.
 
@@ -577,7 +470,7 @@ Similar  to **johnfull**, **kerryres** can also pull images and create networks 
 
 Notice that Barry does not even have a **Pull Image** button. This is because **barryview** has the **View Only** default permission. This permission does not allow operations such as pulling images.
 
-- Click the **Networks** link and create a network called "barry-net".
+- Click the **Networks** link and create a network called "barry-net" with the **bridge** driver. 
 
 You will get an **Error creating network: access denied** error message because of insufficient permissions.
 
@@ -590,3 +483,5 @@ You will get an **Error creating network: access denied** error message because 
 This is because Tracey has the **No Access** default permission. However, because Tracey is a members of the Engineering team, she gets access to all of the tagged resources that the Engineering team has access to.
 
 - Click the **Containers** link and notice that Tracey can see the three containers that have the **view** label attached to them.
+
+Thank you for taking the time to complete this lab! Feel free to try any of the other labs. I

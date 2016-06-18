@@ -1,23 +1,48 @@
 # Lab 4: Docker Cloud
 
-##IMPORTANT: If you intend to do the Universal Control Plane lab today, you should do that BEFORE completing this lab.
+##IMPORTANT: If you intend to do the Docker Datacenter lab today, you should do that BEFORE completing this lab.
 
 
 > **Difficulty**: Beginner
 
-> **Time**: Approximately 40 minutes
+> **Time**: Approximately 45 minutes
 
-In this lab you will deploy a web application using Docker Cloud. You will complete the following tasks as part of the lab:
+> In this lab you will deploy a web application using Docker Cloud. You will complete the following tasks as part of the lab:
 
-- [Configure the prerequisites](#prerequisits)
-- [Install the Docker Cloud CLI on a management host](#cli-install)
-- [Deploy the Docker Cloud agent on a Docker host](#install_node)
-- [Deploy a service](#deploy_service)
-  - [Check the service](#check_service)
-- [Deploy an application using a CI/CD pipeline](#deploy_app)
-  - [Configure Docker Cloud autobuilds](#autobuild)
-  - [Test autobuilds](#test_autobuild)
-  - [Configure and test autodeploy](#autodeploy)
+> - [Task 0: Configure the prerequisites](#prerequisits)
+- [Task 1: Install the Docker Cloud CLI on a management host](#cli-install)
+- [Task 2: Deploy the Docker Cloud agent on a Docker host](#install_node)
+- [Task 3: Deploy a service](#deploy_service)
+  - [Task 3.1: Check the service](#check_service)
+- [Task 4: Deploy an application using a CI/CD pipeline](#deploy_app)
+  - [Task 4.1: Configure Docker Cloud autobuilds](#autobuild)
+  - [Task 4.2: Test autobuilds](#test_autobuild)
+  - [Task 4.3: Configure and test autodeploy](#autodeploy)
+
+## What is Docker Cloud?
+
+Docker Cloud is Docker's cloud platform to build, ship and run your containerized applications. Docker Cloud enables teams to come together to collaborate on their projects and to automate complex continuous delivery flows. So you can focus on working and improving your app, and leave the rest up to Docker Cloud.
+Docker Cloud offers a set of services that can be used individually or together for an end-to end solution. These services are:
+
+####Build
+
+- A **continuous integration** (CI) service, to automate the build and test of your code repositories. It integrates with both Github and Bitbucket.
+ 
+####Ship
+
+- A **registry service** to manage your public and private Docker image repositories. 
+
+- **Docker Security Scanning**, a service that automatically scans your Docker repositories for known vulnerabilities. With DSS you can easily see if your containers are affected by any known security vulnerabilities, as well as find out when and how the vulnerability was introduced into your applications. As new vulnerabilities are found, your repositories are automatically scanned and you are notified. 
+
+####Run
+
+- **Infrastructure provisioning and management service** Right from within Docker Cloud you can provision interconnected node clusters on the most popular cloud providers: such as Amazon, Azure and Digital Ocean. You can easily scale your infrastructure up and down, and bulk update your entire infrastructure when a new Docker version is available, for example.
+
+- **Application deployment and management service** Docker Cloud lets you run any dockerized application publicly accessible on any registry in the world. Docker Cloud supports popular features such us: load balancing, DNS round robin service endpoints, auto re-deploys, rolling updates, rollbacks, log aggregation, and many others. You can simply paste your compose file, and get started. You can even exec into individual containers if you'd like to do some hands-on debugging. 
+
+Docker Cloud can also send you and your team **Slack notifications**, so you get notified whenever a build succeeds, or a test failed, or one of your apps in staging has been automatically updated.
+
+Finally, with Organizations, you can now assign **role-based access control** to repositories, applications, and infrastructure, empowering your teams to come together and focus on different aspects of the Continuous Delivery process
 
 ##Document conventions
 When you encounter a prhase in between `<` and `>`  you are meant to subititute in a different value. 
@@ -26,18 +51,14 @@ For instance if you see `ssh <username>@<hostname>` you would actually type some
 
 You will be asked to SSH into various nodes. These nodes are referred to as **v111node0**, **v111node1** etc. These tags correspond to the very beginning of the hostnames you will find in your welcome email. 
 
-## What is Docker Cloud?
-
-Docker Cloud is a SaaS-based service for deploying and managing Dockerized applications. Docker Cloud makes it easy for you to manage and deploy the full spectrum of applications, from single container apps to distributed microservices stacks, to any cloud or on-premises infrastructure.
-
-## <a name="prerequisites"></a>Prerequisites
+## <a name="prerequisites"></a>Task 0: Prerequisites
 
 In order to complete this lab you will need all of the following:
 
 - A Docker ID
-- A management host (you can use your laptop or one of the nodes from your lab)
+- A management host (you can use your laptop or one of the Azure nodes supplied in your registration email)
 - A GitHub account
-- Git installed locally on your machine
+- Git installed locally on your machine (if you are using your machine for the *management host*)
 
 ### Obtain a Docker ID
 
@@ -65,70 +86,25 @@ You now have a Docker ID. Remember to keep the password safe and secure.
 
 ### Choose a management host
 
-As part opf this lab you will need a designated machine that has the Docker Cloud CLI installed. The remainder of this document will refer to this as the *management host*. You have two option for this:
+As part of this lab you will need a designated machine that has the Docker Cloud CLI installed. The remainder of this document will refer to this as the *management host*. 
 
-####Option 1 (recommended): Use your own laptop
-Install the Docker for Mac or Docker for Windows beta on your laptop and use this as your *management host*. If you'd like to do this please refer to **_need names for relevant portion of D4W and D4M labs_** and follow the instructions there.  ***FAO MIKE we still need this previous sentence nailing down with links etc.***
+You have two options with regards to choosing a *management host*:
 
-> **Note**: If you choose this option, you will install the Docker Cloud CLI and execute commands in a terminal or command window on your laptop.
+- **Option 1 (recommended)**: Use your own laptop
 
-####Option 2: Use an Azure-based virtual machine
-If you do not wish to install any software locally, you will need to:
-	- SSH into **v111node1**, 
-	- Add the local user to the Docker group
+	In order to use your own laptop, you will need to have Docker installed. 
 
-> **Note**:	If you choose this option, you will install the Docker Cloud CLI and execute commands on **v111node1**.  
+	We recommend you install either the Docker for Mac or Docker for Windows beta. If you'd like to do this please refer to the <a href="https://github.com/docker/dcus-hol-2016/tree/master/docker-developer"> Docker for developers lab</a>, and follow the installation instructions there for your operating system 
 
-To configure `Second v.1.11 node` as your *management host*:
+	> **Note**: You only need to do the installation portion of the Docker for Developers lab, you don't need to complete the whole lab unless you'd like to).
 
-1. Use the following command to SSH into **v111node1** of your lab, substituting the hostname and password you received via email. 
-	  
-	For example:
-	  		
-		$ ssh labuser@v111node1-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net
-	  		
-	 When prompted enter the password for **v111node1** provided in your welcome email. 
-  	
-1. Add the local user to the Docker group on **v111node1** by typing the following:
-	 
-		$ sudo usermod -aG docker <username for v111node1>
+	If you choose this option, you will install the Docker Cloud CLI and execute commands in a terminal or command window on your laptop.
+
+- **Option 2**: Use an Azure-based virtual machine
 	
-	Enter the password from your welcome email for **v111node1** if prompted	
-	
-	The output should be similar to this:
-	
-	```	
-	$ sudo usermod -aG docker labuser
-	[sudo] password for labuser:
-	sent invalidate(passwd) request, exiting
-	sent invalidate(group) request, exiting
-	```	
-	
-1. Exit the current session by entering the `exit` command
+	If you do not wish to install any software locally you can use one of the Azure VMs as your *management host*
 
-1. SSH back into **v111node1** by repeating step 1
-
-1. Validate everything is working by checking your Docker version
-
-	```
-	$ docker version
-	Client:
-	 Version:      1.11.2
-	 API version:  1.23
-	 Go version:   go1.5.4
-	 Git commit:   b9f10c9
-	 Built:        Wed Jun  1 21:47:50 2016
-	 OS/Arch:      linux/amd64
-	
-	Server:
-	 Version:      1.11.2
-	 API version:  1.23
-	 Go version:   go1.5.4
-	 Git commit:   b9f10c9
-	 Built:        Wed Jun  1 21:47:50 2016
-	 OS/Arch:      linux/amd64
-	```
-
+	If you choose this option, you will install the Docker Cloud CLI an execute all commands on the **v111node1** virtual machine. 
 		
   
 ### GitHub account
@@ -142,7 +118,7 @@ If you are using your own laptop for you *management host*, you'll need to make 
 
 Visit <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">the git website</a> for information how how to install `git`
 
-# <a name="cli-install"></a>Step 1: Install the Docker Cloud CLI
+# <a name="cli-install"></a>Task 1: Install the Docker Cloud CLI
 
 In this step you will install the Docker Cloud Command Line Interface (CLI) on your *management host*.
 
@@ -150,7 +126,7 @@ The Docker Cloud CLI allows you to interact directly with Docker Cloud, and you 
 
 Installing the Docker Cloud CLI differs based on the operating system of your *management host*.
 
-1. Make sure you are logged on to your *management host* (local terminal/command window if using Docker for Mac or Docker for Windows, or an SSH session to **v111node1**).
+1. Make sure you are logged on to your *management host*: Either a local terminal/command window if using Docker for Mac or Docker for Windows, or an SSH session to **v111node1** if you are using the Azure VM.
 
 2. Install the `docker-cloud` CLI.
 
@@ -173,7 +149,7 @@ You now have the Docker Cloud CLI installed on your *management host* and are re
 
 > **Note**: You can uninstall the Docker Cloud CLI by running `pip uninstall docker-cloud` on Linux and Windows, or `brew uninstall docker-cloud`on OS X.
 
-# <a name="install_node"></a>Step 2: Deploy the Docker Cloud Agent on a Docker host
+# <a name="install_node"></a>Task 2: Deploy the Docker Cloud Agent on a Docker host
 
 *Docker hosts* that are managed by Docker Cloud are called *nodes*. In this step you will install the Docker Cloud agent on a *Docker host* and register it as a *node* with Docker Cloud. Later in the lab you will use Docker Cloud to deploy containers to this node.
 
@@ -208,7 +184,7 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host (**
 7. Paste the command onto the command prompt on **v111node0**
 
 		$ curl -Ls https://get.cloud.docker.com/ | sudo -H sh -s c7a941OHAIac9419e837f940fab9aa4f1
-  **Remember to cut and paste the command and token from the Docker Cloud UI and not the one form the example above.**
+ > **Note**: Remember to cut and paste the command and token from the Docker Cloud UI and not the one form the example above.
 
     The command downloads a script which installs and configures the Docker Cloud agent and registers the host as a *node* with Docker Cloud.
 
@@ -239,7 +215,7 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host (**
 
 You have successfully added **v111node0** as a Docker Cloud *node*. This means Docker Cloud can manage **v111node0** and deploy containers to it.
 
-# <a name="deploy_service"></a>Step 3: Deploy a Service
+# <a name="deploy_service"></a>Task 3: Deploy a Service
 
 In this step you will use the Docker Cloud web UI to deploy a simple application comprising a single *service*.
 
@@ -248,7 +224,7 @@ A *service* is a group of containers based off the same tagged image (`image:tag
 When you create a service in the Docker Cloud web interface, a wizard walks you through configuring the service in three steps.
 
 + **Step 1 - Choose a Container Image:** Docker Cloud supports images form public and private repos on Docker Hub and thid party registries. It also provides a set of *Jumpstart* repos that are designed to make deploying simple applications easy.
-+  **Step 2 - Configure the Service:** Services have verious proerties and values that need setting. These include: a service a name, initial number of containers, which ports to expose/publish, the entrypoint command, memory and CPU limits.
++  **Step 2 - Configure the Service:** Services have various properties and values that need setting. These include: a service a name, initial number of containers, which ports to expose/publish, the entrypoint command, memory and CPU limits.
 +  **Step 3 - Set Environment variables:** Each service has a set of environment variables that are used to configure the service, such as linking your service to other services in Docker Cloud.
 
 > **Note**: In this lab  we won't be working with environment variables or connecting data volumes, but these are also available as optional steps in the wizard.
@@ -275,9 +251,10 @@ Let's get started by selecting a service to deploy.
 
 4. Scroll down to the **Ports** section and place a check in the **Published** checkbox.
 
-	![](images/first-service-ports.png)
 
-5. Replace **dynamic** with "8080" and click **Add port**.
+5. Replace **dynamic** with "8080".
+
+	![](images/port_8080.jpg)
 
 	> **Note**: Two containers on the same node cannot publish to the same port. If you have completed other labs that already have a container on the node using port 8080, this operation will fail.
 
@@ -304,7 +281,7 @@ Two additional tabs of information are available for each service:
 
 The service is now deployed and can be reached over the internet on port 8080.
 
-## <a name="check_service"></a>Step 3.1: Check the service
+## <a name="check_service"></a>Task 3.1: Check the service
 
 Let's make sure the service is up and listening for requests.
 
@@ -341,7 +318,7 @@ Make sure you are logged in to the Docker Cloud web UI and on the details page o
 **Congratulations!** You've successfully deployed your first service using Docker Cloud.
 
 
-# <a name="deploy_app"></a>Step 4: Deploy and application using a CI/CD pipeline
+# <a name="deploy_app"></a>Task 4: Deploy and application using a CI/CD pipeline
 
 One of the most powerful features of Docker Cloud is the ability to define end-to-end CI/CD pipelines. In this part of the lab you're going to link your GitHub account to Docker Cloud to facilitate seamless application delivery.
 
@@ -429,7 +406,7 @@ Now we'll clone the repository into our local Docker environment. The following 
 
 Congratulations! You have successfully deployed a simple web app using Docker Cloud.
 
-# <a name="autobuild"></a>Step 4.1: Configure autobuilds
+# <a name="autobuild"></a>Task 4.1: Configure autobuilds
 
 Docker Cloud can automatically build new images when updates are pushed to a repository on GitHub.
 
@@ -449,8 +426,6 @@ In this step you're going to build two GitHub repositories - one for the **votin
 4. Click **Create**
 
 	You'll be taken to the details page for ythe new repository. From here you're going to link your GitHub repository and instruct Docker Cloud to rebuild the image whenever a change is pushed to GitHub.
-
-5. Click **Edit repository** near the top right of the repository details page
 
 6. Select the **Builds** tab and click the **Link to GitHub** button
 
@@ -476,7 +451,7 @@ Specifying the Dockerfile path (Step 8)
 
 Well done! You've created two new repos and configured them to autobuild whenever new changes are pushed to the associated GitHub repos.
 
-# <a name="test_autobuild"></a>Step 4.2: Test autobuilds
+# <a name="test_autobuild"></a>Task 4.2: Test autobuilds
 
 Switch back the command line of your *management host*. 
 
@@ -498,7 +473,8 @@ Switch back the command line of your *management host*.
 4. Save your changes
 
 5. Commit changes to the repository and push to GitHub using `git add`, `git commit`, and `git push`
-
+       
+       ```
 		$ git add *
 
 		$ git commit -m "changing the voting options"
@@ -513,8 +489,8 @@ Switch back the command line of your *management host*.
 		Total 4 (delta 3), reused 0 (delta 0)
 		To https://github.com/<your github repo>/voting-demo.git
    		c1788a1..2ab640a  master -> master
-
-  >**Note:** If you have two factor authentication (2FA) configured on your GitHub account you will need to enter your personal access token (PAT) instead of your password when prompted.
+       ```
+> **Note:** If you have two factor authentication (2FA) configured on your GitHub account you will need to enter your personal access token (PAT) instead of your password when prompted.
 
 6. In the Docker Cloud web UI, navigate back to the **voting** repo and notice that the status is **BUILDING**.
 
@@ -534,7 +510,7 @@ Switch back the command line of your *management host*.
 
 Congratulations. You have configured your Docker Cloud to build a new Docker image each time you push a change to your application's repository on GitHub.
 
-# <a name="autodeploy"></a>Step 4.2: Configure automated deployments
+# <a name="autodeploy"></a>Task 4.3: Configure automated deployments
 
 Now that you have Docker Cloud configured to update your images whenever new code is pushed to GitHub, you will configure the voting application to redeploy each service anytime the underlying image is changed.
 
@@ -691,3 +667,9 @@ Now that you have your application up and running, let's push a change to GitHub
 Congratulations! You have successfully deployed an application and configured it to automatically redeploy any time changes are pushed to its GitHub repo.
 
 This completes the Docker Cloud lab.
+
+In this lab you learned how to configure a node with Docker Cloud, create a service from the Docker Cloud jumpstart images, and then deploy this service to your own node using the Docker Cloud UI.
+
+Next, you defined an end-to-end CI/CD pipeline by configuring Docker Cloud autobuilds and then configured the application to automatically redeploy any time changes are pushed to its GitHub repo.
+
+Feel free to continue to explore additional features of Docker Cloud!
