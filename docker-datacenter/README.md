@@ -38,17 +38,17 @@ available, check the [reference documentation](../reference/install.md).
 
 To install UCP:
 
-1. Log in to your first VM (v111node0) where you will install UCP.  v111node0 will act as your controller node. You will find the hostname, username, and password in your email 
+1. Log in to your first VM (v111node0) where you will install UCP.  v111node0 will act as your controller node. You will find the hostname, username, and password in your email
 
 		$ ssh <username>@<v111node0 hostname>
-		
-	> **Note**: If prompted answer `yes` to add the node to the list of known hosts. 
-		
+
+	> **Note**: If prompted answer `yes` to add the node to the list of known hosts.
+
 2. UCP is installed via a Docker container (`docker/ucp`).
 
     In this example we'll be running the install command interactively, so that
     the command prompts for the necessary configuration values.
-    
+
     ```bash
     $ docker run --rm -it \
         --name ucp \
@@ -58,47 +58,47 @@ To install UCP:
     ```
 
 	When prompted enter the following values:
-	
+
 	- **Password**: enter a password of your choosing
-	
+
 	- **Additional Aliases**: enter your the hostname for **v111node0** which can be found in your email (for example: v111node0-0e23927a6fc9472089bf4c7aeca47ca2-3.cloudapp.net)
-	
+
 	> **Note**: The install with finish with a message to log into your UCP controller at an IP address similar to 10.0.0.2. Ignore this, the address supplied is a private IP, and cannot be used to access UCP.
-	
+
 1. Log into your UCP cluster by pointing your browser to `https://<v111node0 hostname>` (you can find your hostname in the email you received)
 
 	> **Note**: use `https://` not `http://`
-	
+
+   > **Note**: If you're not using an external CA, your browser warns that UCP is an unsafe site. This happens because you're accessing UCP using HTTPS but the certificates used by UCP are not trusted by your browser.
+
 	Username: admin
-	
+
 	Password: the password you chose in the previous step
 
-   > **Note**: If you're not using an external CA, your browser warns that UCP is an unsafe site. This happens because you're accessing UCP using HTTPS but the certificates used by UCP are not trusted by your browser.  
-
-1. When prompted for a UCP license, click `Skip for now`
+2. When prompted for a UCP license, click `Skip for now`
 
  	![](./images/skip.jpg)
- 	
+
 ### Licensing your installation
- 	
+
 1. The UCP dashboard will load. Click the link in the orange banner to create and download a trail license. Follow the prompts to complete the process
 
-	> **Note**: After entering your information to obtain the license, you will be promted to install the CS engine and Docker Datacenter, just click `Next` on each of those screens. 
-	
-	Finish by clicking `Download license` and make a note of where the license file is downloaded. 
-	
-1. In your browser return to the UCP Dashboard. 
+	> **Note**: After entering your information to obtain the license, you will be promted to install the CS engine and Docker Datacenter, just click `Next` on each of those screens.
 
-1. In the left hand menu at the bottom, select settings. 
+	Finish by clicking `Download license` and make a note of where the license file is downloaded.
 
-	> **Note**: Sometimes the left hand menu does not render properly, if this is the case, simply refresh the page. 
+1. In your browser return to the UCP Dashboard.
 
-	> **Note**: If your menu is collapsed you will only see gear icon. To expand your menu click the "hamburger" in top left corner. 
-	
+1. In the left hand menu at the bottom, select settings.
+
+	> **Note**: Sometimes the left hand menu does not render properly, if this is the case, simply refresh the page.
+
+	> **Note**: If your menu is collapsed you will only see gear icon. To expand your menu click the "hamburger" in top left corner.
+
 1. Click `License` adn then `choose file`
 
 	![](./images/license.jpg)
-	
+
 1. Navigate to where your license was downloaded, and double click the `docker_subscription.lic` file.
 
 1. Click `Upload License`. You should get a success notification in the lower right hand corner.  	
@@ -110,9 +110,9 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 1. Log into your second VM (**v111node1**) (You can find your username, password, and hostname in the email you received)
 
 		$ ssh <username>@<v111node1 hostname>
-		
-	> **Note**: If prompted answer `yes` to add the node to the list of known hosts. 
-			
+
+	> **Note**: If prompted answer `yes` to add the node to the list of known hosts.
+
 2. Use the join command, to join the node to the cluster:
 
     ```bash
@@ -138,10 +138,10 @@ Now that we have our controller-node installed with UCP.  We have to join other 
 4. Check the cluster state by returning to the UCP Dashboard in our browser and choosing the `nodes` option from the left hand menu.
 
     The node's page of UCP should list all your nodes.
-    
-![](images/nodes.jpg)
- 
-Congratulations! You've just deployed a UCP cluster, and added two worker nodes to your cluster. 
+
+   ![](images/nodes.jpg)
+
+Congratulations! You've just deployed a UCP cluster, and added two worker nodes to your cluster.
 
 ## <a name="deploy-a-container"></a>Deploy a container
 
@@ -156,21 +156,21 @@ In this step you will launch a new container based on the NGINX image using the 
 - Click on **+ Deploy Container** button.
 - Fill out the Basic Settings as shown below:
 
-![](images/basic_settings.png)
+   ![](images/basic_settings.png)
 
 - Scroll down the page, and expand the **Network** section on the same page and configure the following port mappings:
 
-![](images/port_mappings.png)
+   ![](images/port_mappings.png)
 
 - Click **Run Container** button on the right side panel.
 
 When the operation completes you will see your container listed as shown below. The green circle to the left of the container indicates that the container is in the **running** state.
 
-![](images/deployed_container.png)
+   ![](images/deployed_container.png)
 
 - Click on the row where the container is listed to see the full container details. Then scroll down to the **Ports** section of the page to check the port mappings.
 
-![](images/port_mappings_check.png)
+   ![](images/port_mappings_check.png)
 
 ### Quick Test
 
@@ -200,8 +200,8 @@ In this step you'll depoy a multi-container application (`FoodTrucks`) using the
 
 Docker Compose files are used to describe applications in UCP. They can specify services, networks, and volumes. In our case, we'll be deploying two services:
 
-- Elasticsearch using the official image
-- Web which is a python application based on Flask that shows the location of food trucks around San Francisco
+- `es` using the official Elasticsearch image
+- `Web` which is a python application based on Flask that shows the location of food trucks around San Francisco
 
 Below is the Docker compose file for `FoodTrucks`
 
@@ -219,29 +219,31 @@ web:
     - es
 ```
 
-3. In the UCP web-interface click on the **Compose Application** button on the **Applications** page
+1. In the UCP web-interface click on the **Compose Application** button on the **Applications** page
 
 ![](images/ucp02_t5_compose_application.PNG)
 
-4. In the Create Application window, give your application a name. i.e. "FoodTrucks".
+2. In the Create Application window, give your application a name. i.e. "FoodTrucks".
 
    Copy and paste the Docker Compose file from above, and paste it into the compose window in UCP
-   
+
    Then click on **Create**
 
 
 	A pop up will detail the progress of the application deployment, and indicate when it's successfully completed. When it has, click **Done**
 
-![](images/ucp02_t5_create_application_output.PNG)
+   ![](images/ucp02_t5_create_application_output.PNG)
+
+   >**Note**: If the application returns an error and fails to deploy, repeat the steps again and it should deploy.
 
 - Click on **Applications** from the left hadn menu, and you should now see your FoodTrucks application listed.
 
-###View the Food Truck App in Your Browser
+###View the FoodTruck App in Your Browser
 
 
 1. Click on the `foodtrucks` app in UCP.
 
-   This displays the two contaienrs that comprise the app.
+   This displays the two containers that comprise the app.
    - `foodtrucks_web_1` (the Python app that powers the website)
    - `foodtrucks_es_1` (Elasticsearch backend that powers the search function on the site)
 
@@ -250,7 +252,7 @@ web:
 3. Make note of the node. Then scroll down and note the port that it's running on.   
 
   ![](./images/ft_node.jpg)
-  
+
   ![](./images/ft_port.jpg)
 
    The screenshot above shows the container running on `v111node1` and port `5000`.
@@ -262,14 +264,14 @@ web:
 5. Point your browser to the application.
 
   To do this, combine the node's hostname (from your registration email) with port 5000 as follows:
-  
+
   - `<hostname>:5000`
 
   For example: `http://v111node1-3634b10bff8349cb9dc6b4fe3649b571-22.cloudapp.net:5000`.
 
   If you completed all the steps correctly, you will see a very cool application that allows you to search for food trucks in San Francisco.
-  
-  > **Note**: It can sometimes take a minute or two for the webapp to display. This is due to the application pulling in data to display. 
+
+  > **Note**: It can sometimes take a minute or two for the webapp to display. This is due to the application pulling in data to display.
 
   ![](http://i.imgur.com/vOkgc2l.jpg)
 
@@ -322,7 +324,7 @@ Users can be grouped into teams for simpler management.
 
 This step will walk you through the process of creating a team and adding users to the team.
 
-- Create a team called **Engineering** by clicking the ** + Create** button shown in the image below.
+- Create a team called **Engineering** by clicking the **+ Create** button shown in the image below.
 
 ![](images/create_team.png)
 
@@ -342,7 +344,7 @@ All four users are now members of the Engineering team.
 
 Labels are central to permissions in Docker UCP.
 
-In this step you will create a new label and assign the Engineering team "View Only" access to that label. In Step 4 you will start a new container and apply that same label to the container. As a result, members of the Engineering team will have "View Only" access to the container.
+In this step you will create a new label and assign the Engineering team "View Only" access to that label. In a later step you will start a new container and apply that same label to the container. As a result, members of the Engineering team will have "View Only" access to the container.
 
 - With the **Engineering** team selected, go to the **Permissions** tab and click **+ Add Label**.
 
@@ -386,7 +388,7 @@ In this task you will complete the following steps:
 
 ### Test permission labels
 
-Docker UCP uses labels to implement permissions and access control. In the previous lab (Task 1) you deployed the "nginx1" container with the "view" label. You also assigned the Engineering team "View Only" access to all resources tagged with the "view" label. In this step you will log back in to UCP as "johnfull" and verify that you only have view access to the "nginx1" container.
+Docker UCP uses labels to implement permissions and access control. You have just deployed the "nginx1" container with the "view" label. You also assigned the Engineering team "View Only" access to all resources tagged with the "view" label. In this step you will log back in to UCP as "johnfull" and verify that you only have view access to the "nginx1" container.
 
 - Logout of UCP and log back in as user **johnfull**
 - Click on the **Containers** link in the left pane.
@@ -441,7 +443,7 @@ This time the bash terminal will launch successfully. This is because the user *
 
 ### Test default permissions
 
-In this step you will test access to UCP resources that are not tagged with permissions labels. 
+In this step you will test access to UCP resources that are not tagged with permissions labels.
 
 - Logout of UCP as the **admin** user and log back in as **johnfull**.
 - Click on the **Images** link and click **Pull Image**.
@@ -461,7 +463,7 @@ From the previous 4 steps we can see that the user **johnfull** has full access 
 
 - Logout of UCP as **johnfull** and log back in as **kerryres**.
 - Click on the **Images** link and pull the "alpine" image.
-- Click on the **Networks** link and create a network called "kerry-net" with the **bridge** driver. 
+- Click on the **Networks** link and create a network called "kerry-net" with the **bridge** driver.
 
 Similar  to **johnfull**, **kerryres** can also pull images and create networks despite only having the **Restricted Control** default permission. However, there are actions that users with Full Control can do, that users with Restricted Control cannot do such as `docker exec` into containers and lauch **privileged** containers.
 
@@ -470,7 +472,7 @@ Similar  to **johnfull**, **kerryres** can also pull images and create networks 
 
 Notice that Barry does not even have a **Pull Image** button. This is because **barryview** has the **View Only** default permission. This permission does not allow operations such as pulling images.
 
-- Click the **Networks** link and create a network called "barry-net" with the **bridge** driver. 
+- Click the **Networks** link and create a network called "barry-net" with the **bridge** driver.
 
 You will get an **Error creating network: access denied** error message because of insufficient permissions.
 
