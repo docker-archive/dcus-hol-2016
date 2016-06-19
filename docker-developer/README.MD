@@ -6,15 +6,15 @@
 
 > **Tasks**:
 > 
-> + [Introduction to Docker for Desktop]()
-> + [Docker for Mac]()
-> + [Docker for Windows]()
+> + [Introduction to Docker for Mac/Windows](#what-is-docker-for-mac/windows)
+> + [Docker for Mac](#docker-for-mac)
+> + [Docker for Windows](#docker-for-windows)
 
-## What is Docker for Desktop (Mac/Windows) ?
+##What is Docker for Mac/Windows ?
 
 Docker for Mac and Docker for Windows are faster, more reliable alternatives to Docker Toolbox for running Docker locally on your Windows or Mac. It features the following:
 
-**Faster and more reliable**- No more VirtualBox! On Mac, the Docker Engine runs in an xhyve Virtual Machine (VM) on top of an Alpine Linux distribution. The VM is managed by the native Docker application. On Windows, the Docker Engine is running in a Hyper-V VM. You do not need Docker Machine (docker-machine) to run Docker for Mac and Docker for Windows.
+**Faster and more reliable**- No more VirtualBox! On Mac, the Docker Engine runs in an xhyve Virtual Machine (VM) on top of an Alpine Linux distribution. The VM is managed by the native Docker application. On Windows, the Docker Engine is running in a Hyper-V VM. You do not need Docker Machine (`docker-machine`) to run Docker for Mac and Docker for Windows.
 
 **Native apps for better tools integration** - Docker for Mac and Docker for Windows are native applications, including native user interfaces and the ability to stay updated automatically. The Docker tools are bundled with these apps, including the Docker command line interface (CLI), Docker Compose, and Docker Machine.
 
@@ -26,7 +26,7 @@ Docker for Mac and Docker for Windows are faster, more reliable alternatives to 
 
 Please go through the tutorial based on the platform you're using (Mac or Windows)
 
-## Docker for Mac
+##Docker for Mac
 
 Docker for Mac is packaged as `Docker.app`, a bundle of Docker client, and Docker Engine. Docker.app uses the OSX Hypervisor.framework (part of MacOS X 10.10 Yosemite and higher) to run containers, meaning that no separate VirtualBox is required
 
@@ -34,7 +34,7 @@ Docker for Mac is packaged as `Docker.app`, a bundle of Docker client, and Docke
 
 * **README FIRST for Docker Toolbox and Docker Machine users**: If you are already running Docker on your machine, first read [Docker for Mac vs. Docker Toolbox](https://beta.docker.com/docs/mac/docker-toolbox/) to understand the impact of this installation on your existing setup, how to set your environment for Docker for Mac, and how the two products can coexist.
 
-* **Relationship to Docker Machine**: Installing Docker for Mac does not affect machines you created with Docker Machine. You'll get the option to copy containers and images from your local `default` machine (if one exists) to the new Docker for Mac <a href="https://github.com/mist64/xhyve/" target="_blank">xhyve</a> VM.
+* **Relationship to Docker Machine**: Installing Docker for Mac does not affect machines you created with Docker Machine. You'll get the option to copy containers and images from your local `default` machine (if one exists) to the new Docker for Mac [xhyve](https://github.com/mist64/xhyve/).
 
 * **System Requirements**: Docker for Mac will launch only if all these requirements are met.
 
@@ -77,7 +77,7 @@ If you just installed the app, you also get a success message with suggested nex
 
 Select **About Docker** to verify that you have the latest version.
 
-![Docker About box](images/About.png)
+![Docker About box](images/About16.png)
 
 **Step 5:** Check versions of Docker Engine, Compose, and Machine
 
@@ -85,13 +85,13 @@ Run these commands to test if your versions of `docker`, `docker-compose`, and `
 
 ```shell
 	$ docker --version
-	Docker version 1.11.2, build b9f10c9
+	Docker version 1.12.0-rc2, build 906eacd, experimental
 
 	$ docker-compose --version
-	docker-compose version 1.7.1, build 0a9ab35
+	docker-compose version 1.8.0-rc1, build 9bf6bc6
 
 	$ docker-machine --version
-	docker-machine version 0.7.0, build a650a40
+	docker-machine version 0.8.0-rc1, build fffa6c9
 ```
 
 **Congratulations! You're up and running with Docker for Mac!**
@@ -119,7 +119,7 @@ Run these commands to test if your versions of `docker`, `docker-compose`, and `
 
 * **sysctl.conf** - You can configure tuning parameters for the Linux kernel on which the Docker daemon runs by editing the `sysctl.conf` file.
 
-	Reference information for the `sysctl` configuration file is available with Linux distributions. See <a href="https://www.linux.com/news/kernel-tuning-sysctl" target="_blank">Kernel tuning with sysctl</a> to start learning more about these options. Proceed with caution, as modifying `sysctl.conf` incorrectly can prevent Docker from starting.
+	Reference information for the `sysctl` configuration file is available with Linux distributions. See [Kernel tuning with sysctl](https://www.linux.com/news/kernel-tuning-sysctl) to start learning more about these options. Proceed with caution, as modifying `sysctl.conf` incorrectly can prevent Docker from starting.
 
 	For more about options on the Docker daemon, see the [daemon reference] (https://docs.docker.com/engine/reference/commandline/daemon/).
 
@@ -281,7 +281,7 @@ To access the app, you can go to yoru favorite browser and hit `localhost:5000`
 
 **Step 4:** Now let's tweak the voting options on the go and see the effect take place right away!
 
-Using your favorite text editor, edit `app.py` and changes the voting options:
+Using your favorite text editor, edit `app.py` and changes the voting options. Here we're changing them to Windows and Mac :)
 
  
  ```
@@ -297,7 +297,9 @@ option_a = os.getenv('OPTION_A', "Windows")
 option_b = os.getenv('OPTION_B', "Mac")
  ```
  
-Save your edits, and refresh the page. No need to rebuild the image or restart/redeploy the voting app containers.
+Save your edits, and refresh the page. No need to rebuild the image or restart/redeploy the voting app containers!
+
+Feel free to explore other features of Docker for Mac, deploy your favorite application, or just Tweet how awesome Docker for Mac is :)
 
 
 ![app](images/image4.png)
@@ -307,7 +309,7 @@ Save your edits, and refresh the page. No need to rebuild the image or restart/r
 Docker for Mac is the fastest, most reliable, and native way to use Docker on your Mac. Througout this tutorial, we learned how to install and run Docker for Mac. We also deployed an application and used the robust file-syncing to see changes in the application code right away without restarting or de-deploying the application containers!
 
 
-## Docker for Windows
+##Docker for Windows
 
 Docker for Windows is an integrated, easy-to-deploy environment for building, assembling, and shipping applications from a Windows PC. Docker for Windows is a native Windows application with a native user interface and auto-update capability, deeply integrated with Windows native virtualization, Hyper-V, networking and file system, making it faster and more reliable than previous ways of getting Docker on a Windows PC
 
@@ -332,7 +334,7 @@ If you have not done so already, please download Docker for Windows [**here**](h
 
 **Step 2:** Double-click `InstallDocker.msi` to run the installer.
 
- If you haven't already downloaded the installer (`InstallDocker.msi`), you can get it [**here**](https://download.docker.com/win/beta/InstallDocker.msi). It typically downloads to your `Downloads folder`, or you can run it from the recent downloads bar at the bottom of your web browser.
+It typically downloads to your `Downloads folder`, or you can run it from the recent downloads bar at the bottom of your web browser.
 
 **Step 3:** Follow the install wizard to accept the license, authorize the installer, and proceed with the install.
 
@@ -361,13 +363,13 @@ On every start of Docker, you will be prompted by Windows for privileged access.
 Start your favorite shell (`cmd.exe` or PowerShell) and check your versions of `docker` and `docker-compose`, and verify the installation.
 
       PS C:\Users\samstevens> docker --version
-      Docker version 1.11.1, build 5604cbe
+      Docker version 1.12.0-rc2, build 906eacd, experimental
 
       PS C:\Users\samstevens> docker-compose --version
-      docker-compose version 1.7.1, build 0a9ab35
+      docker-compose version 1.8.0-rc1, build 9bf6bc6
 
       PS C:\Users\samstevens> docker-machine --version
-      docker-machine.exe version 0.7.0, build a650a40
+      docker-machine.exe version 0.8.0-rc1, build fffa6c9
       
 
 **Congratulations!** You're up and running with Docker for Windows.
@@ -422,7 +424,7 @@ You can enable **VPN compatibilty mode** to allow Docker for Windows networking 
 
 * **(Not Required) DNS Server** - You can configure a static IP address for the DNS server.
 
-* **(Required) Experimental** - **Check the box** to expose a container's ports on your `local host`.
+* **(Required) Experimental** - **Check the box** to expose a container's ports on your `localhost`.
 
 After you enable the experiemental please press **Apply**.
 
@@ -434,7 +436,7 @@ After you enable the experiemental please press **Apply**.
 ### Docker daemon(Informational)
 You can configure options on the Docker daemon in the given JSON configuration file, and determine how your containers will run.
 
-For a full list of options on the Docker daemon, see <a href="https://docs.docker.com/engine/reference/commandline/daemon/" target="_blank">daemon</a> in the Docker Engine command line reference.
+For a full list of options on the Docker daemon, see [daemon](https://docs.docker.com/engine/reference/commandline/daemon/) in the Docker Engine command line reference.
 
 ![Docker Daemon](images/docker-daemon.png)
 
@@ -446,7 +448,7 @@ You can configure tuning parameters for the Linux kernel on which the Docker dae
 
 ![Kernel tuning](images/settings-kernel.png)
 
-Reference information for the `sysctl` configuration file is available with Linux distributions. See <a href="https://www.linux.com/news/kernel-tuning-sysctl" target="_blank">Kernel tuning with sysctl</a> to start learning more about these options. Proceed with caution, as modifying `sysctl.conf` incorrectly can prevent Docker from starting.
+Reference information for the `sysctl` configuration file is available with Linux distributions. See [Kernel tuning with sysctl](https://www.linux.com/news/kernel-tuning-sysctl) to start learning more about these options. Proceed with caution, as modifying `sysctl.conf` incorrectly can prevent Docker from starting.
 
 For more about options on the Docker daemon, see the [daemon reference] (https://docs.docker.com/engine/reference/commandline/daemon/).
 
@@ -637,6 +639,8 @@ option_b = os.getenv('OPTION_B', "Mac")
 Save your edits, and refresh the page !
 
 ![app](images/image4.png)
+
+Feel free to explore other features of Docker for Windows, deploy your favorite application, or just Tweet how awesome Docker for Windows is :)
 
 
 **Summary**
