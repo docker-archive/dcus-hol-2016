@@ -195,7 +195,7 @@ networks:
   back-tier:
 ```
 
-You can see that for both the `voting-app` and `result-app` services, a host directory is mounted into the container. For example, the directory called `voting-app` is mounted into the cotnainer at `/app`. You can exampin the `./voting-app/app.py` Python file as follows:
+You can see that for both the `voting-app` and `result-app` services, a host directory is mounted into the container. For example, the directory called `voting-app` is mounted into the container at `/app`. You can examine the `./voting-app/app.py` Python file as follows:
 
 
 ```
@@ -272,7 +272,7 @@ examplevotingapp_worker_1       java -jar target/worker-ja ...   Up
 
 ```
 
-To access the app, you can go to yoru favorite browser and hit `localhost:5000`
+To access the app, you can go to your favorite browser and hit `localhost:5000`
 
 
 ![app](images/image1.png)
@@ -306,7 +306,7 @@ Feel free to explore other features of Docker for Mac, deploy your favorite appl
 
 **Summary**
 
-Docker for Mac is the fastest, most reliable, and native way to use Docker on your Mac. Througout this tutorial, we learned how to install and run Docker for Mac. We also deployed an application and used the robust file-syncing to see changes in the application code right away without restarting or de-deploying the application containers!
+Docker for Mac is the fastest, most reliable, and native way to use Docker on your Mac. Throughout this tutorial, we learned how to install and run Docker for Mac. We also deployed an application and used the robust file-syncing to see changes in the application code right away without restarting or de-deploying the application containers!
 
 
 ##Docker for Windows
@@ -385,7 +385,7 @@ To get a popup menu with application options, right-click the whale:
 
 ![Docker for Windows popup menu](images/config-popup-menu-win.png)
 
-The **Settings** dialogs provide options to allow Docker auto-start, automatically check for updates, share local drives with Docker containers, enable VPN compatibilty, manage CPUs and memory Docker uses, restart Docker, or perform a factory reset.
+The **Settings** dialogs provide options to allow Docker auto-start, automatically check for updates, share local drives with Docker containers, enable VPN compatibility, manage CPUs and memory Docker uses, restart Docker, or perform a factory reset.
 
 
 ### General(Informational)
@@ -400,13 +400,13 @@ The **Settings** dialogs provide options to allow Docker auto-start, automatical
 
 Share your local drives with Docker for Windows, so that they are available to your containers.
 
-**Step 1:** Pleace select the `C` drive to be shared with the Docker VM. Feel free to select whichever drive you prefer but you need to ensure it's the same one that you'll be using in the following app deployment excercise. 
+**Step 1:** Please select the `C` drive to be shared with the Docker VM. Feel free to select whichever drive you prefer but you need to ensure it's the same one that you'll be using in the following app deployment exercise. 
 
 ![Shared Drives](images/settings-shared-drives.png)
 
 You will be asked to provide your Windows system username and password to apply shared drives. You can select an option to have Docker store the credentials so that you don't have to re-enter them every time.
 
-### Advanced (Optionol)
+### Advanced (Optional)
 
 ![CPU and Memory settings](images/settings-cpu-ram.png)
 
@@ -418,7 +418,7 @@ Please note, updating these settings requires a reconfiguration and reboot of th
 
 ### Network (Required)
 
-You can enable **VPN compatibilty mode** to allow Docker for Windows networking to work on a VPN.
+You can enable **VPN compatibility mode** to allow Docker for Windows networking to work on a VPN.
 
 * **(Not Required) NAT Virtual Switch** - You can specify a NAT prefix and subnet mask.
 
@@ -426,7 +426,7 @@ You can enable **VPN compatibilty mode** to allow Docker for Windows networking 
 
 * **(Required) Experimental** - **Check the box** to expose a container's ports on your `localhost`.
 
-After you enable the experiemental please press **Apply**.
+After you enable the experimental please press **Apply**.
 
 **Note** that updating these settings requires a reconfiguration and reboot of the Linux VM.
 
@@ -461,7 +461,7 @@ In this step, we will show the power of file syncing when it comes to developing
 
 **Step 1:** Let's start by cloning the imfamous voting app into your local directory. Please ensure that youre local directory is in the same drive that you shared in Step#2 above. In the case below, we chose the `docker` directory under `C` drive. 
 
-**Note:** If you do not have `git` insalled on your Mac. Please download it [here](https://git-scm.com/download/windows).
+**Note:** If you do not have `git` installed on your Mac. Please download it [here](https://git-scm.com/download/windows).
 
 ```
 C:\Users\docker> git clone https://github.com/docker/example-voting-app.git
@@ -527,7 +527,7 @@ networks:
   back-tier:
 ```
 
-You can see that for both the `voting-app` and `result-app` services, a host directory is mounted into the container. For example, the directory called `voting-app` is mounted into the cotnainer at `/app`. You can exampin the `./voting-app/app.py` Python file as follows:
+You can see that for both the `voting-app` and `result-app` services, a host directory is mounted into the container. For example, the directory called `voting-app` is mounted into the container at `/app`. You can examine the `./voting-app/app.py` Python file as follows:
 
 
 ```
@@ -645,7 +645,8 @@ Feel free to explore other features of Docker for Windows, deploy your favorite 
 
 **Summary**
 
-Docker for Windows is the fastest, most reliable, and native way to use Docker on your Windows 10 machine. Througout this tutorial, we learned how to install and run Docker for Windows. We also deployed an application and used the robust file-syncing to see changes in the application code right away without restarting or de-deploying the application containers!
+Docker for Windows is the fastest, most reliable, and native way to use Docker on your Windows 10 machine. Throughout this tutorial, we learned how to install and run Docker for Windows. We also deployed an application and used the robust file-syncing to see changes in the application code right away without restarting or de-deploying the application containers!
+
 
 
 
