@@ -83,7 +83,7 @@ To install UCP:
 
 1. The UCP dashboard will load. Click the link in the orange banner to create and download a trail license. Follow the prompts to complete the process
 
-	> **Note**: After entering your information to obtain the license, you will be promted to install the CS engine and Docker Datacenter, just click `Next` on each of those screens.
+	> **Note**: After entering your information to obtain the license, you will be promoted to install the CS engine and Docker Datacenter, just click `Next` on each of those screens.
 
 	Finish by clicking `Download license` and make a note of where the license file is downloaded.
 
@@ -95,11 +95,11 @@ To install UCP:
 
 	> **Note**: If your menu is collapsed you will only see gear icon. To expand your menu click the "hamburger" in top left corner.
 
-1. Click `License` adn then `choose file`
+1. Click `License` and then `choose file`
 
 	![](./images/license.jpg)
 
-1. Navigate to where your license was downloaded, and double click the `docker_subscription.lic` file.
+1. Navigate to where your license was downloaded, and double-click the `docker_subscription.lic` file.
 
 1. Click `Upload License`. You should get a success notification in the lower right hand corner.  	
 
@@ -196,7 +196,7 @@ You have successfully launched a web container using the Docker UCP web UI
 
 ### Deploy FoodTruck Application
 
-In this step you'll depoy a multi-container application (`FoodTrucks`) using the UCP web interface, and work out how to connect to it with your web browser.
+In this step you'll deploy a multi-container application (`FoodTrucks`) using the UCP web interface, and work out how to connect to it with your web browser.
 
 Docker Compose files are used to describe applications in UCP. They can specify services, networks, and volumes. In our case, we'll be deploying two services:
 
@@ -236,7 +236,7 @@ web:
 
    >**Note**: If the application returns an error and fails to deploy, repeat the steps again and it should deploy.
 
-- Click on **Applications** from the left hadn menu, and you should now see your FoodTrucks application listed.
+- Click on **Applications** from the left hand menu, and you should now see your FoodTrucks application listed.
 
 ###View the FoodTruck App in Your Browser
 
@@ -278,7 +278,7 @@ web:
   Congratulations. You've successfully deployed application to Docker UCP using the UCP Web Interface.
 
 
-## <a name="create-users-teams"></a>Create Users and Teams (OPtiona
+## <a name="create-users-teams"></a>Create Users and Teams (Optional)
 
 In this task you will complete the following four steps.
 
@@ -314,7 +314,7 @@ In this step you will create the 4 new users shown below.
 
 - Click **Create User**.
 
-Repeat for all users in the table above. Be sure to select the appropriate permissions from the **Default Permissions** dropdown.
+Repeat for all users in the table above. Be sure to select the appropriate permissions from the **Default Permissions** drop-down.
 
 > **Note:** The *Default Permissions* configured in the above step are not the same as the permissions you will set in Step - *Default Permissions* apply to non-labelled resources. The permissions you will set in Step 3 will only apply to resources that are labelled appropriately.
 
