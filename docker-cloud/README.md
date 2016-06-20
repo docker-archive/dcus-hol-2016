@@ -40,12 +40,12 @@ Docker Cloud offers a set of services that can be used individually or together 
 
 - **Application deployment and management service** Docker Cloud lets you run any dockerized application publicly accessible on any registry in the world. Docker Cloud supports popular features such us: load balancing, DNS round robin service endpoints, auto re-deploys, rolling updates, rollbacks, log aggregation, and many others. You can simply paste your compose file, and get started. You can even exec into individual containers if you'd like to do some hands-on debugging. 
 
-Docker Cloud can also send you and your team **Slack notifications**, so you get notified whenever a build succeeds, or a test failed, or one of your apps in staging has been automatically updated.
+Docker Cloud can also send you and your team **Slack notifications**, so you get notified when a build succeeds, or a test failed, or one of your apps in staging has been automatically updated.
 
 Finally, with Organizations, you can now assign **role-based access control** to repositories, applications, and infrastructure, empowering your teams to come together and focus on different aspects of the Continuous Delivery process
 
 ##Document conventions
-When you encounter a prhase in between `<` and `>`  you are meant to subititute in a different value. 
+When you encounter a phrase in between `<` and `>`  you are meant to substitute in a different value. 
 
 For instance if you see `ssh <username>@<hostname>` you would actually type something like `ssh labuser@v111node0-adaflds023asdf-23423kjl.appnet.com`
 
@@ -53,7 +53,7 @@ You will be asked to SSH into various nodes. These nodes are referred to as **v1
 
 ## <a name="prerequisites"></a>Task 0: Prerequisites
 
-In order to complete this lab you will need all of the following:
+In order to complete this lab, you will need the following:
 
 - A Docker ID
 - A management host (you can use your laptop or one of the Azure nodes supplied in your registration email)
@@ -62,7 +62,7 @@ In order to complete this lab you will need all of the following:
 
 ### Obtain a Docker ID
 
-If you do not already have a Docker ID, you will need to create one now. Creating a Docker ID is free, and allows you to access both [Docker Cloud](https://cloud.docker.com) and [Docker Hub](https://hub.docker.com).
+If you do not already have a Docker ID, you will need to create one now. Creating a Docker ID is free, and allows you to use both [Docker Cloud](https://cloud.docker.com) and [Docker Hub](https://hub.docker.com).
 
 If you already have a Docker ID, skip to the next prerequisite.
 
@@ -86,7 +86,7 @@ You now have a Docker ID. Remember to keep the password safe and secure.
 
 ### Choose a management host
 
-As part of this lab you will need a designated machine that has the Docker Cloud CLI installed. The remainder of this document will refer to this as the *management host*. 
+As part of this lab you will need a designated machine that has the Docker Cloud CLI installed. The rest of this document will refer to this as the *management host*. 
 
 You have two options with regards to choosing a *management host*:
 
@@ -253,7 +253,7 @@ Let's get started by selecting a service to deploy.
 
   For the purposes of this lab, the only modification you need to make on this page is to expose a port and map it to a node (host) port. Let's do that.
 
-4. Scroll down to the **Ports** section and place a check in the **Published** checkbox.
+4. Scroll down to the **Ports** section and place a check in the **Published** check box.
 
 
 5. Replace **dynamic** with "8080".
