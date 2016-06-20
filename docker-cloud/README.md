@@ -170,6 +170,8 @@ In this step you'll deploy the Docker Cloud agent to an existing Docker host (**
 
 2. Click the **Create a Node** icon on the welcome screen
 
+    > **Note**: For this lab you are using the free tier of Docker cloud, this only allows you to add one managed node. Adding a 2nd managed node will fail.
+
 3. Click **Bring your own node**
 
 	![byon_button](./images/byon_button.png)
