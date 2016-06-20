@@ -670,7 +670,7 @@ Now that you have your application up and running, let's push a change to GitHub
 
 Congratulations! You have successfully deployed an application and configured it to automatically redeploy any time changes are pushed to its GitHub repo.
 
-This completes the Docker Cloud lab.
+This completes the Docker Cloud lab. **Have a Docker employee verify your lab results and collect your contact information to receive a coupon code for 4 free private repositories and an additional node on Docker Cloud.**
 
 In this lab you learned how to configure a node with Docker Cloud, create a service from the Docker Cloud jumpstart images, and then deploy this service to your own node using the Docker Cloud UI.
 
