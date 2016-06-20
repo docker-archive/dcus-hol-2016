@@ -61,6 +61,22 @@ In this lab you will:
 - Dockerize it and iterate on it.
 
 
+## Lab 05. [Docker Native Orchestration](https://github.com/docker/dcus-hol-2016/tree/master/docker-orchestration)
+
+In this lab you will try out the new features from Docker engine 1.12 that provide native container orchestration. You will deploy a Dockerized application to a single host and test the application. You will then configure Docker for Swarm Computing and deploy the same app across multiple hosts. You will then see how to scale the application and move the workload across different hosts easily.
+
+Duration: 45 minutes
+
+In this lab you will:
+
+- Deploy a single host application with a Dockerfile
+- Configure Docker for Swarm Computing
+- Deploy the application across multiple hosts
+- Scale the application
+- Drain a node and reschedule the containers
+
+
+
 
 ---
 
