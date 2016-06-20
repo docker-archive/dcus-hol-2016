@@ -32,7 +32,7 @@ Docker for Mac is packaged as `Docker.app`, a bundle of Docker client, and Docke
 
 ### What to know before you install
 
-* **README FIRST for Docker Toolbox and Docker Machine users**: If you are already running Docker on your machine, first read [Docker for Mac vs. Docker Toolbox](https://beta.docker.com/docs/mac/docker-toolbox/) to understand the impact of this installation on your existing setup, how to set your environment for Docker for Mac, and how the two products can coexist.
+* **README FIRST for Docker Toolbox and Docker Machine users**: If you are already running Docker on your machine, first read [Docker for Mac vs. Docker Toolbox](https://docs.docker.com/docker-for-mac/docker-toolbox/) to understand the impact of this installation on your existing setup, how to set your environment for Docker for Mac, and how the two products can coexist.
 
 * **Relationship to Docker Machine**: Installing Docker for Mac does not affect machines you created with Docker Machine. You'll get the option to copy containers and images from your local `default` machine (if one exists) to the new Docker for Mac [xhyve](https://github.com/mist64/xhyve/).
 
