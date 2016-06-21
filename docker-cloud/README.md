@@ -333,7 +333,7 @@ In order to complete this step you'll need to:
 - have Docker Cloud linked to your GitHub account
 - have `git` installed on your *management host*
 
-To link Docker Cloud with GitHub, click your account name in the top right corner of the Docker Cloud web UI. Click **Account settings** and then the **Source providers** link. Click the **power socket** icon and follow the procedure to link your GitHub account.
+To link Docker Cloud with GitHub, click the **Cloud Settings** link in the menu on the left hand side of the Docker Cloud web UI. Scroll down to the **Source providers** section. Click the **power socket** icon and follow the procedure to link your GitHub account.
 
 ![](./images/power_socket.jpg)
 
