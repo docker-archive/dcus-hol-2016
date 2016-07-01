@@ -83,3 +83,16 @@ In this lab you will:
 ## Contribute Your Own Labs
 
 If you have an awesome tutorial/lab and would like to add it here. Please open a PR. We would love to add more exciting tutorials to the list!
+
+## Lab 01. [Begining with Docker](https://github.com/bcornec/Labs/tree/master/Docker)
+
+In this lab you will install and use Docker to become familiar with Linux based containers and handle some of the common use cases around it, such as deploying your first owncloud application in a container. This Lab is intended to be trial and error so that during the session students should understand really what is behind the tool, instead of blindly following instructions, which never teach people anything IMHO. You've been warned ;-)
+
+Duration: 120 minutes
+
+In this lab you will:
+
+- Deploy docker locally on your Linux system
+- Explore with the basic commands
+- Use existing containers from the Docker Hub 
+- Build you own container to launch owncloud
